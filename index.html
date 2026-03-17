@@ -4,97 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arresalah International Madrasah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-body{background:#f5f2ee;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#f8f1e9;}
+
 
 /* NAVBAR */
-header{
-    background:#3b2a1e;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 20px;
-    position:fixed;
-    width:100%;
-    top:0;
-    z-index:1000;
-    box-shadow:0 2px 10px rgba(0,0,0,.2);
-}
+header{background:#4b2b0f;color:white;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 8px 20px rgba(0,0,0,.15);}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo img{width:40px;border-radius:50%;}
-nav.desktop{display:flex;gap:20px;}
-nav.desktop a{color:white;font-weight:bold;}
-.menu{font-size:25px;cursor:pointer;display:none;}
+.logo img{width:45px;border-radius:8px;}
+.logo span{font-weight:700;letter-spacing:.2px;}
+nav.desktop{display:flex;gap:16px;}
+nav.desktop a{color:#fffdf7;font-weight:500;font-size:.95rem;text-decoration:none;transition:.2s;}
+nav.desktop a:hover{color:#f5b35f;}
+.menu{font-size:26px;cursor:pointer;display:none;}
 @media(max-width:768px){.menu{display:block;} nav.desktop{display:none;}}
 
 /* SIDEBAR */
-.sidebar{
-    position:fixed;
-    top:0;
-    right:-250px;
-    width:70%;
-    max-width:250px;
-    height:100%;
-    background:#2b1d14;
-    transition:0.4s;
-    padding-top:60px;
-    z-index:999;
-}
-.sidebar a{
-    display:block;
-    color:white;
-    padding:15px 25px;
-    text-decoration:none;
-    border-bottom:1px solid #444;
-}
-.sidebar a:hover{background:#6b4423;}
+.sidebar{position:fixed;top:0;right:-250px;width:70%;max-width:260px;height:100%;background:#2b1d14;transition:.3s;padding-top:60px;z-index:999;}
+.sidebar a{display:block;color:white;padding:15px 24px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.08);}
+.sidebar a:hover{background:#4f371f;}
 .sidebar.active{right:0;}
 
 /* HERO */
-.hero{
-    text-align:center;
-    padding:150px 20px 80px 20px;
-}
-.hero img{width:80px;border-radius:50%;margin-bottom:15px;}
-.hero h1{font-size:28px;color:#3b2a1e;}
-.hero p{margin-top:10px;color:#5c4532;font-size:16px;}
+.hero{background:linear-gradient(135deg, #fff8f1, #f1d9b7);text-align:center;padding:140px 20px 60px 20px;border-bottom:1px solid #e0c5a1;}
+.hero img{width:100px;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.12);margin-bottom:16px;}
+.hero h1{font-size:2.05rem;color:#3e2615;margin-bottom:10px;font-weight:700;}
+.hero p{margin-top:10px;color:#5e432f;font-size:1rem;max-width:680px;margin-inline:auto;}
 
 /* CARD SECTIONS */
-.card{
-    background:white;
-    margin:20px auto;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    max-width:400px;
-}
+.card{background:white;margin:20px auto;padding:28px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,0.08);max-width:480px;}
 .card h2,h3{text-align:center;color:#3b2a1e;margin-bottom:10px;}
-.card p{text-align:center;margin-bottom:15px;color:#555;}
-input{width:100%;padding:12px;margin:10px 0;border-radius:6px;border:1px solid #ccc;}
-button{width:100%;padding:12px;background:#8b5e34;color:white;border:none;border-radius:6px;margin-top:10px;cursor:pointer;transition:0.3s;}
-button:hover{background:#6b4423;}
+.card p{text-align:center;margin-bottom:15px;color:#5a4b3b;}
+input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #d4c5b1;}
+button{width:100%;padding:12px;background:#7a3e10;color:white;border:none;border-radius:8px;margin-top:10px;cursor:pointer;transition:.3s;}
+button:hover{background:#a66a15;}
 
 /* SECTIONS */
-section{padding:80px 20px; max-width:1100px; margin:auto;}
-h2{color:#3b2a1e;margin-bottom:20px;text-align:center;}
-.about, #courses, #payment, #contact{line-height:1.6;}
+section{padding:100px 20px 60px;max-width:1100px;margin:auto;}
+h2{color:#4b2f12;margin-bottom:18px;text-align:center;font-size:1.8rem;}
+.about,#courses,#payment,#contact,#team{line-height:1.7;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:24px;margin-bottom:20px;}
+.about img{max-width:260px;border-radius:12px;margin-bottom:15px;}
+ul{margin-left:18px;margin-top:8px;color:#3f4a5b;}
+.team-card{background:#fff8f0;border:1px solid #f1d7b4;border-radius:12px;padding:16px;margin-top:8px;}
+.team-card h3{margin-bottom:6px;color:#4b2f12;}
+.team-card p{margin-bottom:8px;color:#3f2d1f;line-height:1.55;}
 
 /* COURSES CARDS */
-.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-.course-card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center;transition:0.3s;}
-.course-card:hover{transform:translateY(-5px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
-.price{font-weight:bold;color:#3b2a1e;margin:10px 0;}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+.course-card{background:#fff;padding:22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:center;transition:.3s;}
+.course-card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(0,0,0,.12);}
+.price{font-weight:700;color:#7a3e10;margin:10px 0;}
+.btn{display:inline-block;font-weight:600;background:#7a3e10;color:white;padding:10px 18px;border-radius:8px;text-decoration:none;transition:.2s;}
+.btn:hover{background:#a66a15;}
 
 /* CONTACT */
-.contact{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:15px;}
-.contact a{font-size:24px;color:#3b2a1e;transition:0.3s;}
-.contact a:hover{color:#8b5e34;}
+.contact{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:8px;}
+.contact a{font-size:24px;color:#6f3f1b;transition:.3s;}
+.contact a:hover{color:#ffcd3c;}
 
-/* FOOTER */
-footer{text-align:center;padding:20px;background:#3b2a1e;color:white;margin-top:40px;}
+/* TESTIMONIALS */
+.testimonial-section{background:#fff6ec;border:1px solid #f0d4ad;border-radius:14px; padding:24px; margin:20px auto; max-width:1100px;}
+.testimonial-section h2{margin-bottom:14px;color:#4b2f12;font-size:2rem; text-align:center; font-weight:700;}
+.testimonial-wrapper{position:relative;overflow:hidden;}
+.testimonial-track{display:flex;transition:transform .4s ease;}
+.testimonial-card{flex:0 0 100%;padding:20px; background:#fff; border:1px solid #ecd4ad; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.08); margin-bottom:12px;}
+.testimonial-head{display:flex;align-items:center;gap:10px; font-weight:700; color:#3b2a1e; margin-bottom:10px;}
+.flag-icon{width:24px;height:16px;border-radius:3px;object-fit:cover;display:inline-block;}
+.testimonial-card p{color:#3e2a19;font-size:1rem;line-height:1.6; margin-top:0;}
+.testimonial-controls{display:flex;justify-content:center;gap:12px;margin-top:14px;}
+.testimonial-controls button{border:none;background:#7a3e10;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;}
+.testimonial-controls button:hover{background:#a66a15;}
+
+@media (min-width:700px){
+  .testimonial-card{padding:22px;}
+  .testimonial-track{display:grid;grid-template-columns:repeat(5,100%);}
+}
+
 
 /* FLOATING WHATSAPP */
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;font-size:28px;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.3);z-index:1000;}
@@ -136,6 +126,9 @@ footer{text-align:center;padding:20px;background:#3b2a1e;color:white;margin-top:
 <!-- ABOUT -->
 <section id="about" class="about">
 <h2>About Us</h2>
+<div style="text-align:center; margin-bottom:15px;">
+    <img src="cac.jpeg" alt="Cac Logo" style="max-width:220px; width:100%; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+</div>
 <p>Arresalah International Madrasah is a global online Qur’ān learning institute dedicated to teaching students of all ages across different countries including Nigeria, Ghana, Sierra Leone, the United Kingdom, and the United States.</p>
 <p>We specialize in:</p>
 <ul>
@@ -144,6 +137,63 @@ footer{text-align:center;padding:20px;background:#3b2a1e;color:white;margin-top:
 <li>Basic Islamic Studies</li>
 </ul>
 <p>Our mission is to spread the words of Allah with sincerity, excellence, and proper guidance.</p>
+</section>
+
+<!-- DIRECTOR & TUTORS -->
+<section id="team" class="about">
+<h2>About the Director & Tutors</h2>
+<div class="team-grid" style="display:grid;grid-template-columns:1fr;gap:15px;">
+  <article class="team-card">
+    <h3>Director – Abu Huzaifah</h3>
+    <p><strong>Founder & Lead Instructor</strong></p>
+    <p>Abu Huzaifah is a dedicated teacher of the Qur’ān and a passionate educator committed to nurturing students upon authentic Islamic knowledge. Based in Ogun State, Nigeria, with roots in Oyo State, he has devoted his life to teaching, mentoring, and guiding students in their journey with the Book of Allāh.</p>
+    <p>With strong experience in Qur’ān memorization and teaching, he has helped students from different parts of the world develop proper recitation, memorization (Hifdh), and understanding of the Qur’ān. His teaching approach focuses on patience, clarity, and building a strong spiritual connection between the student and the Qur’ān.</p>
+  </article>
+  <article class="team-card">
+    <h3>Senior Tutor – Ibn Shatibiyy</h3>
+    <p>Ibn Shatibiyy is a highly skilled and knowledgeable instructor, well-grounded in both Arabic language (Lughah) and Qur’ānic studies.</p>
+    <p>He has attained mastery in the Arabic language as well as the Qur’ān, enabling students to understand beyond recitation. He specializes in improving students’ fluency, pronunciation (Tajweed), and comprehension of the Qur’ān through structured and engaging lessons.</p>
+    <p>His teaching style ensures steady progress and confidence in every student.</p>
+  </article>
+  <article class="team-card">
+    <h3>Qur’ān Tutor – Ummu Aneesah</h3>
+    <p>Ummu Aneesah is a dedicated and experienced Qur’ān teacher who has attained mastery in Qur’ānic recitation and memorization.</p>
+    <p>She is passionate about teaching students—especially sisters and children—helping them build confidence and consistency in their Qur’ān journey. Her teaching style is gentle, supportive, and focused on ensuring students recite the Qur’ān correctly while developing a deep love for it.</p>
+  </article>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testimonial-section">
+    <h2>Testimonials from Our Students Worldwide</h2>
+    <div class="testimonial-wrapper">
+        <div class="testimonial-track" id="testimonialTrack">
+                    <article class="testimonial-card">
+                <div class="testimonial-head"><img class="flag-icon" src="https://flagcdn.com/w20/ng.png" alt="Nigeria"> <strong>Amina S.</strong> – Nigeria</div>
+                <p>“Alhamdulillāh, joining Arresalah International Madrasah has been one of the best decisions for my Qur’ān journey. My recitation has improved greatly, and I now read with confidence. The teachers are patient and truly care about their students.”</p>
+            </article>
+            <article class="testimonial-card">
+                <div class="testimonial-head"><img class="flag-icon" src="https://flagcdn.com/w20/gh.png" alt="Ghana"> <strong>Abdul Rahman K.</strong> – Ghana</div>
+                <p>“The teaching method is very easy to follow and well-structured. I started as a beginner, but now I can recite the Qur’ān with proper Tajweed. May Allāh reward the teachers abundantly.”</p>
+            </article>
+            <article class="testimonial-card">
+                <div class="testimonial-head"><img class="flag-icon" src="https://flagcdn.com/w20/gb.png" alt="United Kingdom"> <strong>Fatimah A.</strong> – United Kingdom</div>
+                <p>“I really appreciate the flexibility of the classes. Despite my busy schedule, I was able to memorize new surahs consistently. The environment is very encouraging and professional.”</p>
+            </article>
+            <article class="testimonial-card">
+                <div class="testimonial-head"><img class="flag-icon" src="https://flagcdn.com/w20/us.png" alt="United States"> <strong>Yusuf M.</strong> – United States</div>
+                <p>“My children are enrolled in the kids’ class, and I am very impressed with their progress. The tutors are kind, engaging, and highly experienced. I highly recommend this Madrasah to every Muslim family.”</p>
+            </article>
+            <article class="testimonial-card">
+                <div class="testimonial-head"><img class="flag-icon" src="https://flagcdn.com/w20/sl.png" alt="Sierra Leone"> <strong>Khadijah B.</strong> – Sierra Leone</div>
+                <p>“The teachers are very dedicated and supportive. They correct mistakes with wisdom and patience. I have developed a stronger connection with the Qur’ān through this program. Alhamdulillāh.”</p>
+            </article>
+        </div>
+    </div>
+    <div class="testimonial-controls">
+        <button onclick="prevTestimonial()">⟨ prev</button>
+        <button onclick="nextTestimonial()">next ⟩</button>
+    </div>
 </section>
 
 <!-- COURSES -->
@@ -184,9 +234,14 @@ footer{text-align:center;padding:20px;background:#3b2a1e;color:white;margin-top:
 <section id="login" class="card">
 <h2>Student Login</h2>
 <p>Sign in to access your dashboard</p>
-<input type="email" placeholder="you@example.com">
-<input type="password" placeholder="********">
-<button>Continue</button>
+<input id="student-email" type="email" placeholder="you@example.com">
+<input id="student-password" type="password" placeholder="********">
+<div style="margin:10px 0;display:flex;align-items:center;gap:10px;">
+  <input id="humanCheck" type="checkbox" style="transform:scale(1.1);" />
+  <label for="humanCheck">I am human (human verification)</label>
+</div>
+<button id="loginBtn">Continue</button>
+<div id="loginError" style="color:#a53a1d; font-size:.9rem; margin-top:8px; display:none;"></div>
 <div class="footer">
 Don't have an account? <a href="#">Create Account</a>
 </div>
@@ -205,7 +260,8 @@ Don't have an account? <a href="#">Create Account</a>
 <a href="https://wa.me/2348082062525" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <footer>
-<p>© Arresalah International Madrasah</p>
+<p>© Arresalah International Madrasah. All rights reserved.</p>
+<p>CAC Reg. No: 927310 | TIN: 2622782263635</p>
 <p>Spreading the words of Allah globally</p>
 </footer>
 
@@ -217,6 +273,29 @@ document.querySelectorAll('.sidebar a').forEach(link => {
     link.addEventListener('click', () => {
         document.getElementById('sidebar').classList.remove('active');
     });
+});
+
+let testimonialIndex = 0;
+const testimonialTrack = document.getElementById('testimonialTrack');
+function showTestimonial(index) {
+    const slides = document.querySelectorAll('.testimonial-card').length;
+    testimonialIndex = (index + slides) % slides;
+    testimonialTrack.style.transform = `translateX(-${testimonialIndex * 100}%)`;
+}
+function nextTestimonial(){ showTestimonial(testimonialIndex + 1); }
+function prevTestimonial(){ showTestimonial(testimonialIndex - 1); }
+setInterval(()=>{ showTestimonial(testimonialIndex + 1); },4500);
+showTestimonial(0);
+
+document.getElementById('loginBtn').addEventListener('click', function(event){
+  event.preventDefault();
+  const human = document.getElementById('humanCheck').checked;
+  const email = document.getElementById('student-email').value.trim();
+  const password = document.getElementById('student-password').value.trim();
+  const error = document.getElementById('loginError');
+  if(!human){ error.style.display='block'; error.textContent='Please confirm human verification.'; return; }
+  if(!email || !password){ error.style.display='block'; error.textContent='Please enter both email and password.'; return; }
+  error.style.display='block'; error.style.color='#2d6b28'; error.textContent='Login successful (demo).';
 });
 </script>
 
