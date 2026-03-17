@@ -4,240 +4,221 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arresalah International Madrasah</title>
-<!-- Font Awesome for social icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-/* General Styles */
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f8f6f2;
-    color: #333;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#f5f2ee;}
+
+/* NAVBAR */
+header{
+    background:#3b2a1e;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
 }
-header {
-    background: #4b2e05;
-    color: white;
-    padding: 20px;
-    text-align: center;
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{width:40px;border-radius:50%;}
+nav.desktop{display:flex;gap:20px;}
+nav.desktop a{color:white;font-weight:bold;}
+.menu{font-size:25px;cursor:pointer;display:none;}
+@media(max-width:768px){.menu{display:block;} nav.desktop{display:none;}}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-250px;
+    width:70%;
+    max-width:250px;
+    height:100%;
+    background:#2b1d14;
+    transition:0.4s;
+    padding-top:60px;
+    z-index:999;
 }
-nav {
-    background: #6a4308;
-    padding: 10px;
-    text-align: center;
+.sidebar a{
+    display:block;
+    color:white;
+    padding:15px 25px;
+    text-decoration:none;
+    border-bottom:1px solid #444;
 }
-nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
+.sidebar a:hover{background:#6b4423;}
+.sidebar.active{right:0;}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:150px 20px 80px 20px;
 }
-section {
-    padding: 60px 20px;
-    max-width: 1100px;
-    margin: auto;
+.hero img{width:80px;border-radius:50%;margin-bottom:15px;}
+.hero h1{font-size:28px;color:#3b2a1e;}
+.hero p{margin-top:10px;color:#5c4532;font-size:16px;}
+
+/* CARD SECTIONS */
+.card{
+    background:white;
+    margin:20px auto;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    max-width:400px;
 }
-h2 {
-    text-align: center;
-    color: #4b2e05;
-    margin-bottom: 30px;
-}
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-                url("https://images.unsplash.com/photo-1587614382346-4ec70e388b28");
-    background-size: cover;
-    color: white;
-}
-.hero h1 {
-    font-size: 40px;
-}
-.btn {
-    background: #c89b3c;
-    color: white;
-    padding: 12px 25px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-    margin-top: 15px;
-}
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,.1);
-    text-align: center;
-}
-.price {
-    font-size: 22px;
-    color: #4b2e05;
-    font-weight: bold;
-    margin: 10px 0;
-}
-.testimonial {
-    display: none;
-    text-align: center;
-    font-style: italic;
-}
-.testimonial.active {
-    display: block;
-}
-.flag {
-    font-size: 24px;
-}
-.donation {
-    background: #fff;
-    border: 2px solid #c89b3c;
-    padding: 25px;
-    text-align: center;
-    border-radius: 8px;
-}
-input, button {
-    padding: 10px;
-    margin: 5px;
-    width: 100%;
-    max-width: 350px;
-}
-footer {
-    background: #4b2e05;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-}
-.social i {
-    font-size: 22px;
-    margin: 10px;
-    color: white;
-}
+.card h2,h3{text-align:center;color:#3b2a1e;margin-bottom:10px;}
+.card p{text-align:center;margin-bottom:15px;color:#555;}
+input{width:100%;padding:12px;margin:10px 0;border-radius:6px;border:1px solid #ccc;}
+button{width:100%;padding:12px;background:#8b5e34;color:white;border:none;border-radius:6px;margin-top:10px;cursor:pointer;transition:0.3s;}
+button:hover{background:#6b4423;}
+
+/* SECTIONS */
+section{padding:80px 20px; max-width:1100px; margin:auto;}
+h2{color:#3b2a1e;margin-bottom:20px;text-align:center;}
+.about, #courses, #payment, #contact{line-height:1.6;}
+
+/* COURSES CARDS */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.course-card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center;transition:0.3s;}
+.course-card:hover{transform:translateY(-5px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.price{font-weight:bold;color:#3b2a1e;margin:10px 0;}
+
+/* CONTACT */
+.contact{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:15px;}
+.contact a{font-size:24px;color:#3b2a1e;transition:0.3s;}
+.contact a:hover{color:#8b5e34;}
+
+/* FOOTER */
+footer{text-align:center;padding:20px;background:#3b2a1e;color:white;margin-top:40px;}
+
+/* FLOATING WHATSAPP */
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;font-size:28px;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.3);z-index:1000;}
+.whatsapp:hover{background:#1ebe57;}
 </style>
 </head>
 <body>
+
 <header>
-    <h1>Arresalah International Madrasah</h1>
-    <p>Online Qur'an Learning Platform</p>
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+        <span>Arresalah International Madrasah</span>
+    </div>
+    <div class="menu" onclick="toggleSidebar()">☰</div>
+    <nav class="desktop">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#courses">Courses</a>
+        <a href="#payment">Payment</a>
+        <a href="#login">Student Login</a>
+    </nav>
 </header>
-<nav>
-    <a href="#">Home</a>
+
+<div class="sidebar" id="sidebar">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
     <a href="#courses">Courses</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#sponsor">Sponsor</a>
-    <a href="#donate">Donate</a>
-    <a href="#teacher">Teacher Portal</a>
-</nav>
-<!-- Hero Section -->
-<section class="hero">
-    <h1>Learn the Qur'an From Qualified Tutors</h1>
-    <p>Students from Nigeria, Ghana, Sierra Leone, UK and USA</p>
-    <a class="btn" href="#courses">Enroll Now</a>
+    <a href="#payment">Payment</a>
+    <a href="#login">Student Login</a>
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero">
+    <img src="logo.png" alt="Arresalah logo">
+    <h1>Welcome to Arresalah International Madrasah</h1>
+    <p>Online Qur’ān learning for students across Nigeria, Ghana, Sierra Leone, UK, USA, and beyond</p>
 </section>
-<!-- Courses Section -->
+
+<!-- ABOUT -->
+<section id="about" class="about">
+<h2>About Us</h2>
+<p>Arresalah International Madrasah is a global online Qur’ān learning institute dedicated to teaching students of all ages across different countries including Nigeria, Ghana, Sierra Leone, the United Kingdom, and the United States.</p>
+<p>We specialize in:</p>
+<ul>
+<li>Qur’ān Memorization (Hifz)</li>
+<li>Tajweed (proper recitation)</li>
+<li>Basic Islamic Studies</li>
+</ul>
+<p>Our mission is to spread the words of Allah with sincerity, excellence, and proper guidance.</p>
+</section>
+
+<!-- COURSES -->
 <section id="courses">
-<h2>Our Classes</h2>
+<h2>Courses</h2>
 <div class="course-grid">
-    <div class="card">
-        <h3>Personalized Qur'an Class</h3>
-        <p>You and your tutor alone for more focus.</p>
-        <p class="price">₦30,000 / Month</p>
-        <a class="btn">Enroll Now</a>
+    <div class="course-card">
+        <h3>Kids Class</h3>
+        <p>Age: 4–15</p>
+        <p class="price">₦15,000 / $15</p>
+        <a class="btn" href="#payment">Enroll Now</a>
     </div>
-    <div class="card">
-        <h3>General Qur'an Class</h3>
-        <p>Group class with multiple students.</p>
-        <p class="price">₦15,000 / Month</p>
-        <a class="btn">Enroll Now</a>
-    </div>
-    <div class="card">
-        <h3>Qur'an + Islamic Subjects</h3>
-        <p>Aqeedah, Fiqh and Islamic studies included.</p>
-        <p class="price">₦20,000 / Month</p>
-        <a class="btn">Enroll Now</a>
+    <div class="course-card">
+        <h3>Adult Class</h3>
+        <p>Open for stay-at-home moms, elderly, beginners & advanced learners</p>
+        <p class="price">₦20,000 / $20</p>
+        <a class="btn" href="#payment">Enroll Now</a>
     </div>
 </div>
 </section>
-<!-- Testimonials Section -->
-<section id="testimonials">
-<h2>Student Recommendations</h2>
-<div class="testimonial active">
-    <p>"Arresalah helped me improve my Tajweed greatly."</p>
-    <strong>Sister Aliyah</strong> <span class="flag">🇬🇧</span>
-</div>
-<div class="testimonial">
-    <p>"The tutors are patient and supportive."</p>
-    <strong>Brother Abdullah</strong> <span class="flag">🇳🇬</span>
-</div>
-<div class="testimonial">
-    <p>"My child now reads Qur'an confidently."</p>
-    <strong>Parents of Yusuf</strong> <span class="flag">🇺🇸</span>
-</div>
-<div class="testimonial">
-    <p>"A beautiful learning experience."</p>
-    <strong>Student – Ghana</strong> <span class="flag">🇬🇭</span>
-</div>
-<div class="testimonial">
-    <p>"Very structured Qur'an memorization."</p>
-    <strong>Student – Sierra Leone</strong> <span class="flag">🇸🇱</span>
-</div>
-</section>
-<!-- Sponsor Section -->
-<section id="sponsor">
-<h2>Sponsor a Child to Memorize the Qur'an</h2>
+
+<!-- PAYMENT -->
+<section id="payment">
+<h2>Payment</h2>
 <div class="card">
-    <p>Your support helps children who cannot afford Qur'an education.</p>
-    <a class="btn">Sponsor Now</a>
+<a class="btn" href="https://paystack.shop/pay/arresalahinstitute" target="_blank">Pay with Paystack</a>
 </div>
-</section>
-<!-- Donate Section -->
-<section id="donate">
-<h2>Support the Madrasah</h2>
-<div class="donation">
-    <p><strong>Account Name:</strong><br>Arresalah International Madrasah Limited</p>
-    <p><strong>Account Number:</strong><br>6222367478</p>
-    <p><strong>Bank:</strong><br>Moniepoint MFB</p>
-    <button onclick="copyAccount()">Copy Account Number</button>
-</div>
-</section>
-<!-- Teacher Portal Section -->
-<section id="teacher">
-<h2>Teacher Portal</h2>
 <div class="card">
-    <p>Teachers can login to manage students and confirm classes.</p>
-    <input type="text" placeholder="Teacher Username">
-    <input type="password" placeholder="Password">
-    <label><input type="checkbox"> I am not a robot</label>
-    <button>Login</button>
+<p><strong>Bank Transfer / Opay</strong></p>
+<p>Account Name: Akinjobi Abdulrahmon</p>
+<p>Account Number: 8082062525</p>
+<p>Bank: Opay</p>
+<p>After payment, kindly send proof of payment via WhatsApp or email.</p>
 </div>
 </section>
-<!-- Footer -->
+
+<!-- STUDENT LOGIN -->
+<section id="login" class="card">
+<h2>Student Login</h2>
+<p>Sign in to access your dashboard</p>
+<input type="email" placeholder="you@example.com">
+<input type="password" placeholder="********">
+<button>Continue</button>
+<div class="footer">
+Don't have an account? <a href="#">Create Account</a>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<h2>Contact Us</h2>
+<div class="contact">
+<a href="mailto:arresalahinstitute@gmail.com"><i class="fas fa-envelope"></i></a>
+<a href="https://www.facebook.com/share/1NaFXLGkZY/" target="_blank"><i class="fab fa-facebook"></i></a>
+<a href="https://www.instagram.com/arresalahinstitute" target="_blank"><i class="fab fa-instagram"></i></a>
+</div>
+</section>
+
+<a href="https://wa.me/2348082062525" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
 <footer>
-<p>© 2026 Arresalah International Madrasah</p>
-<div class="social">
-    <i class="fab fa-whatsapp"></i>
-    <i class="fab fa-facebook"></i>
-    <i class="fab fa-instagram"></i>
-</div>
+<p>© Arresalah International Madrasah</p>
+<p>Spreading the words of Allah globally</p>
 </footer>
+
 <script>
-// Auto-rotate testimonials
-let index = 0;
-function showTestimonials() {
-    let t = document.querySelectorAll(".testimonial");
-    t.forEach(el => el.classList.remove("active"));
-    index++;
-    if (index >= t.length) { index = 0; }
-    t[index].classList.add("active");
+function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("active");
 }
-setInterval(showTestimonials, 4000);
-// Copy account number
-function copyAccount() {
-    navigator.clipboard.writeText("6222367478");
-    alert("Account number copied");
-}
+document.querySelectorAll('.sidebar a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.remove('active');
+    });
+});
 </script>
+
 </body>
 </html>
