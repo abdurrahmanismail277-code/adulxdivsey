@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arresalah International Madrasah</title>
+<!-- Font Awesome for social icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* General Styles */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f8f6f2;
+    color: #333;
+}
+header {
+    background: #4b2e05;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+nav {
+    background: #6a4308;
+    padding: 10px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+h2 {
+    text-align: center;
+    color: #4b2e05;
+    margin-bottom: 30px;
+}
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+                url("https://images.unsplash.com/photo-1587614382346-4ec70e388b28");
+    background-size: cover;
+    color: white;
+}
+.hero h1 {
+    font-size: 40px;
+}
+.btn {
+    background: #c89b3c;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+}
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    text-align: center;
+}
+.price {
+    font-size: 22px;
+    color: #4b2e05;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.testimonial {
+    display: none;
+    text-align: center;
+    font-style: italic;
+}
+.testimonial.active {
+    display: block;
+}
+.flag {
+    font-size: 24px;
+}
+.donation {
+    background: #fff;
+    border: 2px solid #c89b3c;
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+}
+input, button {
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+    max-width: 350px;
+}
+footer {
+    background: #4b2e05;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+.social i {
+    font-size: 22px;
+    margin: 10px;
+    color: white;
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>Arresalah International Madrasah</h1>
+    <p>Online Qur'an Learning Platform</p>
+</header>
+<nav>
+    <a href="#">Home</a>
+    <a href="#courses">Courses</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#sponsor">Sponsor</a>
+    <a href="#donate">Donate</a>
+    <a href="#teacher">Teacher Portal</a>
+</nav>
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Learn the Qur'an From Qualified Tutors</h1>
+    <p>Students from Nigeria, Ghana, Sierra Leone, UK and USA</p>
+    <a class="btn" href="#courses">Enroll Now</a>
+</section>
+<!-- Courses Section -->
+<section id="courses">
+<h2>Our Classes</h2>
+<div class="course-grid">
+    <div class="card">
+        <h3>Personalized Qur'an Class</h3>
+        <p>You and your tutor alone for more focus.</p>
+        <p class="price">₦30,000 / Month</p>
+        <a class="btn">Enroll Now</a>
+    </div>
+    <div class="card">
+        <h3>General Qur'an Class</h3>
+        <p>Group class with multiple students.</p>
+        <p class="price">₦15,000 / Month</p>
+        <a class="btn">Enroll Now</a>
+    </div>
+    <div class="card">
+        <h3>Qur'an + Islamic Subjects</h3>
+        <p>Aqeedah, Fiqh and Islamic studies included.</p>
+        <p class="price">₦20,000 / Month</p>
+        <a class="btn">Enroll Now</a>
+    </div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section id="testimonials">
+<h2>Student Recommendations</h2>
+<div class="testimonial active">
+    <p>"Arresalah helped me improve my Tajweed greatly."</p>
+    <strong>Sister Aliyah</strong> <span class="flag">🇬🇧</span>
+</div>
+<div class="testimonial">
+    <p>"The tutors are patient and supportive."</p>
+    <strong>Brother Abdullah</strong> <span class="flag">🇳🇬</span>
+</div>
+<div class="testimonial">
+    <p>"My child now reads Qur'an confidently."</p>
+    <strong>Parents of Yusuf</strong> <span class="flag">🇺🇸</span>
+</div>
+<div class="testimonial">
+    <p>"A beautiful learning experience."</p>
+    <strong>Student – Ghana</strong> <span class="flag">🇬🇭</span>
+</div>
+<div class="testimonial">
+    <p>"Very structured Qur'an memorization."</p>
+    <strong>Student – Sierra Leone</strong> <span class="flag">🇸🇱</span>
+</div>
+</section>
+<!-- Sponsor Section -->
+<section id="sponsor">
+<h2>Sponsor a Child to Memorize the Qur'an</h2>
+<div class="card">
+    <p>Your support helps children who cannot afford Qur'an education.</p>
+    <a class="btn">Sponsor Now</a>
+</div>
+</section>
+<!-- Donate Section -->
+<section id="donate">
+<h2>Support the Madrasah</h2>
+<div class="donation">
+    <p><strong>Account Name:</strong><br>Arresalah International Madrasah Limited</p>
+    <p><strong>Account Number:</strong><br>6222367478</p>
+    <p><strong>Bank:</strong><br>Moniepoint MFB</p>
+    <button onclick="copyAccount()">Copy Account Number</button>
+</div>
+</section>
+<!-- Teacher Portal Section -->
+<section id="teacher">
+<h2>Teacher Portal</h2>
+<div class="card">
+    <p>Teachers can login to manage students and confirm classes.</p>
+    <input type="text" placeholder="Teacher Username">
+    <input type="password" placeholder="Password">
+    <label><input type="checkbox"> I am not a robot</label>
+    <button>Login</button>
+</div>
+</section>
+<!-- Footer -->
+<footer>
+<p>© 2026 Arresalah International Madrasah</p>
+<div class="social">
+    <i class="fab fa-whatsapp"></i>
+    <i class="fab fa-facebook"></i>
+    <i class="fab fa-instagram"></i>
+</div>
+</footer>
+<script>
+// Auto-rotate testimonials
+let index = 0;
+function showTestimonials() {
+    let t = document.querySelectorAll(".testimonial");
+    t.forEach(el => el.classList.remove("active"));
+    index++;
+    if (index >= t.length) { index = 0; }
+    t[index].classList.add("active");
+}
+setInterval(showTestimonials, 4000);
+// Copy account number
+function copyAccount() {
+    navigator.clipboard.writeText("6222367478");
+    alert("Account number copied");
+}
+</script>
+</body>
+</html>
