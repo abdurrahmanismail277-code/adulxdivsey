@@ -50,9 +50,14 @@ h2{color:#4b2f12;margin-bottom:18px;text-align:center;font-size:1.8rem;}
 .about,#courses,#payment,#contact,#team{line-height:1.7;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:24px;margin-bottom:20px;}
 .about img{max-width:260px;border-radius:12px;margin-bottom:15px;}
 ul{margin-left:18px;margin-top:8px;color:#3f4a5b;}
-.team-card{background:#fff8f0;border:1px solid #f1d7b4;border-radius:12px;padding:16px;margin-top:8px;}
-.team-card h3{margin-bottom:6px;color:#4b2f12;}
-.team-card p{margin-bottom:8px;color:#3f2d1f;line-height:1.55;}
+.tutor-slider{position:relative;overflow:hidden;margin-top:15px;border-radius:12px;}
+.tutor-track{display:flex;transition:transform .4s ease;}
+.tutor-slide{flex:0 0 100%;padding:14px;background:#fff8f0;border:1px solid #f1d7b4;border-radius:12px;}
+.tutor-slide h3{margin-bottom:8px;color:#4b2f12;font-size:1.2rem;}
+.tutor-slide p{margin-bottom:6px;color:#3f2d1f;line-height:1.45;font-size:.94rem;}
+.tutor-controls{display:flex;justify-content:center;gap:10px;margin-top:12px;}
+.tutor-controls button{border:none;background:#7a3e10;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;}
+.tutor-controls button:hover{background:#a66a15;}
 
 /* COURSES CARDS */
 .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
@@ -89,6 +94,16 @@ ul{margin-left:18px;margin-top:8px;color:#3f4a5b;}
 /* FLOATING WHATSAPP */
 .whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;font-size:28px;border-radius:50%;width:60px;height:60px;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.3);z-index:1000;}
 .whatsapp:hover{background:#1ebe57;}
+footer{background:#3e2615;color:#fff; text-align:center; padding:18px 12px; font-size:.95rem; line-height:1.45; margin-top:12px;}
+footer p{margin:4px 0;}
+@media (max-width:768px){
+  .hero h1{font-size:1.65rem;}
+  .hero p{font-size:.95rem;}
+  h2{font-size:1.55rem;}
+  .card{margin:16px auto;}
+  .team-card, .tutor-slide{font-size:.95rem;}
+  .about p{font-size:.95rem;}
+}
 </style>
 </head>
 <body>
@@ -142,24 +157,28 @@ ul{margin-left:18px;margin-top:8px;color:#3f4a5b;}
 <!-- DIRECTOR & TUTORS -->
 <section id="team" class="about">
 <h2>About the Director & Tutors</h2>
-<div class="team-grid" style="display:grid;grid-template-columns:1fr;gap:15px;">
-  <article class="team-card">
-    <h3>Director – Abu Huzaifah</h3>
-    <p><strong>Founder & Lead Instructor</strong></p>
-    <p>Abu Huzaifah is a dedicated teacher of the Qur’ān and a passionate educator committed to nurturing students upon authentic Islamic knowledge. Based in Ogun State, Nigeria, with roots in Oyo State, he has devoted his life to teaching, mentoring, and guiding students in their journey with the Book of Allāh.</p>
-    <p>With strong experience in Qur’ān memorization and teaching, he has helped students from different parts of the world develop proper recitation, memorization (Hifdh), and understanding of the Qur’ān. His teaching approach focuses on patience, clarity, and building a strong spiritual connection between the student and the Qur’ān.</p>
-  </article>
-  <article class="team-card">
-    <h3>Senior Tutor – Ibn Shatibiyy</h3>
-    <p>Ibn Shatibiyy is a highly skilled and knowledgeable instructor, well-grounded in both Arabic language (Lughah) and Qur’ānic studies.</p>
-    <p>He has attained mastery in the Arabic language as well as the Qur’ān, enabling students to understand beyond recitation. He specializes in improving students’ fluency, pronunciation (Tajweed), and comprehension of the Qur’ān through structured and engaging lessons.</p>
-    <p>His teaching style ensures steady progress and confidence in every student.</p>
-  </article>
-  <article class="team-card">
-    <h3>Qur’ān Tutor – Ummu Aneesah</h3>
-    <p>Ummu Aneesah is a dedicated and experienced Qur’ān teacher who has attained mastery in Qur’ānic recitation and memorization.</p>
-    <p>She is passionate about teaching students—especially sisters and children—helping them build confidence and consistency in their Qur’ān journey. Her teaching style is gentle, supportive, and focused on ensuring students recite the Qur’ān correctly while developing a deep love for it.</p>
-  </article>
+<div class="tutor-slider">
+  <div class="tutor-track" id="tutorTrack">
+    <article class="tutor-slide">
+      <h3>Director – Abu Huzaifah</h3>
+      <p><strong>Founder & Lead Instructor</strong></p>
+      <p>Abu Huzaifah is a dedicated teacher of the Qur’ān and a passionate educator committed to nurturing students upon authentic Islamic knowledge. He focuses on patience, clarity, and building a strong spiritual connection with the Qur’ān.</p>
+    </article>
+    <article class="tutor-slide">
+      <h3>Senior Tutor – Ibn Shatibiyy</h3>
+      <p><strong>Qur’ān & Arabic Specialist</strong></p>
+      <p>Ibn Shatibiyy helps students improve recitation, Tajweed, and comprehension with structured lessons. His approach builds confidence and consistency for learners at all levels.</p>
+    </article>
+    <article class="tutor-slide">
+      <h3>Qur’ān Tutor – Ummu Aneesah</h3>
+      <p><strong>Children & Sisters’ Instructor</strong></p>
+      <p>Ummu Aneesah provides gentle, supportive teaching for sisters and young students, helping them recite and memorize correctly while developing love for the Qur’ān.</p>
+    </article>
+  </div>
+</div>
+<div class="tutor-controls">
+  <button onclick="tutorPrev()">⟨ Prev Tutor</button>
+  <button onclick="tutorNext()">Next Tutor ⟩</button>
 </div>
 </section>
 
@@ -286,6 +305,18 @@ function nextTestimonial(){ showTestimonial(testimonialIndex + 1); }
 function prevTestimonial(){ showTestimonial(testimonialIndex - 1); }
 setInterval(()=>{ showTestimonial(testimonialIndex + 1); },4500);
 showTestimonial(0);
+
+let tutorIndex = 0;
+const tutorTrack = document.getElementById('tutorTrack');
+function showTutor(index){
+    const slides = document.querySelectorAll('.tutor-slide').length;
+    tutorIndex = (index + slides) % slides;
+    tutorTrack.style.transform = `translateX(-${tutorIndex * 100}%)`;
+}
+function tutorNext(){ showTutor(tutorIndex + 1); }
+function tutorPrev(){ showTutor(tutorIndex - 1); }
+setInterval(()=>{ showTutor(tutorIndex + 1); },5000);
+showTutor(0);
 
 document.getElementById('loginBtn').addEventListener('click', function(event){
   event.preventDefault();
