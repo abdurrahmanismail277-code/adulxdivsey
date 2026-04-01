@@ -23,249 +23,225 @@
   --text-soft: #7a5438;
   --white: #fffef9;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--cream); font-family:'Crimson Pro',Georgia,serif; color:var(--text-dark); font-size:17px; line-height:1.7; overflow-x:hidden; }
 
-body {
-  background: var(--cream);
-  font-family: 'Crimson Pro', Georgia, serif;
-  color: var(--text-dark);
-  font-size: 17px;
-  line-height: 1.7;
-  overflow-x: hidden;
-}
+/* HEADER */
+header { background:var(--brown-deep); position:fixed; top:0; left:0; right:0; z-index:1000; padding:0 32px; height:72px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(201,151,42,0.3); }
+header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.logo-area { display:flex; align-items:center; gap:14px; }
+.logo-img { width:46px; height:46px; border-radius:50%; border:1.5px solid var(--gold); object-fit:cover; }
+.logo-en { font-family:'Playfair Display',serif; color:var(--white); font-size:1rem; font-weight:600; }
+.logo-ar { font-family:'Amiri',serif; color:var(--gold); font-size:0.82rem; direction:rtl; }
+nav { display:flex; gap:20px; }
+nav a { color:rgba(255,254,249,0.75); text-decoration:none; font-family:'Crimson Pro',serif; font-size:0.95rem; font-weight:500; letter-spacing:0.5px; transition:color 0.2s; position:relative; padding-bottom:2px; }
+nav a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--gold); transition:width 0.25s; }
+nav a:hover { color:var(--gold-pale); }
+nav a:hover::after { width:100%; }
 
-/* ─── HEADER ─── */
-header {
-  background: var(--brown-deep);
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  padding: 0 32px;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(201,151,42,0.3);
-}
-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.logo-area { display: flex; align-items: center; gap: 14px; }
-.logo-img { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--gold); object-fit: cover; }
-.logo-en { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1rem; font-weight: 600; }
-.logo-ar { font-family: 'Amiri', serif; color: var(--gold); font-size: 0.82rem; direction: rtl; }
+/* HERO */
+.hero { min-height:100vh; background:var(--brown-deep); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 30px 80px; position:relative; overflow:hidden; }
+.hero-bg { position:absolute; inset:0; background-image:radial-gradient(circle at 20% 30%,rgba(201,151,42,0.06) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(201,151,42,0.05) 0%,transparent 50%); }
+.hero-geo { position:absolute; inset:0; background-image:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(201,151,42,0.025) 60px,rgba(201,151,42,0.025) 61px),repeating-linear-gradient(-45deg,transparent,transparent 60px,rgba(201,151,42,0.025) 60px,rgba(201,151,42,0.025) 61px); }
+.hero-badge { font-family:'Amiri',serif; color:var(--gold); font-size:2.2rem; letter-spacing:4px; margin-bottom:28px; opacity:0; animation:fadeDown 1s 0.2s forwards; }
+.hero-logo { width:110px; height:110px; border-radius:50%; border:2px solid var(--gold); box-shadow:0 0 0 8px rgba(201,151,42,0.08),0 20px 60px rgba(0,0,0,0.5); margin-bottom:32px; opacity:0; animation:fadeUp 1s 0.4s forwards; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.4rem); color:var(--white); font-weight:700; line-height:1.2; max-width:760px; margin-bottom:10px; opacity:0; animation:fadeUp 1s 0.6s forwards; }
+.hero-sub-ar { font-family:'Amiri',serif; font-size:1.3rem; color:var(--gold); direction:rtl; margin:12px 0 22px; opacity:0; animation:fadeUp 1s 0.7s forwards; }
+.hero-verse { font-style:italic; color:rgba(255,254,249,0.55); font-size:1.05rem; max-width:560px; margin-bottom:8px; opacity:0; animation:fadeUp 1s 0.8s forwards; }
+.hero-tagline { color:rgba(255,254,249,0.65); font-size:1rem; max-width:580px; margin-bottom:40px; opacity:0; animation:fadeUp 1s 0.9s forwards; }
+.hero-img { width:min(580px,90%); border-radius:14px; box-shadow:0 30px 80px rgba(0,0,0,0.5); border:1px solid rgba(201,151,42,0.25); margin-bottom:40px; opacity:0; animation:fadeUp 1.1s 1s forwards; }
+.btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--brown-deep); font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; padding:14px 36px; border-radius:3px; text-decoration:none; letter-spacing:0.5px; transition:all 0.25s; border:2px solid transparent; opacity:0; animation:fadeUp 1s 1.1s forwards; }
+.btn-primary:hover { background:transparent; border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
 
-nav { display: flex; gap: 28px; }
-nav a {
-  color: rgba(255,254,249,0.75);
-  text-decoration: none;
-  font-family: 'Crimson Pro', serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: color 0.2s;
-  position: relative;
-  padding-bottom: 2px;
-}
-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.25s; }
-nav a:hover { color: var(--gold-pale); }
-nav a:hover::after { width: 100%; }
+/* SECTION HEADERS */
+.section-header { text-align:center; margin-bottom:56px; }
+.section-label { font-size:0.75rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:12px; display:block; }
+.section-header h2 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--brown-rich); font-weight:700; line-height:1.2; }
+.section-header h2 em { font-style:italic; color:var(--gold); }
+.divider { width:60px; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:18px auto 0; }
 
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  background: var(--brown-deep);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 120px 30px 80px;
-  position: relative;
-  overflow: hidden;
-}
-.hero-bg-pattern {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(201,151,42,0.06) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(201,151,42,0.05) 0%, transparent 50%);
-}
-.hero-geo {
-  position: absolute; inset: 0;
-  background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 60px, rgba(201,151,42,0.025) 60px, rgba(201,151,42,0.025) 61px),
-    repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(201,151,42,0.025) 60px, rgba(201,151,42,0.025) 61px);
-}
-.hero-badge { font-family: 'Amiri', serif; color: var(--gold); font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 28px; opacity: 0; animation: fadeDown 1s 0.2s forwards; }
-.hero-logo { width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 0 8px rgba(201,151,42,0.08), 0 20px 60px rgba(0,0,0,0.5); margin-bottom: 32px; opacity: 0; animation: fadeUp 1s 0.4s forwards; }
-.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.4rem); color: var(--white); font-weight: 700; line-height: 1.2; max-width: 760px; margin-bottom: 10px; opacity: 0; animation: fadeUp 1s 0.6s forwards; }
-.hero-sub-ar { font-family: 'Amiri', serif; font-size: 1.3rem; color: var(--gold); direction: rtl; margin: 12px 0 22px; opacity: 0; animation: fadeUp 1s 0.7s forwards; }
-.hero-verse { font-style: italic; color: rgba(255,254,249,0.55); font-size: 1.05rem; max-width: 560px; margin-bottom: 8px; opacity: 0; animation: fadeUp 1s 0.8s forwards; }
-.hero-tagline { color: rgba(255,254,249,0.65); font-size: 1rem; max-width: 580px; margin-bottom: 40px; opacity: 0; animation: fadeUp 1s 0.9s forwards; }
-.hero-img { width: min(580px, 90%); border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); border: 1px solid rgba(201,151,42,0.25); margin-bottom: 40px; opacity: 0; animation: fadeUp 1.1s 1s forwards; }
-.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; padding: 14px 36px; border-radius: 3px; text-decoration: none; letter-spacing: 0.5px; transition: all 0.25s; border: 2px solid transparent; opacity: 0; animation: fadeUp 1s 1.1s forwards; }
-.btn-primary:hover { background: transparent; border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+/* ABOUT */
+.about-section { background:var(--cream); padding:90px 24px; }
+.about-inner { max-width:1100px; margin:0 auto; }
+.about-wrapper { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.about-cac { border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.12); border:1px solid var(--cream-dark); }
+.about-cac img { width:100%; display:block; }
+.about-body p { color:var(--text-mid); margin-bottom:18px; font-size:1.05rem; }
+.about-body .verse { font-style:italic; color:var(--text-soft); font-size:1rem; border-left:3px solid var(--gold); padding-left:16px; margin:24px 0; }
+.feature-list { list-style:none; margin:20px 0; }
+.feature-list li { display:flex; align-items:center; gap:12px; padding:10px 0; color:var(--text-mid); font-size:1.02rem; border-bottom:1px solid rgba(201,151,42,0.15); }
+.feature-list li:last-child { border-bottom:none; }
+.feature-list li::before { content:'◆'; color:var(--gold); font-size:0.6rem; flex-shrink:0; }
 
-/* ─── SECTION HEADERS ─── */
-.section-header { text-align: center; margin-bottom: 56px; }
-.section-label { font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 12px; display: block; }
-.section-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--brown-rich); font-weight: 700; line-height: 1.2; }
-.section-header h2 em { font-style: italic; color: var(--gold); }
-.divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 18px auto 0; }
+/* TEAM */
+.team-section { background:var(--brown-deep); padding:90px 0; position:relative; overflow:hidden; }
+.team-section::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-60deg,transparent,transparent 80px,rgba(201,151,42,0.02) 80px,rgba(201,151,42,0.02) 81px); }
+.team-inner { max-width:1100px; margin:0 auto; padding:0 24px; }
+.tutor-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px; }
+.tutor-card { background:rgba(255,255,255,0.04); border:1px solid rgba(201,151,42,0.2); border-radius:10px; padding:32px 28px; transition:all 0.3s; position:relative; overflow:hidden; }
+.tutor-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--gold),transparent); transform:scaleX(0); transition:transform 0.3s; }
+.tutor-card:hover { background:rgba(255,255,255,0.07); transform:translateY(-4px); }
+.tutor-card:hover::before { transform:scaleX(1); }
+.tutor-role { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; display:block; }
+.tutor-card h3 { font-family:'Playfair Display',serif; font-size:1.35rem; color:var(--white); margin-bottom:16px; }
+.tutor-card p { color:rgba(255,254,249,0.6); font-size:0.97rem; line-height:1.65; }
 
-/* ─── ABOUT ─── */
-.about-section { background: var(--cream); padding: 90px 24px; }
-.about-inner { max-width: 1100px; margin: 0 auto; }
-.about-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-.about-cac { border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.12); border: 1px solid var(--cream-dark); }
-.about-cac img { width: 100%; display: block; }
-.about-body p { color: var(--text-mid); margin-bottom: 18px; font-size: 1.05rem; }
-.about-body .verse { font-style: italic; color: var(--text-soft); font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 16px; margin: 24px 0; }
-.feature-list { list-style: none; margin: 20px 0; }
-.feature-list li { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--text-mid); font-size: 1.02rem; border-bottom: 1px solid rgba(201,151,42,0.15); }
-.feature-list li:last-child { border-bottom: none; }
-.feature-list li::before { content: '◆'; color: var(--gold); font-size: 0.6rem; flex-shrink: 0; }
+/* COURSES */
+.courses-section { background:var(--white); padding:90px 24px; }
+.courses-inner { max-width:1100px; margin:0 auto; }
+.course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+.course-card { background:var(--white); border:1px solid var(--cream-dark); border-radius:10px; padding:36px 28px; text-align:center; transition:all 0.3s; }
+.course-card:hover { box-shadow:0 16px 48px rgba(59,31,12,0.12); transform:translateY(-6px); border-color:var(--gold); }
+.course-type { font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-soft); margin-bottom:8px; display:block; }
+.course-card h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--brown-rich); margin-bottom:14px; line-height:1.3; }
+.course-card p { color:var(--text-soft); font-size:0.97rem; margin-bottom:20px; line-height:1.6; }
+.course-price { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--brown-rich); margin-bottom:4px; }
+.course-period { font-size:0.85rem; color:var(--text-soft); margin-bottom:24px; }
+.btn-enroll { display:inline-block; background:var(--gold); color:var(--brown-deep); font-family:'Playfair Display',serif; font-weight:700; font-size:0.95rem; padding:12px 28px; border-radius:3px; text-decoration:none; letter-spacing:0.3px; transition:all 0.2s; border:2px solid var(--gold); cursor:pointer; }
+.btn-enroll:hover { background:transparent; color:var(--gold); }
 
-/* ─── TEAM ─── */
-.team-section { background: var(--brown-deep); padding: 90px 0; position: relative; overflow: hidden; }
-.team-section::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-60deg, transparent, transparent 80px, rgba(201,151,42,0.02) 80px, rgba(201,151,42,0.02) 81px); }
-.team-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-.tutor-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
-.tutor-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(201,151,42,0.2); border-radius: 10px; padding: 32px 28px; transition: all 0.3s; position: relative; overflow: hidden; }
-.tutor-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transition: transform 0.3s; }
-.tutor-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-4px); }
-.tutor-card:hover::before { transform: scaleX(1); }
-.tutor-role { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
-.tutor-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--white); margin-bottom: 16px; }
-.tutor-card p { color: rgba(255,254,249,0.6); font-size: 0.97rem; line-height: 1.65; }
+/* TESTIMONIALS */
+.testimonials-section { background:var(--cream); padding:90px 24px; }
+.test-inner { max-width:1100px; margin:0 auto; }
+.test-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+.test-card { background:var(--white); border:1px solid var(--cream-dark); border-radius:10px; padding:32px; position:relative; }
+.test-card::before { content:'"'; font-family:'Playfair Display',serif; font-size:5rem; color:var(--gold); opacity:0.15; position:absolute; top:12px; left:20px; line-height:1; }
+.test-flag { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.test-flag img { width:24px; height:17px; border-radius:2px; object-fit:cover; }
+.test-name { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--brown-rich); font-weight:600; }
+.test-country { font-size:0.82rem; color:var(--text-soft); }
+.stars { color:var(--gold); font-size:0.85rem; letter-spacing:2px; margin-bottom:14px; }
+.test-card p { color:var(--text-soft); font-style:italic; font-size:1rem; line-height:1.65; }
 
-/* ─── COURSES ─── */
-.courses-section { background: var(--white); padding: 90px 24px; }
-.courses-inner { max-width: 1100px; margin: 0 auto; }
-.course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-.course-card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 36px 28px; text-align: center; transition: all 0.3s; }
-.course-card:hover { box-shadow: 0 16px 48px rgba(59,31,12,0.12); transform: translateY(-6px); border-color: var(--gold); }
-.course-type { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px; display: block; }
-.course-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--brown-rich); margin-bottom: 14px; line-height: 1.3; }
-.course-card p { color: var(--text-soft); font-size: 0.97rem; margin-bottom: 20px; line-height: 1.6; }
-.course-price { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--brown-rich); margin-bottom: 4px; }
-.course-period { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; }
-.btn-enroll { display: inline-block; background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 3px; text-decoration: none; letter-spacing: 0.3px; transition: all 0.2s; border: 2px solid var(--gold); cursor: pointer; }
-.btn-enroll:hover { background: transparent; color: var(--gold); }
+/* PAYMENT */
+.payment-section { background:var(--white); padding:90px 24px; display:none; }
+.payment-inner { max-width:700px; margin:0 auto; }
+.pay-card { background:var(--cream); border:1px solid var(--cream-dark); border-radius:10px; padding:32px; margin-bottom:24px; }
+.pay-card h3 { font-family:'Playfair Display',serif; color:var(--brown-rich); margin-bottom:16px; font-size:1.3rem; }
+.pay-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--cream-dark); flex-wrap:wrap; gap:8px; }
+.pay-row:last-of-type { border-bottom:none; }
+.pay-label { font-size:0.82rem; letter-spacing:1px; text-transform:uppercase; color:var(--text-soft); }
+.copy-btn { background:var(--gold); color:var(--brown-deep); border:none; padding:4px 10px; border-radius:3px; font-size:0.8rem; cursor:pointer; font-weight:600; }
 
-/* ─── TESTIMONIALS ─── */
-.testimonials-section { background: var(--cream); padding: 90px 24px; }
-.test-inner { max-width: 1100px; margin: 0 auto; }
-.test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-.test-card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 32px; position: relative; }
-.test-card::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 5rem; color: var(--gold); opacity: 0.15; position: absolute; top: 12px; left: 20px; line-height: 1; }
-.test-flag { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.test-flag img { width: 24px; height: 17px; border-radius: 2px; object-fit: cover; }
-.test-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--brown-rich); font-weight: 600; }
-.test-country { font-size: 0.82rem; color: var(--text-soft); }
-.stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 14px; }
-.test-card p { color: var(--text-soft); font-style: italic; font-size: 1rem; line-height: 1.65; }
+/* CBT */
+.cbt-section { background:var(--white); padding:90px 24px; }
+.cbt-inner { max-width:800px; margin:0 auto; }
+.cbt-field { margin-bottom:14px; }
+.cbt-field label { display:block; font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-soft); margin-bottom:6px; }
+.cbt-field input, .cbt-field select { width:100%; padding:12px 16px; border:1px solid var(--cream-dark); border-radius:5px; background:var(--cream); font-family:'Crimson Pro',serif; font-size:1rem; color:var(--text-dark); outline:none; transition:border-color 0.2s; }
+.cbt-field input:focus, .cbt-field select:focus { border-color:var(--gold); background:var(--white); }
+#timer { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:var(--gold); text-align:center; margin-bottom:28px; padding:16px; background:var(--brown-deep); border-radius:8px; }
+#timer.warning { color:#e74c3c; }
+.question-block { background:var(--cream); border:1px solid var(--cream-dark); border-radius:10px; padding:24px; margin-bottom:20px; user-select:none; -webkit-user-select:none; }
+.question-block.theory-q { user-select:text; -webkit-user-select:text; }
+.question-block .q-num { font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:block; }
+.question-block p { font-weight:600; color:var(--brown-rich); margin-bottom:16px; font-size:1.05rem; }
+.option-label { display:flex; align-items:center; gap:10px; padding:10px 14px; margin:6px 0; border-radius:6px; border:1px solid var(--cream-dark); cursor:pointer; color:var(--text-mid); transition:all 0.2s; font-size:0.98rem; }
+.option-label:hover { background:var(--white); border-color:var(--gold); }
+.option-label input { accent-color:var(--gold); }
+.question-block textarea { width:100%; padding:12px; border:1px solid var(--cream-dark); border-radius:5px; background:var(--white); font-family:'Crimson Pro',serif; font-size:1rem; color:var(--text-dark); outline:none; resize:vertical; user-select:text; -webkit-user-select:text; }
+.question-block textarea:focus { border-color:var(--gold); }
 
-/* ─── PAYMENT ─── */
-.payment-section { background: var(--white); padding: 90px 24px; display: none; }
-.payment-inner { max-width: 700px; margin: 0 auto; }
-.pay-card { background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 32px; margin-bottom: 24px; }
-.pay-card h3 { font-family: 'Playfair Display', serif; color: var(--brown-rich); margin-bottom: 16px; font-size: 1.3rem; }
-.pay-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--cream-dark); }
-.pay-row:last-of-type { border-bottom: none; }
-.pay-label { font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-soft); }
-.pay-value { font-weight: 600; color: var(--text-dark); }
-.copy-btn { background: var(--gold); color: var(--brown-deep); border: none; padding: 4px 10px; border-radius: 3px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
+/* GRADES */
+.grades-section { background:var(--cream); padding:90px 24px; }
+.grades-inner { max-width:900px; margin:0 auto; }
+.grade-item { background:var(--white); padding:18px 22px; margin:10px 0; border-radius:8px; border-left:4px solid var(--gold); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; box-shadow:0 2px 10px rgba(0,0,0,0.04); }
+.grade-name { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--brown-rich); font-weight:600; }
+.grade-score { font-size:1.1rem; font-weight:700; color:var(--gold); }
+.grade-meta { font-size:0.85rem; color:var(--text-soft); }
+.grade-pass { background:#e8f5e9; color:#2e7d32; padding:4px 10px; border-radius:4px; font-size:0.82rem; font-weight:600; }
+.grade-fail { background:#fdecea; color:#c62828; padding:4px 10px; border-radius:4px; font-size:0.82rem; font-weight:600; }
+.grades-filter { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px; }
+.filter-btn { padding:8px 20px; border:1px solid var(--cream-dark); border-radius:20px; background:var(--white); color:var(--text-soft); font-family:'Crimson Pro',serif; cursor:pointer; transition:all 0.2s; font-size:0.92rem; }
+.filter-btn.active, .filter-btn:hover { background:var(--gold); color:var(--brown-deep); border-color:var(--gold); }
 
-/* ─── CONTACT ─── */
-.contact-section { background: var(--brown-deep); padding: 90px 24px; text-align: center; }
-.contact-icons { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; }
-.contact-icon { width: 58px; height: 58px; border: 1px solid rgba(201,151,42,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.3rem; text-decoration: none; transition: all 0.25s; }
-.contact-icon:hover { background: var(--gold); color: var(--brown-deep); border-color: var(--gold); transform: translateY(-3px); }
+/* PRIVACY */
+.privacy-section { background:var(--white); padding:90px 24px; }
+.privacy-inner { max-width:760px; margin:0 auto; }
+.privacy-content p { color:var(--text-mid); margin-bottom:18px; font-size:1.05rem; }
+.privacy-content h3 { font-family:'Playfair Display',serif; color:var(--brown-rich); font-size:1.2rem; margin:28px 0 10px; }
 
-/* ─── FAQ ─── */
-.faq-section { background: var(--white); padding: 90px 24px; }
-.faq-inner { max-width: 800px; margin: 0 auto; }
-details { border-bottom: 1px solid var(--cream-dark); padding: 20px 0; }
-summary { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown-rich); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; user-select: none; }
-summary::after { content: '+'; color: var(--gold); font-size: 1.4rem; font-weight: 300; flex-shrink: 0; transition: transform 0.25s; }
-details[open] summary::after { transform: rotate(45deg); }
-details p { color: var(--text-soft); margin-top: 14px; font-size: 1rem; line-height: 1.7; }
+/* CONTACT */
+.contact-section { background:var(--brown-deep); padding:90px 24px; text-align:center; }
+.contact-icons { display:flex; justify-content:center; gap:20px; margin-top:40px; flex-wrap:wrap; }
+.contact-icon { width:58px; height:58px; border:1px solid rgba(201,151,42,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:1.3rem; text-decoration:none; transition:all 0.25s; }
+.contact-icon:hover { background:var(--gold); color:var(--brown-deep); border-color:var(--gold); transform:translateY(-3px); }
 
-/* ─── LOGIN ─── */
-.login-section { background: var(--cream); padding: 90px 24px; display: flex; justify-content: center; }
-.login-card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 12px; padding: 48px 40px; width: min(480px, 100%); box-shadow: 0 20px 60px rgba(59,31,12,0.08); }
-.login-card h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--brown-rich); margin-bottom: 6px; }
-.login-card .sub { color: var(--text-soft); margin-bottom: 30px; }
-.field { margin-bottom: 18px; }
-.field label { display: block; font-size: 0.82rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 7px; }
-.field input, .field select, .field textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--cream-dark); border-radius: 5px; background: var(--cream); font-family: 'Crimson Pro', serif; font-size: 1rem; color: var(--text-dark); transition: border-color 0.2s; outline: none; }
-.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); background: var(--white); }
-.check-row { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--text-soft); font-size: 0.97rem; }
-.btn-submit { width: 100%; padding: 14px; background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; border: none; border-radius: 5px; cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s; margin-top: 8px; }
-.btn-submit:hover { background: var(--brown-rich); color: var(--gold); }
-.login-links { text-align: center; margin-top: 18px; font-size: 0.95rem; color: var(--text-soft); }
-.login-links a { color: var(--gold); text-decoration: none; }
+/* FAQ */
+.faq-section { background:var(--cream); padding:90px 24px; }
+.faq-inner { max-width:800px; margin:0 auto; }
+details { border-bottom:1px solid var(--cream-dark); padding:20px 0; }
+summary { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown-rich); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:12px; user-select:none; }
+summary::after { content:'+'; color:var(--gold); font-size:1.4rem; font-weight:300; flex-shrink:0; transition:transform 0.25s; }
+details[open] summary::after { transform:rotate(45deg); }
+details p { color:var(--text-soft); margin-top:14px; font-size:1rem; line-height:1.7; }
 
-/* ─── FOOTER ─── */
-footer { background: var(--brown-deep); padding: 40px 24px 28px; text-align: center; border-top: 1px solid rgba(201,151,42,0.2); }
-footer p { color: rgba(255,254,249,0.45); font-size: 0.9rem; margin: 6px 0; }
-.footer-title { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.05rem; margin-bottom: 10px; }
-footer a { color: rgba(255,254,249,0.5); text-decoration: none; }
-footer a:hover { color: var(--gold); }
+/* LOGIN */
+.login-section { background:var(--white); padding:90px 24px; display:flex; justify-content:center; }
+.login-card { background:var(--cream); border:1px solid var(--cream-dark); border-radius:12px; padding:48px 40px; width:min(480px,100%); box-shadow:0 20px 60px rgba(59,31,12,0.08); }
+.login-card h2 { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--brown-rich); margin-bottom:6px; }
+.login-card .sub { color:var(--text-soft); margin-bottom:30px; }
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:0.82rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-soft); margin-bottom:7px; }
+.field input, .field select, .field textarea { width:100%; padding:12px 16px; border:1px solid var(--cream-dark); border-radius:5px; background:var(--white); font-family:'Crimson Pro',serif; font-size:1rem; color:var(--text-dark); transition:border-color 0.2s; outline:none; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); }
+.check-row { display:flex; align-items:center; gap:10px; margin:14px 0; color:var(--text-soft); font-size:0.97rem; }
+.btn-submit { width:100%; padding:14px; background:var(--gold); color:var(--brown-deep); font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; border:none; border-radius:5px; cursor:pointer; letter-spacing:0.5px; transition:all 0.2s; margin-top:8px; }
+.btn-submit:hover { background:var(--brown-rich); color:var(--gold); }
+.login-links { text-align:center; margin-top:18px; font-size:0.95rem; color:var(--text-soft); }
+.login-links a { color:var(--gold); text-decoration:none; }
 
-/* ─── FLOATING ─── */
-.whatsapp { position: fixed; bottom: 24px; right: 24px; background: #25D366; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 999; text-decoration: none; transition: transform 0.2s; }
-.whatsapp:hover { transform: scale(1.1); }
-.back-to-top { position: fixed; bottom: 96px; right: 24px; background: var(--gold); color: var(--brown-deep); width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 1.1rem; cursor: pointer; z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s; }
-.back-to-top.show { opacity: 1; visibility: visible; }
+/* FOOTER */
+footer { background:var(--brown-deep); padding:40px 24px 28px; text-align:center; border-top:1px solid rgba(201,151,42,0.2); }
+footer p { color:rgba(255,254,249,0.45); font-size:0.9rem; margin:6px 0; }
+.footer-title { font-family:'Playfair Display',serif; color:var(--gold); font-size:1.05rem; margin-bottom:10px; }
+footer a { color:rgba(255,254,249,0.5); text-decoration:none; }
+footer a:hover { color:var(--gold); }
 
-/* ─── MODAL ─── */
-.modal { display: none; position: fixed; inset: 0; background: rgba(26,13,6,0.75); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-.modal.open { display: flex; }
-.modal-box { background: var(--white); border-radius: 12px; padding: 40px; width: min(520px, 100%); position: relative; border-top: 3px solid var(--gold); max-height: 90vh; overflow-y: auto; }
-.modal-close { position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-soft); }
-.modal-box h2 { font-family: 'Playfair Display', serif; color: var(--brown-rich); font-size: 1.6rem; margin-bottom: 20px; }
-.modal-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-.modal-btn { padding: 14px; border: 2px solid var(--gold); border-radius: 6px; background: transparent; color: var(--brown-rich); font-family: 'Playfair Display', serif; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; }
-.modal-btn:hover { background: var(--gold); color: var(--brown-deep); }
+/* FLOATING */
+.whatsapp { position:fixed; bottom:24px; right:24px; background:#25D366; color:white; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:999; text-decoration:none; transition:transform 0.2s; }
+.whatsapp:hover { transform:scale(1.1); }
+.back-to-top { position:fixed; bottom:96px; right:24px; background:var(--gold); color:var(--brown-deep); width:44px; height:44px; border-radius:50%; border:none; font-size:1.1rem; cursor:pointer; z-index:999; opacity:0; visibility:hidden; transition:all 0.3s; }
+.back-to-top.show { opacity:1; visibility:visible; }
 
-/* ─── HAMBURGER ─── */
-.ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
-.ham span { width: 24px; height: 2px; background: var(--gold-pale); border-radius: 2px; transition: all 0.3s; display: block; }
-.ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.ham.open span:nth-child(2) { opacity: 0; }
-.ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-.mobile-nav { display: none; position: fixed; inset: 0; background: var(--brown-deep); z-index: 900; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
-.mobile-nav.open { display: flex; }
-.mobile-nav a { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--white); text-decoration: none; transition: color 0.2s; }
-.mobile-nav a:hover { color: var(--gold); }
+/* MODAL */
+.modal { display:none; position:fixed; inset:0; background:rgba(26,13,6,0.75); z-index:2000; justify-content:center; align-items:center; padding:20px; }
+.modal.open { display:flex; }
+.modal-box { background:var(--white); border-radius:12px; padding:40px; width:min(520px,100%); position:relative; border-top:3px solid var(--gold); max-height:90vh; overflow-y:auto; }
+.modal-close { position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-soft); }
+.modal-box h2 { font-family:'Playfair Display',serif; color:var(--brown-rich); font-size:1.6rem; margin-bottom:20px; }
+.modal-choices { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+.modal-btn { padding:14px; border:2px solid var(--gold); border-radius:6px; background:transparent; color:var(--brown-rich); font-family:'Playfair Display',serif; font-weight:600; cursor:pointer; transition:all 0.2s; font-size:0.95rem; }
+.modal-btn:hover { background:var(--gold); color:var(--brown-deep); }
 
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
-@keyframes fadeDown { from { opacity:0; transform: translateY(-16px); } to { opacity:0.85; transform: translateY(0); } }
-.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+/* HAMBURGER */
+.ham { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+.ham span { width:24px; height:2px; background:var(--gold-pale); border-radius:2px; transition:all 0.3s; display:block; }
+.ham.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+.ham.open span:nth-child(2) { opacity:0; }
+.ham.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+.mobile-nav { display:none; position:fixed; inset:0; background:var(--brown-deep); z-index:900; flex-direction:column; align-items:center; justify-content:center; gap:28px; overflow-y:auto; padding:40px 0; }
+.mobile-nav.open { display:flex; }
+.mobile-nav a { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--white); text-decoration:none; transition:color 0.2s; }
+.mobile-nav a:hover { color:var(--gold); }
 
-/* ─── RESPONSIVE ─── */
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-16px);} to{opacity:0.85;transform:translateY(0);} }
+.reveal { opacity:0; transform:translateY(32px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* RESPONSIVE */
 @media(max-width:768px){
-  nav { display: none; }
-  .ham { display: flex; }
-  header { padding: 0 20px; }
-  .about-wrapper { grid-template-columns: 1fr; gap: 32px; }
-  .login-card { padding: 32px 24px; }
-  .hero h1 { font-size: 1.8rem; }
+  nav{display:none;} .ham{display:flex;} header{padding:0 20px;}
+  .about-wrapper{grid-template-columns:1fr;gap:32px;}
+  .login-card{padding:32px 24px;} .hero h1{font-size:1.8rem;}
+  .modal-choices{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo-area">
     <img class="logo-img" src="logo.jpeg" alt="Logo" onerror="this.style.display='none'">
@@ -279,12 +255,12 @@ footer a:hover { color: var(--gold); }
     <a href="#about">About</a>
     <a href="#team">Team</a>
     <a href="#courses">Courses</a>
+    <a href="#cbt">CBT</a>
+    <a href="#grades">Grades</a>
     <a href="#faq">FAQ</a>
     <a href="#login">Login</a>
   </nav>
-  <div class="ham" id="ham" onclick="toggleHam()">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="ham" id="ham" onclick="toggleHam()"><span></span><span></span><span></span></div>
 </header>
 
 <div class="mobile-nav" id="mobileNav">
@@ -292,23 +268,25 @@ footer a:hover { color: var(--gold); }
   <a href="#about" onclick="closeHam()">About</a>
   <a href="#team" onclick="closeHam()">Team</a>
   <a href="#courses" onclick="closeHam()">Courses</a>
+  <a href="#cbt" onclick="closeHam()">CBT</a>
+  <a href="#grades" onclick="closeHam()">Grades</a>
   <a href="#faq" onclick="closeHam()">FAQ</a>
   <a href="#login" onclick="closeHam()">Login</a>
 </div>
 
 <!-- HERO -->
 <section id="home" class="hero">
-  <div class="hero-bg-pattern"></div>
+  <div class="hero-bg"></div>
   <div class="hero-geo"></div>
   <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
-    <div class="hero-badge">﷽</div>
+    <div class="hero-badge">&#65021;</div>
     <img class="hero-logo" src="logo.jpeg" alt="Arresalah" onerror="this.src='https://placehold.co/110x110/1a0d06/c9972a?text=A'">
     <h1>Arresalah International Madrasah</h1>
-    <div class="hero-sub-ar">معهد الرساله لتحفيظ القران ودراسات الإسلامية</div>
-    <p class="hero-verse">"And whoever Allāh guides — he is the rightly guided." (Qur'an 18:17)</p>
-    <p class="hero-tagline">Online Qur'ān learning for students across Nigeria, Ghana, Sierra Leone, UK, USA, and beyond</p>
+    <div class="hero-sub-ar">&#1605;&#1593;&#1607;&#1583; &#1575;&#1604;&#1585;&#1587;&#1575;&#1604;&#1607; &#1604;&#1578;&#1581;&#1601;&#1610;&#1592; &#1575;&#1604;&#1602;&#1585;&#1575;&#1606; &#1608;&#1583;&#1585;&#1575;&#1587;&#1575;&#1578; &#1575;&#1604;&#1573;&#1587;&#1604;&#1575;&#1605;&#1610;&#1577;</div>
+    <p class="hero-verse">"And whoever Allah guides — he is the rightly guided." (Qur'an 18:17)</p>
+    <p class="hero-tagline">Online Qur'an learning for students across Nigeria, Ghana, Sierra Leone, UK, USA, and beyond</p>
     <img class="hero-img" src="https://cdn.pixabay.com/photo/2017/08/01/01/33/islam-2562560_1280.jpg" alt="Quranic learning">
-    <a href="#courses" class="btn-primary">Begin Your Journey &nbsp;→</a>
+    <a href="#courses" class="btn-primary">Begin Your Journey &nbsp;&rarr;</a>
   </div>
 </section>
 
@@ -317,7 +295,7 @@ footer a:hover { color: var(--gold); }
   <div class="about-inner">
     <div class="section-header reveal">
       <span class="section-label">Our Institute</span>
-      <h2>Spreading the Word of <em>Allāh</em></h2>
+      <h2>Spreading the Word of <em>Allah</em></h2>
       <div class="divider"></div>
     </div>
     <div class="about-wrapper reveal">
@@ -325,14 +303,14 @@ footer a:hover { color: var(--gold); }
         <img src="cac.jpeg" alt="CAC Registration" onerror="this.src='https://placehold.co/600x400/f0e6c8/5c3317?text=CAC+Registered'">
       </div>
       <div class="about-body">
-        <p>Arresalah International Madrasah is a global online Qur'ān learning institute dedicated to teaching students of all ages across Nigeria, Ghana, Sierra Leone, the United Kingdom, and the United States.</p>
-        <blockquote class="verse">"Indeed, Allāh will not change the condition of a people until they change what is in themselves." — Qur'an 13:11</blockquote>
+        <p>Arresalah International Madrasah is a global online Qur'an learning institute dedicated to teaching students of all ages across Nigeria, Ghana, Sierra Leone, the United Kingdom, and the United States.</p>
+        <blockquote class="verse">"Indeed, Allah will not change the condition of a people until they change what is in themselves." — Qur'an 13:11</blockquote>
         <p>Our mission is to spread the words of Allah with sincerity, excellence, and proper guidance.</p>
         <ul class="feature-list">
-          <li>Qur'ān Memorization (Hifz)</li>
+          <li>Qur'an Memorization (Hifz)</li>
           <li>Tajweed — proper recitation</li>
           <li>Arabic Language (Arabiyah)</li>
-          <li>Islamic Studies — Fiqh, Aqeedah, Seerah, Nūrul Bayān</li>
+          <li>Islamic Studies — Fiqh, Aqeedah, Seerah, Nurul Bayan</li>
         </ul>
       </div>
     </div>
@@ -351,17 +329,17 @@ footer a:hover { color: var(--gold); }
       <div class="tutor-card reveal">
         <span class="tutor-role">Founder &amp; Director</span>
         <h3>Abu Huzaifah</h3>
-        <p>Based in Ogun State, Nigeria, Abu Huzaifah has devoted his life to teaching, mentoring, and guiding students in their journey with the Book of Allāh — with patience, clarity, and deep spiritual commitment. His approach focuses on building a strong connection between the student and the Qur'ān.</p>
+        <p>Based in Ogun State, Nigeria, Abu Huzaifah has devoted his life to teaching, mentoring, and guiding students in their journey with the Book of Allah — with patience, clarity, and deep spiritual commitment.</p>
       </div>
       <div class="tutor-card reveal">
         <span class="tutor-role">Senior Tutor</span>
         <h3>Ibn Shatibiyy</h3>
-        <p>Highly skilled in both Arabic language (Lughah) and Qur'ānic studies, Ibn Shatibiyy enables students to understand beyond recitation. He specializes in fluency, Tajweed, and comprehension through structured, engaging lessons that ensure steady progress.</p>
+        <p>Highly skilled in both Arabic language (Lughah) and Qur'anic studies. He specializes in fluency, Tajweed, and comprehension through structured, engaging lessons that ensure steady progress.</p>
       </div>
       <div class="tutor-card reveal">
-        <span class="tutor-role">Qur'ān Tutor</span>
+        <span class="tutor-role">Qur'an Tutor</span>
         <h3>Ummu Aneesah</h3>
-        <p>Dedicated and experienced, especially beloved by sisters and young learners. Her gentle, supportive style ensures every student recites correctly while developing a lasting love for the Qur'ān.</p>
+        <p>Dedicated and experienced, especially beloved by sisters and young learners. Her gentle, supportive style ensures every student recites correctly while developing a lasting love for the Qur'an.</p>
       </div>
     </div>
   </div>
@@ -379,35 +357,35 @@ footer a:hover { color: var(--gold); }
     <div class="course-grid">
       <div class="course-card reveal">
         <span class="course-type">General Class</span>
-        <h3>Qur'ān Only</h3>
-        <p>Group learning focused on Qur'ān recitation and memorization.</p>
-        <div class="course-price">₦5,000</div>
+        <h3>Qur'an Only</h3>
+        <p>Group learning focused on Qur'an recitation and memorization.</p>
+        <div class="course-price">&#8358;5,000</div>
         <div class="course-period">per month</div>
-        <button class="btn-enroll" onclick="openEnroll('General Class – Qur\'ān Only')">Enroll Now</button>
+        <button class="btn-enroll" onclick="openEnroll('General Class - Quran Only')">Enroll Now</button>
       </div>
       <div class="course-card reveal">
         <span class="course-type">General Class</span>
-        <h3>Qur'ān + Arabiyah</h3>
-        <p>Group learning combining Qur'ān with Arabic language basics.</p>
-        <div class="course-price">₦10,000</div>
+        <h3>Qur'an + Arabiyah</h3>
+        <p>Group learning combining Qur'an with Arabic language basics.</p>
+        <div class="course-price">&#8358;10,000</div>
         <div class="course-period">per month</div>
-        <button class="btn-enroll" onclick="openEnroll('General Class – Qur\'ān + Arabiyah')">Enroll Now</button>
+        <button class="btn-enroll" onclick="openEnroll('General Class - Quran + Arabiyah')">Enroll Now</button>
       </div>
       <div class="course-card reveal">
         <span class="course-type">Personalized Class</span>
-        <h3>One-to-One Qur'ān</h3>
-        <p>Individual tutoring focused on Qur'ān recitation and memorization.</p>
-        <div class="course-price">₦15,000</div>
+        <h3>One-to-One Qur'an</h3>
+        <p>Individual tutoring focused on Qur'an recitation and memorization.</p>
+        <div class="course-price">&#8358;15,000</div>
         <div class="course-period">per month</div>
-        <button class="btn-enroll" onclick="openEnroll('Personalized Class – One-to-One Qur\'ān')">Enroll Now</button>
+        <button class="btn-enroll" onclick="openEnroll('Personalized Class - One-to-One Quran')">Enroll Now</button>
       </div>
       <div class="course-card reveal">
         <span class="course-type">Personalized Class</span>
-        <h3>Qur'ān + Arabiyah</h3>
-        <p>Individual tutoring covering Qur'ān, Fiqh, Aqeedah, Seerah, and Nūrul Bayān.</p>
-        <div class="course-price">₦20,000</div>
+        <h3>Qur'an + Arabiyah</h3>
+        <p>Individual tutoring covering Qur'an, Fiqh, Aqeedah, Seerah, and Nurul Bayan.</p>
+        <div class="course-price">&#8358;20,000</div>
         <div class="course-period">per month</div>
-        <button class="btn-enroll" onclick="openEnroll('Personalized Class – Qur\'ān + Arabiyah')">Enroll Now</button>
+        <button class="btn-enroll" onclick="openEnroll('Personalized Class - Quran + Arabiyah')">Enroll Now</button>
       </div>
     </div>
   </div>
@@ -423,50 +401,35 @@ footer a:hover { color: var(--gold); }
     </div>
     <div class="test-grid">
       <div class="test-card reveal">
-        <div class="test-flag">
-          <img src="https://flagcdn.com/w20/ng.png" alt="Nigeria">
-          <div><div class="test-name">Amina S.</div><div class="test-country">Nigeria</div></div>
-        </div>
-        <div class="stars">★★★★★</div>
-        <p>Alhamdulillāh, joining Arresalah has been one of the best decisions for my Qur'ān journey. My recitation has improved greatly, and the teachers are patient and truly care about their students.</p>
+        <div class="test-flag"><img src="https://flagcdn.com/w20/ng.png" alt="Nigeria"><div><div class="test-name">Amina S.</div><div class="test-country">Nigeria</div></div></div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>Alhamdulillah, joining Arresalah has been one of the best decisions for my Qur'an journey. My recitation has improved greatly and the teachers truly care about their students.</p>
       </div>
       <div class="test-card reveal">
-        <div class="test-flag">
-          <img src="https://flagcdn.com/w20/gh.png" alt="Ghana">
-          <div><div class="test-name">Abdul Rahman K.</div><div class="test-country">Ghana</div></div>
-        </div>
-        <div class="stars">★★★★★</div>
-        <p>The teaching method is well-structured. I started as a beginner, but now I can recite the Qur'ān with proper Tajweed. May Allāh reward the teachers abundantly.</p>
+        <div class="test-flag"><img src="https://flagcdn.com/w20/gh.png" alt="Ghana"><div><div class="test-name">Abdul Rahman K.</div><div class="test-country">Ghana</div></div></div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>The teaching method is well-structured. I started as a beginner but now recite the Qur'an with proper Tajweed. May Allah reward the teachers abundantly.</p>
       </div>
       <div class="test-card reveal">
-        <div class="test-flag">
-          <img src="https://flagcdn.com/w20/gb.png" alt="UK">
-          <div><div class="test-name">Fatimah A.</div><div class="test-country">United Kingdom</div></div>
-        </div>
-        <div class="stars">★★★★★</div>
-        <p>Despite my busy schedule, I was able to memorize new sūrahs consistently. The environment is very encouraging, professional, and beautifully flexible.</p>
+        <div class="test-flag"><img src="https://flagcdn.com/w20/gb.png" alt="UK"><div><div class="test-name">Fatimah A.</div><div class="test-country">United Kingdom</div></div></div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>Despite my busy schedule I was able to memorize new surahs consistently. The environment is very encouraging, professional, and wonderfully flexible.</p>
       </div>
       <div class="test-card reveal">
-        <div class="test-flag">
-          <img src="https://flagcdn.com/w20/us.png" alt="USA">
-          <div><div class="test-name">Yusuf M.</div><div class="test-country">United States</div></div>
-        </div>
-        <div class="stars">★★★★★</div>
-        <p>My children are enrolled and I am very impressed with their progress. The tutors are kind, engaging, and highly experienced. I highly recommend this Madrasah to every Muslim family.</p>
+        <div class="test-flag"><img src="https://flagcdn.com/w20/us.png" alt="USA"><div><div class="test-name">Yusuf M.</div><div class="test-country">United States</div></div></div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>My children are enrolled and I am very impressed with their progress. The tutors are kind, engaging, and highly experienced. I highly recommend this Madrasah.</p>
       </div>
       <div class="test-card reveal">
-        <div class="test-flag">
-          <img src="https://flagcdn.com/w20/sl.png" alt="Sierra Leone">
-          <div><div class="test-name">Khadijah B.</div><div class="test-country">Sierra Leone</div></div>
-        </div>
-        <div class="stars">★★★★★</div>
-        <p>The teachers correct mistakes with wisdom and patience. I have developed a stronger connection with the Qur'ān through this program. Alhamdulillāh.</p>
+        <div class="test-flag"><img src="https://flagcdn.com/w20/sl.png" alt="Sierra Leone"><div><div class="test-name">Khadijah B.</div><div class="test-country">Sierra Leone</div></div></div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>The teachers correct mistakes with wisdom and patience. I have developed a stronger connection with the Qur'an through this program. Alhamdulillah.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PAYMENT (hidden until enrollment) -->
+<!-- PAYMENT -->
 <section id="payment" class="payment-section">
   <div class="payment-inner">
     <div class="section-header reveal">
@@ -483,18 +446,66 @@ footer a:hover { color: var(--gold); }
       <h3>Bank Transfer / Opay</h3>
       <div class="pay-row">
         <span class="pay-label">Account Name</span>
-        <span><span id="accountName">Akinjobi Abdulrahmon</span> <button class="copy-btn" onclick="copyText('accountName')">Copy</button></span>
+        <span><span id="accountName">Akinjobi Abdulrahmon</span> &nbsp;<button class="copy-btn" onclick="copyText('accountName')">Copy</button></span>
       </div>
       <div class="pay-row">
         <span class="pay-label">Account Number</span>
-        <span><span id="accountNumber">8082062525</span> <button class="copy-btn" onclick="copyText('accountNumber')">Copy</button></span>
+        <span><span id="accountNumber">8082062525</span> &nbsp;<button class="copy-btn" onclick="copyText('accountNumber')">Copy</button></span>
       </div>
       <div class="pay-row">
         <span class="pay-label">Bank</span>
-        <span><span id="bankName">Opay</span> <button class="copy-btn" onclick="copyText('bankName')">Copy</button></span>
+        <span><span id="bankName">Opay</span> &nbsp;<button class="copy-btn" onclick="copyText('bankName')">Copy</button></span>
       </div>
-      <p style="margin-top:16px;font-size:0.95rem;color:var(--text-soft);">After payment, send proof via WhatsApp (+234 808 206 2525) or email (arresalahinstitute@gmail.com). Include your full name and selected course.</p>
+      <p style="margin-top:16px;font-size:0.95rem;color:var(--text-soft);">After payment, send proof via WhatsApp (+234 808 206 2525) or email arresalahinstitute@gmail.com. Include your full name and course.</p>
     </div>
+  </div>
+</section>
+
+<!-- CBT -->
+<section id="cbt" class="cbt-section">
+  <div class="cbt-inner">
+    <div class="section-header reveal">
+      <span class="section-label">Assessments</span>
+      <h2>Computer-Based <em>Test</em></h2>
+      <div class="divider"></div>
+      <p style="color:var(--text-soft);margin-top:14px;font-size:1.05rem;">28 questions (25 MCQ + 3 Fill-in-the-gap) &nbsp;&middot;&nbsp; 30 minutes &nbsp;&middot;&nbsp; Generated weekly</p>
+    </div>
+    <div id="cbt-access" class="reveal">
+      <div class="cbt-field"><label>Level</label>
+        <select id="cbt-level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="cbt-field"><label>Exam Key</label><input type="text" id="exam-key" placeholder="e.g. ARQM-2026-W14-ABC"></div>
+      <div class="cbt-field"><label>Email</label><input type="email" id="student-email-cbt" placeholder="you@example.com"></div>
+      <div class="cbt-field"><label>Full Name</label><input type="text" id="student-name-cbt" placeholder="Your full name"></div>
+      <button class="btn-submit" style="margin-top:8px;" onclick="startCBT()">Start Test</button>
+    </div>
+    <div id="cbt-test" style="display:none;">
+      <div id="timer">30:00</div>
+      <div id="questions"></div>
+      <button class="btn-submit" style="margin-top:20px;" onclick="submitCBT()">Submit Test</button>
+    </div>
+  </div>
+</section>
+
+<!-- GRADES -->
+<section id="grades" class="grades-section">
+  <div class="grades-inner">
+    <div class="section-header reveal">
+      <span class="section-label">Results</span>
+      <h2>Public <em>Grades</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grades-filter reveal">
+      <button class="filter-btn active" onclick="filterGrades('all',this)">All</button>
+      <button class="filter-btn" onclick="filterGrades('beginner',this)">Beginner</button>
+      <button class="filter-btn" onclick="filterGrades('intermediate',this)">Intermediate</button>
+      <button class="filter-btn" onclick="filterGrades('advanced',this)">Advanced</button>
+    </div>
+    <div id="grades-list" class="reveal"></div>
   </div>
 </section>
 
@@ -524,18 +535,18 @@ footer a:hover { color: var(--gold); }
       <div class="divider"></div>
     </div>
     <div class="faq-inner reveal">
-      <details><summary>What is Arresalah International Madrasah?</summary><p>A global online Qur'ān learning institute teaching students of all ages across Nigeria, Ghana, Sierra Leone, UK, USA, and beyond. We specialize in Hifz, Tajweed, Arabiyah, and Islamic Studies.</p></details>
-      <details><summary>Can my five-year-old child apply?</summary><p>Yes, we accept children from age 4–5. Our tutors use age-appropriate methods, and parents are welcome to join early sessions to ensure comfort.</p></details>
-      <details><summary>Can I apply as a stay-at-home mom?</summary><p>Absolutely! We have many adult learners including moms. Our flexible scheduling accommodates family responsibilities at all levels.</p></details>
-      <details><summary>Who can enroll in the courses?</summary><p>Our courses are open to students of all ages (4+), backgrounds, and skill levels — children, teenagers, adults, elderly learners, beginners, and advanced students from all countries.</p></details>
-      <details><summary>What is the difference between General and Personalized classes?</summary><p>General Classes are group sessions — affordable community learning. Personalized Classes provide one-to-one tutoring with customized pacing, ideal for intensive or specific needs.</p></details>
-      <details><summary>How do I enroll?</summary><p>Click "Enroll Now" on your chosen class, fill out the application form, and proceed to payment via Paystack or bank transfer. Once confirmed, you'll receive login credentials and schedule information.</p></details>
-      <details><summary>How are classes conducted?</summary><p>Online via Google Meet, Telegram, and WhatsApp. Sessions are interactive, recorded for review, and scheduled at convenient times.</p></details>
-      <details><summary>Is there a trial class available?</summary><p>Yes! We offer a complimentary trial session for new students to experience our teaching methodology before committing.</p></details>
-      <details><summary>Do you provide certificates?</summary><p>Yes, upon successful completion students receive official certificates from Arresalah International Madrasah recognizing their achievements.</p></details>
-      <details><summary>What if I miss a class?</summary><p>All classes are recorded. You can catch up on missed sessions at your convenience. Makeup sessions are also available for personalized classes.</p></details>
-      <details><summary>What if I have technical issues?</summary><p>Email arresalahinstitute@gmail.com or WhatsApp +234 808 206 2525. We provide full onboarding support.</p></details>
-      <details><summary>What is included in Qur'ān + Arabiyah classes?</summary><p>These cover Qur'ān memorization and recitation, plus Arabic fundamentals, Fiqh, Aqeedah, Seerah, and Nūrul Bayān.</p></details>
+      <details><summary>What is Arresalah International Madrasah?</summary><p>A global online Qur'an learning institute teaching students of all ages across Nigeria, Ghana, Sierra Leone, UK, USA, and beyond. We specialize in Hifz, Tajweed, Arabiyah, and Islamic Studies.</p></details>
+      <details><summary>Can my five-year-old child apply?</summary><p>Yes, we accept children from age 4-5. Our tutors use age-appropriate methods, and parents are welcome to join early sessions to ensure comfort.</p></details>
+      <details><summary>Can I apply as a stay-at-home mom?</summary><p>Absolutely! Our flexible scheduling accommodates family responsibilities at all levels.</p></details>
+      <details><summary>Who can enroll in the courses?</summary><p>Our courses are open to students of all ages (4+), backgrounds, and skill levels from all countries.</p></details>
+      <details><summary>What is the difference between General and Personalized classes?</summary><p>General Classes are group sessions offering affordable community learning. Personalized Classes provide one-to-one tutoring with customized pacing.</p></details>
+      <details><summary>How do I enroll?</summary><p>Click "Enroll Now" on your chosen class, fill out the form, and proceed to payment via Paystack or bank transfer.</p></details>
+      <details><summary>How are classes conducted?</summary><p>Online via Google Meet, Telegram, and WhatsApp. Sessions are interactive and recorded for review.</p></details>
+      <details><summary>Is there a trial class available?</summary><p>Yes! We offer a complimentary trial session before you commit to enrollment.</p></details>
+      <details><summary>Do you provide certificates?</summary><p>Yes, upon successful completion students receive official certificates from Arresalah International Madrasah.</p></details>
+      <details><summary>What if I miss a class?</summary><p>All classes are recorded. Makeup sessions are also available for personalized classes.</p></details>
+      <details><summary>What if I have technical issues?</summary><p>Email arresalahinstitute@gmail.com or WhatsApp +234 808 206 2525.</p></details>
+      <details><summary>What is included in Qur'an + Arabiyah classes?</summary><p>Qur'an memorization, recitation, Arabic fundamentals, Fiqh, Aqeedah, Seerah, and Nurul Bayan.</p></details>
     </div>
   </div>
 </section>
@@ -550,14 +561,37 @@ footer a:hover { color: var(--gold); }
     <div class="check-row"><input type="checkbox" id="humanCheck"><label for="humanCheck">I am human</label></div>
     <button class="btn-submit" id="loginBtn">Continue</button>
     <div id="loginError" style="color:#c0392b;font-size:.9rem;margin-top:10px;display:none;"></div>
-    <div class="login-links"><a href="#">Forgot Password?</a> &nbsp;·&nbsp; No account? <a href="#" onclick="openCreateAccount()">Create one</a></div>
+    <div class="login-links"><a href="#">Forgot Password?</a> &nbsp;&middot;&nbsp; No account? <a href="#" onclick="openCreateAccount()">Create one</a></div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy" class="privacy-section">
+  <div class="privacy-inner">
+    <div class="section-header reveal">
+      <span class="section-label">Transparency</span>
+      <h2>Privacy <em>Policy</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="privacy-content reveal">
+      <h3>Data Collection</h3>
+      <p>We collect minimal data strictly for educational purposes — including your name, email, and test results to track progress and improve teaching quality.</p>
+      <h3>Data Storage</h3>
+      <p>Test results and account information are stored locally in your browser. No data is transmitted to external servers beyond payment processing via Paystack.</p>
+      <h3>Third Parties</h3>
+      <p>We do not sell or share your personal information with any third parties. Payment is handled securely by Paystack under their own privacy policy.</p>
+      <h3>Public Grades</h3>
+      <p>CBT results including your name, level, and score are displayed publicly in the Grades section for community transparency and motivation.</p>
+      <h3>Contact</h3>
+      <p>For any privacy concerns, contact us at arresalahinstitute@gmail.com or WhatsApp +234 808 206 2525.</p>
+    </div>
   </div>
 </section>
 
 <!-- ENROLL MODAL -->
 <div class="modal" id="enrollModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeEnroll()">×</button>
+    <button class="modal-close" onclick="closeEnroll()">&#215;</button>
     <h2>Enroll: <span id="courseName" style="color:var(--gold);font-size:1.05rem;display:block;margin-top:4px;"></span></h2>
     <p style="color:var(--text-soft);margin-bottom:4px;">Choose your preferred method:</p>
     <div class="modal-choices">
@@ -570,11 +604,7 @@ footer a:hover { color: var(--gold); }
         <div class="field"><label>Email</label><input type="email" placeholder="you@example.com" required></div>
         <div class="field"><label>Phone</label><input type="tel" placeholder="+234..." required></div>
         <div class="field"><label>Country</label>
-          <select required>
-            <option value="">Select country</option>
-            <option>Nigeria</option><option>Ghana</option><option>Sierra Leone</option>
-            <option>UK</option><option>USA</option><option>Other</option>
-          </select>
+          <select required><option value="">Select country</option><option>Nigeria</option><option>Ghana</option><option>Sierra Leone</option><option>UK</option><option>USA</option><option>Other</option></select>
         </div>
         <div class="field"><label>Message (optional)</label><textarea rows="3" placeholder="Any additional info"></textarea></div>
         <button type="submit" class="btn-submit">Submit Application</button>
@@ -586,7 +616,7 @@ footer a:hover { color: var(--gold); }
 <!-- CREATE ACCOUNT MODAL -->
 <div class="modal" id="createModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeCreateAccount()">×</button>
+    <button class="modal-close" onclick="closeCreateAccount()">&#215;</button>
     <h2>Create Account</h2>
     <form id="createAccountForm">
       <div class="field"><label>Full Name</label><input type="text" id="regName" required></div>
@@ -594,11 +624,7 @@ footer a:hover { color: var(--gold); }
       <div class="field"><label>Password</label><input type="password" id="regPassword" required></div>
       <div class="field"><label>Confirm Password</label><input type="password" id="regConfirmPassword" required></div>
       <div class="field"><label>Country</label>
-        <select id="regCountry" required>
-          <option value="">Select country</option>
-          <option>Nigeria</option><option>Ghana</option><option>Sierra Leone</option>
-          <option>UK</option><option>USA</option><option>Other</option>
-        </select>
+        <select id="regCountry" required><option value="">Select country</option><option>Nigeria</option><option>Ghana</option><option>Sierra Leone</option><option>UK</option><option>USA</option><option>Other</option></select>
       </div>
       <div class="check-row"><input type="checkbox" id="regHumanCheck" required><label for="regHumanCheck">I am human</label></div>
       <button type="submit" class="btn-submit">Create Account</button>
@@ -608,14 +634,14 @@ footer a:hover { color: var(--gold); }
 </div>
 
 <a href="https://wa.me/2348082062525" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
-<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
 <footer>
   <div class="footer-title">Arresalah International Madrasah</div>
-  <p style="font-family:'Amiri',serif;font-size:1rem;color:rgba(201,151,42,0.5);margin-bottom:12px;">معهد الرساله لتحفيظ القران ودراسات الإسلامية</p>
-  <p>© 2026 All rights reserved &nbsp;·&nbsp; CAC Reg. No: 927310 &nbsp;·&nbsp; TIN: 2622782263635</p>
-  <p style="margin-top:6px;">Spreading the words of Allāh globally</p>
-  <p style="margin-top:10px;"><a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Service</a></p>
+  <p style="font-family:'Amiri',serif;font-size:1rem;color:rgba(201,151,42,0.5);margin-bottom:12px;">&#1605;&#1593;&#1607;&#1583; &#1575;&#1604;&#1585;&#1587;&#1575;&#1604;&#1607; &#1604;&#1578;&#1581;&#1601;&#1610;&#1592; &#1575;&#1604;&#1602;&#1585;&#1575;&#1606; &#1608;&#1583;&#1585;&#1575;&#1587;&#1575;&#1578; &#1575;&#1604;&#1573;&#1587;&#1604;&#1575;&#1605;&#1610;&#1577;</p>
+  <p>&copy; 2026 All rights reserved &nbsp;&middot;&nbsp; CAC Reg. No: 927310 &nbsp;&middot;&nbsp; TIN: 2622782263635</p>
+  <p style="margin-top:6px;">Spreading the words of Allah globally</p>
+  <p style="margin-top:10px;"><a href="#privacy">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="#">Terms of Service</a></p>
 </footer>
 
 <script>
@@ -624,109 +650,183 @@ function toggleHam(){ document.getElementById('ham').classList.toggle('open'); d
 function closeHam(){ document.getElementById('ham').classList.remove('open'); document.getElementById('mobileNav').classList.remove('open'); }
 
 // Scroll reveal
-const reveals = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
-}, { threshold: 0.1 });
-reveals.forEach(r => obs.observe(r));
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
 // Back to top
-window.addEventListener('scroll', () => {
-  document.getElementById('backTop').classList.toggle('show', window.scrollY > 300);
-});
+window.addEventListener('scroll',()=>{ document.getElementById('backTop').classList.toggle('show',window.scrollY>300); });
 
 // Enroll Modal
-function openEnroll(course){
-  document.getElementById('courseName').textContent = course;
-  localStorage.setItem('selectedCourse', course);
-  document.getElementById('enrollModal').classList.add('open');
-}
-function closeEnroll(){
-  document.getElementById('enrollModal').classList.remove('open');
-  document.getElementById('manualForm').style.display = 'none';
-}
-function openGoogleForm(){
-  const c = document.getElementById('courseName').textContent;
-  window.open('https://rebrand.ly/arresalahreg?course=' + encodeURIComponent(c), '_blank');
-  closeEnroll();
-}
-document.getElementById('enrollForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  alert('Application submitted! Payment options will be shown.');
-  closeEnroll();
-  const ps = document.getElementById('payment');
-  ps.style.display = 'block';
-  ps.scrollIntoView({ behavior: 'smooth' });
-});
+function openEnroll(course){ document.getElementById('courseName').textContent=course; localStorage.setItem('selectedCourse',course); document.getElementById('enrollModal').classList.add('open'); }
+function closeEnroll(){ document.getElementById('enrollModal').classList.remove('open'); document.getElementById('manualForm').style.display='none'; }
+function openGoogleForm(){ const c=document.getElementById('courseName').textContent; window.open('https://rebrand.ly/arresalahreg?course='+encodeURIComponent(c),'_blank'); closeEnroll(); }
+document.getElementById('enrollForm').addEventListener('submit',function(e){ e.preventDefault(); alert('Application submitted! Payment options will be shown.'); closeEnroll(); const ps=document.getElementById('payment'); ps.style.display='block'; ps.scrollIntoView({behavior:'smooth'}); });
 
 // Create Account
 function openCreateAccount(){ document.getElementById('createModal').classList.add('open'); }
 function closeCreateAccount(){ document.getElementById('createModal').classList.remove('open'); }
-
-document.getElementById('createAccountForm').addEventListener('submit', function(e){
+document.getElementById('createAccountForm').addEventListener('submit',function(e){
   e.preventDefault();
-  const err = document.getElementById('regError');
-  const p1 = document.getElementById('regPassword').value;
-  const p2 = document.getElementById('regConfirmPassword').value;
-  const email = document.getElementById('regEmail').value.trim();
-  if(p1 !== p2){ err.style.display='block'; err.style.color='#c0392b'; err.textContent='Passwords do not match.'; return; }
-  const users = JSON.parse(localStorage.getItem('users')||'[]');
+  const err=document.getElementById('regError');
+  const p1=document.getElementById('regPassword').value;
+  const p2=document.getElementById('regConfirmPassword').value;
+  const email=document.getElementById('regEmail').value.trim();
+  if(p1!==p2){ err.style.display='block'; err.style.color='#c0392b'; err.textContent='Passwords do not match.'; return; }
+  const users=JSON.parse(localStorage.getItem('users')||'[]');
   if(users.find(u=>u.email===email)){ err.style.display='block'; err.style.color='#c0392b'; err.textContent='Email already registered.'; return; }
-  users.push({ name: document.getElementById('regName').value.trim(), email, password: p1, country: document.getElementById('regCountry').value });
-  localStorage.setItem('users', JSON.stringify(users));
+  users.push({name:document.getElementById('regName').value.trim(),email,password:p1,country:document.getElementById('regCountry').value});
+  localStorage.setItem('users',JSON.stringify(users));
   err.style.display='block'; err.style.color='#2e7d32'; err.textContent='Account created! You can now log in.';
-  setTimeout(closeCreateAccount, 1800);
+  setTimeout(closeCreateAccount,1800);
 });
 
 // Login
-document.getElementById('loginBtn').addEventListener('click', function(){
-  const err = document.getElementById('loginError');
-  const human = document.getElementById('humanCheck').checked;
-  const email = document.getElementById('student-email').value.trim();
-  const password = document.getElementById('student-password').value;
+document.getElementById('loginBtn').addEventListener('click',function(){
+  const err=document.getElementById('loginError');
+  const human=document.getElementById('humanCheck').checked;
+  const email=document.getElementById('student-email').value.trim();
+  const password=document.getElementById('student-password').value;
   if(!human){ err.style.display='block'; err.textContent='Please confirm you are human.'; return; }
   if(!email||!password){ err.style.display='block'; err.textContent='Please enter email and password.'; return; }
-  const users = JSON.parse(localStorage.getItem('users')||'[]');
-  const user = users.find(u=>u.email===email&&u.password===password);
+  const users=JSON.parse(localStorage.getItem('users')||'[]');
+  const user=users.find(u=>u.email===email&&u.password===password);
   if(!user){ err.style.display='block'; err.textContent='Invalid email or password.'; return; }
-  localStorage.setItem('loggedIn','true');
-  localStorage.setItem('userName', user.name);
-  localStorage.setItem('userEmail', email);
+  localStorage.setItem('loggedIn','true'); localStorage.setItem('userName',user.name); localStorage.setItem('userEmail',email);
   showDashboard();
 });
 
 function showDashboard(){
-  document.body.innerHTML = `
-    <style>
-      * { margin:0; padding:0; box-sizing:border-box; }
-      body { font-family:'Crimson Pro',Georgia,serif; background:#fdf8ee; }
-      header { background:#1a0d06; padding:16px 28px; display:flex; justify-content:space-between; align-items:center; position:fixed; top:0; left:0; right:0; z-index:100; }
-      .dash { max-width:800px; margin:120px auto 60px; padding:0 24px; text-align:center; }
-      h1 { font-family:'Playfair Display',serif; font-size:2.2rem; color:#3b1f0c; margin-bottom:10px; }
-      p { color:#7a5438; font-size:1.1rem; margin-top:8px; }
-      .logout-btn { background:#c9972a; color:#1a0d06; border:none; padding:12px 28px; border-radius:3px; font-family:'Playfair Display',serif; font-weight:700; cursor:pointer; font-size:0.95rem; }
-      .logo-lbl { font-family:'Playfair Display',serif; color:#e8b84b; font-size:1rem; }
-    </style>
-    <header>
-      <span class="logo-lbl">Arresalah International Madrasah</span>
-      <button class="logout-btn" onclick="localStorage.removeItem('loggedIn');location.reload();">Logout</button>
-    </header>
-    <div class="dash">
-      <h1>Welcome, ${localStorage.getItem('userName')}!</h1>
-      <p>Logged in as: ${localStorage.getItem('userEmail')}</p>
-      <p style="margin-top:16px;">Your classes, progress, and schedule will appear here.</p>
-    </div>`;
+  document.body.innerHTML=`<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Crimson Pro',Georgia,serif;background:#fdf8ee;}header{background:#1a0d06;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:100;}.dash{max-width:800px;margin:120px auto 60px;padding:0 24px;text-align:center;}h1{font-family:'Playfair Display',serif;font-size:2.2rem;color:#3b1f0c;margin-bottom:10px;}p{color:#7a5438;font-size:1.1rem;margin-top:8px;}.lb{background:#c9972a;color:#1a0d06;border:none;padding:12px 28px;border-radius:3px;font-family:'Playfair Display',serif;font-weight:700;cursor:pointer;font-size:0.95rem;}.ll{font-family:'Playfair Display',serif;color:#e8b84b;font-size:1rem;}</style>
+  <header><span class="ll">Arresalah International Madrasah</span><button class="lb" onclick="localStorage.removeItem('loggedIn');location.reload();">Logout</button></header>
+  <div class="dash"><h1>Welcome, ${localStorage.getItem('userName')}!</h1><p>Logged in as: ${localStorage.getItem('userEmail')}</p><p style="margin-top:16px;">Your classes, progress, and schedule will appear here.</p></div>`;
 }
-
 if(localStorage.getItem('loggedIn')==='true') showDashboard();
 
-// Copy to clipboard
-function copyText(id){
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard ? navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)) : (()=>{
-    const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Copied: '+text);
-  })();
+// Copy
+function copyText(id){ const text=document.getElementById(id).textContent.trim(); navigator.clipboard?navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)):(()=>{ const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);alert('Copied: '+text); })(); }
+
+// ── CBT ──
+const tajweedRules=['Idgham','Iqlab','Ikhfaa','Izhar Halqi','Ghunna','Qalqalah','Madd Tabiei','Tafkhim','Tarqiq','Idgham Shafawi'];
+const tajweedLetters=['Alif','Ba','Ta','Tha','Jeem','Ha','Kha','Dal','Dhal','Ra','Zay','Seen','Sheen','Sad','Dad','Ain','Ghain','Fa','Qaf','Kaf','Lam','Meem','Nun','Waw','Ya'];
+const companions=['Abu Bakr as-Siddiq','Umar ibn al-Khattab','Uthman ibn Affan','Ali ibn Abi Talib','Khalid ibn Walid','Bilal ibn Rabah','Abdullah ibn Masud','Abu Ubaidah'];
+const seerahEvents=['Battle of Badr','Battle of Uhud','Battle of Khandaq','Conquest of Mecca','Farewell Sermon','Hijrah to Medina','Treaty of Hudaybiyyah','Night Journey'];
+const islamicPillars=['Shahada (testimony of faith)','Salah (prayer)','Zakat (charity)','Sawm (fasting)','Hajj (pilgrimage)'];
+const islamicProphets=['Adam (AS)','Nuh (AS)','Ibrahim (AS)','Musa (AS)','Isa (AS)','Muhammad (SAW)','Yusuf (AS)','Dawud (AS)'];
+
+let currentQuestions=[], cbtTimer, timeLeft=1800, cbtName='', cbtEmail='', cbtLevel='';
+
+function getCurrentWeek(){ const n=new Date(), s=new Date(n.getFullYear(),0,1); return Math.ceil((Math.floor((n-s)/864e5)+s.getDay()+1)/7); }
+function seededRnd(seed){ let x=Math.sin(seed+1)*10000; return x-Math.floor(x); }
+function seededShuffle(arr,seed){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(seededRnd(seed+i)*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } }
+
+function generateQuestions(week){
+  const qs=[];
+  for(let i=0;i<25;i++){
+    const cat=i%3; let q,opts,ans;
+    if(cat===0){
+      const letter=tajweedLetters[(i*3+week)%tajweedLetters.length];
+      const correct=tajweedRules[(i+week)%tajweedRules.length];
+      const wrongs=tajweedRules.filter(r=>r!==correct);
+      opts=[correct,wrongs[(i+1)%wrongs.length],wrongs[(i+2)%wrongs.length],wrongs[(i+3)%wrongs.length]];
+      q=`In Tajweed, which rule applies when the letter "${letter}" follows a Noon Sakinah?`;
+    } else if(cat===1){
+      const event=seerahEvents[(i*2+week)%seerahEvents.length];
+      const correct=companions[(i+week)%companions.length];
+      const wrongs=companions.filter(c=>c!==correct);
+      opts=[correct,wrongs[(i+1)%wrongs.length],wrongs[(i+2)%wrongs.length],wrongs[(i+3)%wrongs.length]];
+      q=`Which companion played a prominent role in the ${event}?`;
+    } else {
+      const pillar=islamicPillars[(i*4+week)%islamicPillars.length];
+      const correct=islamicProphets[(i+week)%islamicProphets.length];
+      const wrongs=islamicProphets.filter(p=>p!==correct);
+      opts=[correct,wrongs[(i+1)%wrongs.length],wrongs[(i+2)%wrongs.length],wrongs[(i+3)%wrongs.length]];
+      q=`Which prophet is most closely associated with ${pillar}?`;
+    }
+    seededShuffle(opts,week+i*7);
+    qs.push({type:'mcq',question:q,options:opts,answer:opts[0]});
+  }
+  const theories=[
+    {question:'The Basmala is recited at the beginning of every Surah except Surah __________.', answer:'At-Tawbah (Surah 9)'},
+    {question:'The Prophet Muhammad (SAW) migrated from Mecca to Medina in the year __________ CE.', answer:'622'},
+    {question:'The number of obligatory daily prayers (Salah) is __________.', answer:'Five (5)'}
+  ];
+  theories.forEach(t=>qs.push({type:'theory',question:t.question,answer:t.answer}));
+  return qs;
 }
+
+function startCBT(){
+  const key=document.getElementById('exam-key').value.trim();
+  const email=document.getElementById('student-email-cbt').value.trim();
+  const name=document.getElementById('student-name-cbt').value.trim();
+  const level=document.getElementById('cbt-level').value;
+  const week=getCurrentWeek();
+  const year=new Date().getFullYear();
+  if(!key.startsWith(`ARQM-${year}-W${week}-`)){ alert(`Invalid or expired exam key.\nValid format: ARQM-${year}-W${week}-XXXX`); return; }
+  if(!email||!name){ alert('Please enter your email and full name.'); return; }
+  if(!confirm('Important: By proceeding you agree to attempt this test fairly and honestly.')){ return; }
+  cbtName=name; cbtEmail=email; cbtLevel=level;
+  currentQuestions=generateQuestions(week);
+  const qDiv=document.getElementById('questions');
+  qDiv.innerHTML='';
+  currentQuestions.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='question-block'+(q.type==='theory'?' theory-q':'');
+    let inner=`<span class="q-num">Question ${i+1} of ${currentQuestions.length}</span><p>${q.question}</p>`;
+    if(q.type==='mcq'){ inner+=q.options.map((opt,j)=>`<label class="option-label"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join(''); }
+    else { inner+=`<textarea name="q${i}" rows="3" placeholder="Type your answer here..."></textarea>`; }
+    div.innerHTML=inner; qDiv.appendChild(div);
+  });
+  document.getElementById('cbt-access').style.display='none';
+  document.getElementById('cbt-test').style.display='block';
+  document.getElementById('cbt').scrollIntoView({behavior:'smooth'});
+  timeLeft=1800;
+  cbtTimer=setInterval(()=>{
+    timeLeft--;
+    const m=Math.floor(timeLeft/60),s=timeLeft%60;
+    const el=document.getElementById('timer');
+    el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(timeLeft<=300) el.classList.add('warning');
+    if(timeLeft<=0) submitCBT();
+  },1000);
+}
+
+function submitCBT(){
+  clearInterval(cbtTimer);
+  let score=0;
+  currentQuestions.forEach((q,i)=>{
+    if(q.type==='mcq'){ const sel=document.querySelector(`input[name="q${i}"]:checked`); if(sel&&q.options[parseInt(sel.value)]===q.answer) score++; }
+    else { const ans=document.querySelector(`textarea[name="q${i}"]`); if(ans&&ans.value.trim().length>5) score++; }
+  });
+  const pct=Math.round((score/currentQuestions.length)*100);
+  const result={name:cbtName,email:cbtEmail,level:cbtLevel,score:`${score}/${currentQuestions.length}`,percentage:pct,passed:pct>=50,date:new Date().toLocaleDateString('en-GB')};
+  const results=JSON.parse(localStorage.getItem('cbtResults')||'[]');
+  results.unshift(result);
+  localStorage.setItem('cbtResults',JSON.stringify(results));
+  alert(`Test completed!\n\nScore: ${score}/${currentQuestions.length} (${pct}%)\nResult: ${pct>=50?'PASSED':'FAILED'}`);
+  document.getElementById('cbt-test').style.display='none';
+  document.getElementById('cbt-access').style.display='block';
+  document.getElementById('timer').textContent='30:00';
+  document.getElementById('timer').classList.remove('warning');
+  timeLeft=1800;
+  loadGrades('all');
+  document.getElementById('grades').scrollIntoView({behavior:'smooth'});
+}
+
+let currentFilter='all';
+function filterGrades(level,btn){ currentFilter=level; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); loadGrades(level); }
+
+function loadGrades(filter){
+  filter=filter||currentFilter||'all';
+  const results=JSON.parse(localStorage.getItem('cbtResults')||'[]');
+  const filtered=filter==='all'?results:results.filter(r=>r.level===filter);
+  const div=document.getElementById('grades-list');
+  if(!filtered.length){ div.innerHTML='<p style="text-align:center;color:var(--text-soft);padding:20px 0;">No grades available yet. Be the first to take a test!</p>'; return; }
+  div.innerHTML=filtered.map(r=>`<div class="grade-item"><div><div class="grade-name">${r.name}</div><div class="grade-meta">${r.email} &nbsp;&middot;&nbsp; ${r.level} &nbsp;&middot;&nbsp; ${r.date}</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="grade-score">${r.score} (${r.percentage}%)</div><span class="${r.passed?'grade-pass':'grade-fail'}">${r.passed?'PASSED':'FAILED'}</span></div></div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', ()=>loadGrades('all'));
 </script>
 </body>
 </html>
