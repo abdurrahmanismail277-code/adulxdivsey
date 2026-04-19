@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Arresalah International Madrasah - Global online Qur'ān learning institute offering Hifz, Tajweed, and Islamic studies for students worldwide.">
+<meta name="description" content="Arresalah International Madrasah - Professional online Qur'ān learning institute offering Hifz, Tajweed, Arabic, and Islamic studies for students worldwide.">
 <title>Arresalah International Madrasah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -117,71 +117,6 @@ nav a:hover::after { width: 100%; }
 .btn-enroll { display: inline-block; background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 3px; text-decoration: none; letter-spacing: 0.3px; transition: all 0.2s; border: 2px solid var(--gold); cursor: pointer; }
 .btn-enroll:hover { background: transparent; color: var(--gold); }
 
-/* ─── CBT SECTION ─── */
-.cbt-section { background: linear-gradient(135deg, #1a0d06 0%, #2d1508 50%, #1a0d06 100%); padding: 90px 24px; position: relative; overflow: hidden; }
-.cbt-section::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 50%, rgba(201,151,42,0.06) 0%, transparent 60%), radial-gradient(circle at 70% 20%, rgba(201,151,42,0.04) 0%, transparent 40%); }
-.cbt-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
-.cbt-card { background: rgba(253,248,238,0.04); border: 1px solid rgba(201,151,42,0.25); border-radius: 16px; padding: 48px; backdrop-filter: blur(4px); }
-/* Start screen */
-.cbt-start { text-align: center; }
-.cbt-start .quiz-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
-.cbt-start h3 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.9rem; margin-bottom: 12px; }
-.cbt-start p { color: rgba(255,254,249,0.6); margin-bottom: 28px; font-size: 1.05rem; }
-.cbt-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-.cbt-info-item { background: rgba(201,151,42,0.08); border: 1px solid rgba(201,151,42,0.2); border-radius: 8px; padding: 16px 12px; text-align: center; }
-.cbt-info-item i { color: var(--gold); font-size: 1.2rem; display: block; margin-bottom: 6px; }
-.cbt-info-item span { color: rgba(255,254,249,0.7); font-size: 0.88rem; }
-/* Quiz form */
-.cbt-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-.cbt-field label { display: block; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 7px; }
-.cbt-field input, .cbt-field select { width: 100%; padding: 12px 16px; border: 1px solid rgba(201,151,42,0.3); border-radius: 6px; background: rgba(255,254,249,0.06); font-family: 'Crimson Pro', serif; font-size: 1rem; color: var(--white); outline: none; transition: border-color 0.2s; }
-.cbt-field input::placeholder { color: rgba(255,254,249,0.3); }
-.cbt-field input:focus, .cbt-field select:focus { border-color: var(--gold); }
-.cbt-field select option { background: var(--brown-deep); color: var(--white); }
-/* Quiz question */
-.quiz-progress-bar { background: rgba(201,151,42,0.15); border-radius: 999px; height: 6px; margin-bottom: 28px; overflow: hidden; }
-.quiz-progress-fill { background: linear-gradient(90deg, var(--gold), var(--gold-light)); height: 100%; border-radius: 999px; transition: width 0.4s ease; }
-.quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.quiz-num { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
-.quiz-timer { background: rgba(201,151,42,0.12); border: 1px solid rgba(201,151,42,0.25); border-radius: 20px; padding: 4px 14px; font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--gold-light); }
-.quiz-timer.urgent { color: #e74c3c; border-color: rgba(231,76,60,0.4); background: rgba(231,76,60,0.08); animation: pulse 1s infinite; }
-.quiz-question { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 24px; line-height: 1.5; }
-.quiz-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-.quiz-option { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1.5px solid rgba(201,151,42,0.2); border-radius: 8px; cursor: pointer; transition: all 0.2s; background: rgba(255,254,249,0.03); }
-.quiz-option:hover { border-color: var(--gold); background: rgba(201,151,42,0.08); }
-.quiz-option.selected { border-color: var(--gold); background: rgba(201,151,42,0.15); }
-.quiz-option.correct { border-color: #27ae60; background: rgba(39,174,96,0.12); }
-.quiz-option.incorrect { border-color: #e74c3c; background: rgba(231,76,60,0.08); }
-.option-letter { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid rgba(201,151,42,0.4); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--gold); font-size: 0.9rem; flex-shrink: 0; }
-.quiz-option.selected .option-letter { background: var(--gold); color: var(--brown-deep); border-color: var(--gold); }
-.quiz-option.correct .option-letter { background: #27ae60; border-color: #27ae60; color: white; }
-.quiz-option.incorrect .option-letter { background: #e74c3c; border-color: #e74c3c; color: white; }
-.option-text { color: rgba(255,254,249,0.8); font-size: 1rem; }
-.btn-quiz { background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; padding: 14px 36px; border-radius: 5px; border: none; cursor: pointer; letter-spacing: 0.4px; transition: all 0.2s; width: 100%; }
-.btn-quiz:hover { background: var(--gold-light); transform: translateY(-1px); }
-.btn-quiz:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-/* Results */
-.cbt-results { text-align: center; }
-.score-circle { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 28px; background: rgba(201,151,42,0.08); box-shadow: 0 0 0 12px rgba(201,151,42,0.06); }
-.score-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
-.score-label { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,254,249,0.5); margin-top: 4px; }
-.result-grade { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--white); margin-bottom: 8px; }
-.result-msg { color: rgba(255,254,249,0.6); margin-bottom: 28px; font-size: 1rem; }
-.result-breakdown { background: rgba(255,254,249,0.04); border: 1px solid rgba(201,151,42,0.15); border-radius: 10px; padding: 20px; margin-bottom: 28px; text-align: left; }
-.result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(201,151,42,0.1); font-size: 0.95rem; }
-.result-row:last-child { border-bottom: none; }
-.result-row span:first-child { color: rgba(255,254,249,0.6); }
-.result-row span:last-child { color: var(--white); font-weight: 600; }
-.email-status { margin-bottom: 20px; padding: 14px 20px; border-radius: 8px; font-size: 0.95rem; display: none; }
-.email-status.sending { background: rgba(201,151,42,0.1); border: 1px solid rgba(201,151,42,0.3); color: var(--gold-pale); display: block; }
-.email-status.success { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.3); color: #7dcea0; display: block; }
-.email-status.error { background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.3); color: #f1948a; display: block; }
-.result-btns { display: flex; gap: 12px; }
-.btn-quiz-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; padding: 13px 28px; border-radius: 5px; cursor: pointer; transition: all 0.2s; flex: 1; }
-.btn-quiz-outline:hover { background: rgba(201,151,42,0.1); }
-.feedback-note { background: rgba(201,151,42,0.08); border-left: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 6px 6px 0; margin-bottom: 24px; text-align: left; }
-.feedback-note p { color: rgba(255,254,249,0.65); font-size: 0.93rem; margin: 0; font-style: italic; }
-
 /* ─── TESTIMONIALS ─── */
 .testimonials-section { background: var(--cream); padding: 90px 24px; }
 .test-inner { max-width: 1100px; margin: 0 auto; }
@@ -194,16 +129,6 @@ nav a:hover::after { width: 100%; }
 .test-country { font-size: 0.82rem; color: var(--text-soft); }
 .stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 14px; }
 .test-card p { color: var(--text-soft); font-style: italic; font-size: 1rem; line-height: 1.65; }
-
-/* ─── PAYMENT ─── */
-.payment-section { background: var(--white); padding: 90px 24px; display: none; }
-.payment-inner { max-width: 700px; margin: 0 auto; }
-.pay-card { background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 32px; margin-bottom: 24px; }
-.pay-card h3 { font-family: 'Playfair Display', serif; color: var(--brown-rich); margin-bottom: 16px; font-size: 1.3rem; }
-.pay-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--cream-dark); }
-.pay-row:last-of-type { border-bottom: none; }
-.pay-label { font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-soft); }
-.copy-btn { background: var(--gold); color: var(--brown-deep); border: none; padding: 4px 10px; border-radius: 3px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
 
 /* ─── CONTACT ─── */
 .contact-section { background: var(--brown-deep); padding: 90px 24px; text-align: center; }
@@ -275,10 +200,7 @@ footer a:hover { color: var(--gold); }
   .login-card { padding: 32px 24px; }
   .hero h1 { font-size: 1.8rem; }
   .stats-inner { grid-template-columns: repeat(2,1fr); }
-  .cbt-form-row { grid-template-columns: 1fr; }
-  .cbt-info-grid { grid-template-columns: repeat(2,1fr); }
-  .result-btns { flex-direction: column; }
-  .cbt-card { padding: 28px 20px; }
+  .test-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -298,7 +220,6 @@ footer a:hover { color: var(--gold); }
     <a href="#about">About</a>
     <a href="#team">Team</a>
     <a href="#courses">Courses</a>
-    <a href="#cbt">Take Quiz</a>
     <a href="#faq">FAQ</a>
     <a href="#login">Login</a>
   </nav>
@@ -312,7 +233,6 @@ footer a:hover { color: var(--gold); }
   <a href="#about" onclick="closeHam()">About</a>
   <a href="#team" onclick="closeHam()">Team</a>
   <a href="#courses" onclick="closeHam()">Courses</a>
-  <a href="#cbt" onclick="closeHam()">Take Quiz</a>
   <a href="#faq" onclick="closeHam()">FAQ</a>
   <a href="#login" onclick="closeHam()">Login</a>
 </div>
@@ -460,113 +380,6 @@ footer a:hover { color: var(--gold); }
   </div>
 </section>
 
-<!-- CBT QUIZ SECTION -->
-<section id="cbt" class="cbt-section">
-  <div class="cbt-inner">
-    <div class="section-header reveal" style="margin-bottom:40px;">
-      <span class="section-label" style="color:var(--gold);">Knowledge Assessment</span>
-      <h2 style="color:var(--white);">Islamic Knowledge <em>Quiz</em></h2>
-      <div class="divider"></div>
-      <p style="color:rgba(255,254,249,0.5);margin-top:14px;font-size:1.05rem;">Test your knowledge. Your score will be sent to your email automatically.</p>
-    </div>
-
-    <div class="cbt-card reveal">
-      <!-- START SCREEN -->
-      <div id="cbt-start" class="cbt-start">
-        <span class="quiz-icon">📖</span>
-        <h3>Arresalah Islamic Knowledge Test</h3>
-        <p>Assess your understanding of Qur'ān, Tajweed, Islamic Studies, and Arabic. Your results will be emailed to you instantly.</p>
-        <div class="cbt-info-grid">
-          <div class="cbt-info-item">
-            <i class="fas fa-question-circle"></i>
-            <span>10 Questions</span>
-          </div>
-          <div class="cbt-info-item">
-            <i class="fas fa-clock"></i>
-            <span>30 sec / Q</span>
-          </div>
-          <div class="cbt-info-item">
-            <i class="fas fa-envelope"></i>
-            <span>Score via Email</span>
-          </div>
-        </div>
-        <div class="cbt-form-row">
-          <div class="cbt-field">
-            <label>Full Name</label>
-            <input type="text" id="cbt-name" placeholder="Your full name">
-          </div>
-          <div class="cbt-field">
-            <label>Email Address</label>
-            <input type="email" id="cbt-email" placeholder="you@example.com">
-          </div>
-        </div>
-        <div class="cbt-form-row">
-          <div class="cbt-field">
-            <label>Subject</label>
-            <select id="cbt-subject">
-              <option value="General">General Islamic Knowledge</option>
-              <option value="Quran">Qur'ān & Tajweed</option>
-              <option value="Fiqh">Fiqh & Aqeedah</option>
-              <option value="Arabic">Arabic Language</option>
-            </select>
-          </div>
-          <div class="cbt-field">
-            <label>Level</label>
-            <select id="cbt-level">
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
-          </div>
-        </div>
-        <button class="btn-quiz" onclick="startQuiz()">Begin Assessment &nbsp;→</button>
-        <p style="color:rgba(255,254,249,0.3);font-size:0.85rem;margin-top:16px;">By taking this quiz, your score will be automatically sent to your email via Arresalah International Madrasah.</p>
-      </div>
-
-      <!-- QUIZ SCREEN -->
-      <div id="cbt-quiz" style="display:none;">
-        <div class="quiz-meta">
-          <span class="quiz-num" id="quiz-num">Question 1 of 10</span>
-          <span class="quiz-timer" id="quiz-timer">0:30</span>
-        </div>
-        <div class="quiz-progress-bar">
-          <div class="quiz-progress-fill" id="quiz-progress" style="width:10%"></div>
-        </div>
-        <div class="quiz-question" id="quiz-question"></div>
-        <div class="quiz-options" id="quiz-options"></div>
-        <button class="btn-quiz" id="quiz-next" onclick="nextQuestion()" disabled>Next Question →</button>
-      </div>
-
-      <!-- RESULTS SCREEN -->
-      <div id="cbt-results" class="cbt-results" style="display:none;">
-        <div class="score-circle">
-          <span class="score-number" id="result-score">0</span>
-          <span class="score-label">out of 10</span>
-        </div>
-        <div class="result-grade" id="result-grade"></div>
-        <div class="result-msg" id="result-msg"></div>
-        <div class="result-breakdown">
-          <div class="result-row"><span>Student Name</span><span id="rb-name">—</span></div>
-          <div class="result-row"><span>Email</span><span id="rb-email">—</span></div>
-          <div class="result-row"><span>Subject</span><span id="rb-subject">—</span></div>
-          <div class="result-row"><span>Level</span><span id="rb-level">—</span></div>
-          <div class="result-row"><span>Score</span><span id="rb-score">—</span></div>
-          <div class="result-row"><span>Grade</span><span id="rb-grade">—</span></div>
-          <div class="result-row"><span>Date</span><span id="rb-date">—</span></div>
-        </div>
-        <div class="feedback-note">
-          <p id="feedback-note-text"></p>
-        </div>
-        <div class="email-status" id="email-status"></div>
-        <div class="result-btns">
-          <button class="btn-quiz-outline" onclick="restartQuiz()"><i class="fas fa-redo" style="margin-right:6px;"></i>Retake Quiz</button>
-          <button class="btn-quiz" onclick="window.location.href='#courses'">Enroll in a Course →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- TESTIMONIALS -->
 <section id="testimonials" class="testimonials-section">
   <div class="test-inner">
@@ -620,38 +433,6 @@ footer a:hover { color: var(--gold); }
   </div>
 </section>
 
-<!-- PAYMENT (hidden until enrollment) -->
-<section id="payment" class="payment-section">
-  <div class="payment-inner">
-    <div class="section-header reveal">
-      <span class="section-label">Complete Your Enrollment</span>
-      <h2>Payment <em>Options</em></h2>
-      <div class="divider"></div>
-    </div>
-    <div class="pay-card reveal">
-      <h3>Pay Online</h3>
-      <a href="https://paystack.shop/pay/arresalahinstitute" target="_blank" class="btn-enroll" style="display:inline-block;text-decoration:none;">Pay with Paystack</a>
-      <p style="margin-top:12px;font-size:0.9rem;color:var(--text-soft);">Secure payment powered by Paystack</p>
-    </div>
-    <div class="pay-card reveal">
-      <h3>Bank Transfer / Opay</h3>
-      <div class="pay-row">
-        <span class="pay-label">Account Name</span>
-        <span><span id="accountName">Akinjobi Abdulrahmon</span> <button class="copy-btn" onclick="copyText('accountName')">Copy</button></span>
-      </div>
-      <div class="pay-row">
-        <span class="pay-label">Account Number</span>
-        <span><span id="accountNumber">8082062525</span> <button class="copy-btn" onclick="copyText('accountNumber')">Copy</button></span>
-      </div>
-      <div class="pay-row">
-        <span class="pay-label">Bank</span>
-        <span><span id="bankName">Opay</span> <button class="copy-btn" onclick="copyText('bankName')">Copy</button></span>
-      </div>
-      <p style="margin-top:16px;font-size:0.95rem;color:var(--text-soft);">After payment, send proof via WhatsApp (+234 808 206 2525) or email (arresalahinstitute@gmail.com). Include your full name and selected course.</p>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact" class="contact-section">
   <div class="section-header reveal">
@@ -686,7 +467,6 @@ footer a:hover { color: var(--gold); }
       <details><summary>How do I enroll?</summary><p>Click "Enroll Now" on your chosen class, fill out the application form, and proceed to payment via Paystack or bank transfer. Once confirmed, you'll receive login credentials and schedule information.</p></details>
       <details><summary>How are classes conducted?</summary><p>Online via Google Meet, Telegram, and WhatsApp. Sessions are interactive, recorded for review, and scheduled at convenient times.</p></details>
       <details><summary>Is there a trial class available?</summary><p>Yes! We offer a complimentary trial session for new students to experience our teaching methodology before committing.</p></details>
-      <details><summary>What is the Islamic Knowledge Quiz?</summary><p>The CBT quiz is a free knowledge assessment test offered by Arresalah. Students answer 10 questions and receive their score automatically via email. It helps place students in the right course level.</p></details>
       <details><summary>Do you provide certificates?</summary><p>Yes, upon successful completion students receive official certificates from Arresalah International Madrasah recognizing their achievements.</p></details>
       <details><summary>What if I miss a class?</summary><p>All classes are recorded. You can catch up on missed sessions at your convenience. Makeup sessions are also available for personalized classes.</p></details>
     </div>
@@ -772,281 +552,6 @@ footer a:hover { color: var(--gold); }
 </footer>
 
 <script>
-// ─── QUESTION BANK ───
-const questionBank = {
-  General: [
-    { q: "How many chapters (Sūrahs) are in the Holy Qur'ān?", opts: ["114","116","110","120"], ans: 0 },
-    { q: "What is the first pillar of Islam?", opts: ["Salah","Shahādah","Sawm","Zakāh"], ans: 1 },
-    { q: "Which Surah is known as the 'Heart of the Qur'ān'?", opts: ["Al-Fatiha","Al-Baqarah","Yā-Sīn","Al-Ikhlas"], ans: 2 },
-    { q: "How many times is Salah (prayer) performed daily?", opts: ["3","4","5","6"], ans: 2 },
-    { q: "What is the meaning of 'Islam'?", opts: ["Peace","Submission","Faith","Guidance"], ans: 1 },
-    { q: "In which month is fasting (Sawm) obligatory?", opts: ["Shawwal","Muharram","Ramadān","Rajab"], ans: 2 },
-    { q: "Which angel revealed the Qur'ān to Prophet Muhammad ﷺ?", opts: ["Mikāil","Isrāfīl","Jibrīl","Munkar"], ans: 2 },
-    { q: "What is the shortest Surah in the Qur'ān?", opts: ["Al-Asr","Al-Kawthar","Al-Falaq","An-Nas"], ans: 1 },
-    { q: "What does 'Zakāh' refer to?", opts: ["Fasting","Pilgrimage","Obligatory charity","Night prayer"], ans: 2 },
-    { q: "How many Prophets are mentioned by name in the Qur'ān?", opts: ["20","25","30","35"], ans: 1 },
-    { q: "What is the meaning of 'Taqwa'?", opts: ["Worship","God-consciousness","Gratitude","Patience"], ans: 1 },
-    { q: "Which city contains the Ka'bah?", opts: ["Madīnah","Jerusalem","Makkah","Tā'if"], ans: 2 }
-  ],
-  Quran: [
-    { q: "What is 'Tajweed'?", opts: ["Islamic law","Rules of Qur'ānic recitation","Arabic grammar","Qur'ān translation"], ans: 1 },
-    { q: "Which letter has the sound 'Qaf' (ق)?", opts: ["ك","ق","غ","خ"], ans: 1 },
-    { q: "What is 'Ikhfa' in Tajweed?", opts: ["Clear pronunciation","Hidden/concealed pronunciation","Merging of letters","Stopping"], ans: 1 },
-    { q: "How many Juz' (parts) does the Qur'ān have?", opts: ["20","25","30","28"], ans: 2 },
-    { q: "What is the meaning of 'Hifz'?", opts: ["Reading","Memorization","Understanding","Translation"], ans: 1 },
-    { q: "Which Surah begins with 'Alif Lam Mim'?", opts: ["Al-Fatiha","Al-Baqarah","Al-Ikhlas","Al-Kahf"], ans: 1 },
-    { q: "What is 'Waqf' in Qur'ānic recitation?", opts: ["A type of letter","Stopping/pausing","A rule of Madd","A vowel sign"], ans: 1 },
-    { q: "What is the longest Surah in the Qur'ān?", opts: ["Al-Imran","An-Nisa","Al-Baqarah","Al-Maidah"], ans: 2 },
-    { q: "What does 'Harakāt' refer to in Arabic?", opts: ["Letters","Vowel marks (diacritics)","Numbers","Punctuation"], ans: 1 },
-    { q: "What is 'Idghaam' in Tajweed?", opts: ["Merging of letters","Elongation","Heavy pronunciation","Stopping"], ans: 0 }
-  ],
-  Fiqh: [
-    { q: "What is 'Wudu'?", opts: ["Prayer","Ritual purification","Fasting","Charity"], ans: 1 },
-    { q: "How many Rak'ahs are in the Fajr prayer?", opts: ["2","3","4","5"], ans: 0 },
-    { q: "What invalidates the fast (Sawm)?", opts: ["Sleeping","Eating or drinking intentionally","Sweating","Smelling food"], ans: 1 },
-    { q: "Which of these is not a pillar of Salah?", opts: ["Niyyah (intention)","Takbīr","Reading Qur'ān in Arabic","Raising hands in du'ā"], ans: 3 },
-    { q: "What is 'Ghusl'?", opts: ["Minor purification","Full ritual bath","Prayer mat","The Adhān"], ans: 1 },
-    { q: "What percentage of wealth is Zakāh?", opts: ["5%","2.5%","10%","1%"], ans: 1 },
-    { q: "How many Rak'ahs is the Isha prayer?", opts: ["2","3","4","5"], ans: 2 },
-    { q: "What is 'Tayammum'?", opts: ["Prayer in congregation","Dry ablution with earth/sand","A type of du'ā","Breaking fast"], ans: 1 },
-    { q: "Which prayer is prayed on Friday as a congregation?", opts: ["Asr","Jumu'ah","Isha","Fajr"], ans: 1 },
-    { q: "What is 'Nisāb' in relation to Zakāh?", opts: ["The type of charity","Minimum wealth threshold for Zakāh","The Zakāh recipients","The Zakāh collector"], ans: 1 }
-  ],
-  Arabic: [
-    { q: "How many letters are in the Arabic alphabet?", opts: ["26","28","30","32"], ans: 1 },
-    { q: "What is the meaning of 'Kitāb' (كِتَاب)?", opts: ["Pen","Book","Paper","Teacher"], ans: 1 },
-    { q: "What is a 'Mubtada' in Arabic grammar?", opts: ["Subject (topic of a sentence)","Verb","Predicate","Object"], ans: 0 },
-    { q: "What does 'Fathah' (◌َ) indicate in Arabic?", opts: ["Long 'aa' sound","Short 'a' vowel sound","Silent letter","'u' vowel sound"], ans: 1 },
-    { q: "Which Arabic letter makes the 'Th' sound?", opts: ["ت","ث","ذ","ظ"], ans: 1 },
-    { q: "What is the Arabic word for 'water'?", opts: ["نار","ماء","هواء","تراب"], ans: 1 },
-    { q: "What does 'Ism' (اسم) mean in Arabic grammar?", opts: ["Verb","Noun","Adjective","Preposition"], ans: 1 },
-    { q: "What is the meaning of 'Assalamu Alaykum'?", opts: ["Good morning","Peace be upon you","Thank you","How are you"], ans: 1 },
-    { q: "What does the Kasrah (◌ِ) indicate?", opts: ["Short 'i' vowel sound","Long 'oo' sound","No vowel","Short 'a' sound"], ans: 0 },
-    { q: "Which of these is a Sun letter (Shamsiyya)?", opts: ["ب","م","ن","ت"], ans: 3 }
-  ]
-};
-
-// ─── QUIZ STATE ───
-let currentQ = 0, score = 0, answered = false;
-let questions = [], timerInterval = null, timeLeft = 30;
-let studentName = '', studentEmail = '', studentSubject = '', studentLevel = '';
-let answers = [];
-
-function getQuestions(subject) {
-  const pool = questionBank[subject] || questionBank.General;
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, 10);
-}
-
-function startQuiz() {
-  studentName = document.getElementById('cbt-name').value.trim();
-  studentEmail = document.getElementById('cbt-email').value.trim();
-  studentSubject = document.getElementById('cbt-subject').value;
-  studentLevel = document.getElementById('cbt-level').value;
-
-  if (!studentName) { alert('Please enter your full name.'); return; }
-  if (!studentEmail || !studentEmail.includes('@')) { alert('Please enter a valid email address.'); return; }
-
-  questions = getQuestions(studentSubject);
-  currentQ = 0; score = 0; answers = [];
-
-  document.getElementById('cbt-start').style.display = 'none';
-  document.getElementById('cbt-quiz').style.display = 'block';
-  renderQuestion();
-}
-
-function renderQuestion() {
-  answered = false;
-  const q = questions[currentQ];
-  document.getElementById('quiz-num').textContent = `Question ${currentQ + 1} of ${questions.length}`;
-  document.getElementById('quiz-progress').style.width = `${((currentQ + 1) / questions.length) * 100}%`;
-  document.getElementById('quiz-question').textContent = q.q;
-  document.getElementById('quiz-next').disabled = true;
-  document.getElementById('quiz-next').textContent = currentQ < questions.length - 1 ? 'Next Question →' : 'View Results';
-
-  const opts = document.getElementById('quiz-options');
-  opts.innerHTML = '';
-  const letters = ['A','B','C','D'];
-  q.opts.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'quiz-option';
-    div.innerHTML = `<span class="option-letter">${letters[i]}</span><span class="option-text">${opt}</span>`;
-    div.onclick = () => selectOption(i, div);
-    opts.appendChild(div);
-  });
-
-  startTimer();
-}
-
-function startTimer() {
-  clearInterval(timerInterval);
-  timeLeft = 30;
-  const timerEl = document.getElementById('quiz-timer');
-  timerEl.classList.remove('urgent');
-  timerEl.textContent = `0:${String(timeLeft).padStart(2, '0')}`;
-
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    timerEl.textContent = `0:${String(timeLeft).padStart(2, '0')}`;
-    if (timeLeft <= 10) timerEl.classList.add('urgent');
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      if (!answered) {
-        answers.push({ q: questions[currentQ].q, selected: null, correct: questions[currentQ].opts[questions[currentQ].ans] });
-        autoSelectWrong();
-      }
-    }
-  }, 1000);
-}
-
-function autoSelectWrong() {
-  answered = true;
-  const opts = document.querySelectorAll('.quiz-option');
-  opts[questions[currentQ].ans].classList.add('correct');
-  document.getElementById('quiz-next').disabled = false;
-}
-
-function selectOption(idx, el) {
-  if (answered) return;
-  answered = true;
-  clearInterval(timerInterval);
-
-  const q = questions[currentQ];
-  const allOpts = document.querySelectorAll('.quiz-option');
-  allOpts.forEach(o => o.onclick = null);
-  allOpts[q.ans].classList.add('correct');
-
-  const selected = q.opts[idx];
-  const correct = q.opts[q.ans];
-
-  if (idx === q.ans) {
-    score++;
-    answers.push({ q: q.q, selected, correct, isCorrect: true });
-  } else {
-    el.classList.add('incorrect');
-    answers.push({ q: q.q, selected, correct, isCorrect: false });
-  }
-
-  document.getElementById('quiz-next').disabled = false;
-}
-
-function nextQuestion() {
-  currentQ++;
-  if (currentQ >= questions.length) {
-    showResults();
-  } else {
-    renderQuestion();
-  }
-}
-
-function showResults() {
-  clearInterval(timerInterval);
-  document.getElementById('cbt-quiz').style.display = 'none';
-  document.getElementById('cbt-results').style.display = 'block';
-
-  const pct = Math.round((score / questions.length) * 100);
-  let grade, msg, note;
-
-  if (pct >= 90) {
-    grade = 'Excellent — Distinction 🏆'; msg = 'Mā shā Allāh! Outstanding performance!';
-    note = 'You have demonstrated exceptional Islamic knowledge. We recommend our Advanced Personalized class to further elevate your learning.';
-  } else if (pct >= 75) {
-    grade = 'Very Good — Merit ⭐'; msg = 'Alhamdulillāh! Very impressive result.';
-    note = 'You have a strong foundation. Our Personalized Qur\'ān + Arabiyah class would be a great fit for your level.';
-  } else if (pct >= 60) {
-    grade = 'Good — Pass ✓'; msg = 'Well done! Keep up the effort.';
-    note = 'You are doing well. Our General Class with Qur\'ān + Arabiyah would help you grow significantly.';
-  } else if (pct >= 40) {
-    grade = 'Fair — Needs Improvement'; msg = 'Keep striving! Learning is a continuous journey.';
-    note = 'There is room for growth. We recommend beginning with our General Qur\'ān Class and building from there.';
-  } else {
-    grade = 'Beginner Level'; msg = 'Every expert was once a beginner. Begin your journey today!';
-    note = 'Our beginner-friendly General Qur\'ān class is the perfect starting point. Our teachers will guide you with patience and care.';
-  }
-
-  const now = new Date();
-  document.getElementById('result-score').textContent = `${score}/${questions.length}`;
-  document.getElementById('result-grade').textContent = grade;
-  document.getElementById('result-msg').textContent = msg;
-  document.getElementById('feedback-note-text').textContent = note;
-  document.getElementById('rb-name').textContent = studentName;
-  document.getElementById('rb-email').textContent = studentEmail;
-  document.getElementById('rb-subject').textContent = studentSubject;
-  document.getElementById('rb-level').textContent = studentLevel;
-  document.getElementById('rb-score').textContent = `${score} / ${questions.length} (${pct}%)`;
-  document.getElementById('rb-grade').textContent = grade;
-  document.getElementById('rb-date').textContent = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
-
-  // Send score via email using EmailJS
-  sendScoreEmail(studentName, studentEmail, studentSubject, studentLevel, score, questions.length, pct, grade, note, now);
-}
-
-function sendScoreEmail(name, email, subject, level, score, total, pct, grade, note, date) {
-  const statusEl = document.getElementById('email-status');
-  statusEl.className = 'email-status sending';
-  statusEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Sending your results to ' + email + '...';
-
-  // Build email content for EmailJS
-  const templateParams = {
-    to_name: name,
-    to_email: email,
-    from_name: 'Arresalah International Madrasah',
-    subject_taken: subject,
-    level: level,
-    score: score + ' / ' + total,
-    percentage: pct + '%',
-    grade: grade,
-    recommendation: note,
-    date: date.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }),
-    institute: 'Arresalah International Madrasah',
-    contact: 'arresalahinstitute@gmail.com | +234 808 206 2525'
-  };
-
-  // Load EmailJS dynamically and send
-  if (typeof emailjs === 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.onload = () => {
-      emailjs.init('YOUR_EMAILJS_PUBLIC_KEY'); // <-- Replace with your EmailJS public key
-      sendViaEmailJS(templateParams, statusEl, email);
-    };
-    script.onerror = () => fallbackEmail(statusEl, email, name, subject, score, total, pct, grade);
-    document.head.appendChild(script);
-  } else {
-    sendViaEmailJS(templateParams, statusEl, email);
-  }
-}
-
-function sendViaEmailJS(params, statusEl, email) {
-  // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your EmailJS credentials
-  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', params)
-    .then(() => {
-      statusEl.className = 'email-status success';
-      statusEl.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>Results sent successfully to <strong>' + email + '</strong>. Check your inbox!';
-    })
-    .catch(() => fallbackEmail(statusEl, email, params.to_name, params.subject_taken, parseInt(params.score), 10, parseInt(params.percentage), params.grade));
-}
-
-function fallbackEmail(statusEl, email, name, subject, score, total, pct, grade) {
-  // Fallback: Open mailto link with results
-  const body = encodeURIComponent(
-    `Bismillah,\n\nDear ${name},\n\nHere are your Arresalah Islamic Knowledge Test results:\n\n` +
-    `Subject: ${subject}\nScore: ${score} / ${total} (${pct}%)\nGrade: ${grade}\n\n` +
-    `JazakAllāhu Khayran for taking the quiz!\n\nArresalah International Madrasah\narresalahinstitute@gmail.com | +234 808 206 2525`
-  );
-  const subject_line = encodeURIComponent(`Your Arresalah Quiz Results — ${score}/${total}`);
-  window.open(`mailto:${email}?subject=${subject_line}&body=${body}`);
-
-  statusEl.className = 'email-status success';
-  statusEl.innerHTML = '<i class="fas fa-envelope" style="margin-right:8px;"></i>Email client opened with your results. Alternatively, your results are shown above. You can also WhatsApp us at +234 808 206 2525 for your results.';
-}
-
-function restartQuiz() {
-  document.getElementById('cbt-results').style.display = 'none';
-  document.getElementById('cbt-start').style.display = 'block';
-  document.getElementById('email-status').className = 'email-status';
-}
-
 // ─── STAT COUNTER ───
 function animateCount(el, target) {
   let current = 0;
@@ -1109,9 +614,6 @@ document.getElementById('enrollForm').addEventListener('submit', function(e){
   e.preventDefault();
   alert('Application submitted! Payment options will be shown.');
   closeEnroll();
-  const ps = document.getElementById('payment');
-  ps.style.display = 'block';
-  ps.scrollIntoView({ behavior: 'smooth' });
 });
 
 // ─── CREATE ACCOUNT ───
