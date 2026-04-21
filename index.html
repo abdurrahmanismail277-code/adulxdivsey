@@ -117,6 +117,50 @@ nav a:hover::after { width: 100%; }
 .btn-enroll { display: inline-block; background: var(--gold); color: var(--brown-deep); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; padding: 12px 28px; border-radius: 3px; text-decoration: none; letter-spacing: 0.3px; transition: all 0.2s; border: 2px solid var(--gold); cursor: pointer; }
 .btn-enroll:hover { background: transparent; color: var(--gold); }
 
+/* ─── SEMESTER PRICING SECTION ─── */
+.semester-section { background: var(--cream); padding: 90px 24px; }
+.semester-inner { max-width: 1100px; margin: 0 auto; }
+
+/* Semester cards — two-column layout */
+.semester-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; margin-bottom: 56px; }
+
+.semester-card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 12px; overflow: hidden; transition: all 0.3s; }
+.semester-card:hover { box-shadow: 0 20px 56px rgba(59,31,12,0.13); transform: translateY(-6px); border-color: var(--gold); }
+
+.semester-card-header { background: var(--brown-rich); padding: 28px 32px 22px; position: relative; overflow: hidden; }
+.semester-card-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.semester-card-header .badge { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; display: block; }
+.semester-card-header h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--white); font-weight: 700; line-height: 1.25; }
+
+.semester-card-body { padding: 28px 32px 32px; }
+
+.pricing-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(201,151,42,0.12); }
+.pricing-row:last-of-type { border-bottom: none; }
+.pricing-label { font-size: 0.9rem; color: var(--text-soft); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+.pricing-label i { color: var(--gold); font-size: 0.8rem; opacity: 0.8; }
+.pricing-amount { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--brown-rich); }
+.pricing-amount .currency { font-size: 0.85rem; font-weight: 400; color: var(--text-soft); margin-left: 2px; }
+
+.semester-card-body p.note { font-size: 0.9rem; color: var(--text-soft); margin: 16px 0 20px; font-style: italic; }
+.semester-card-body .btn-enroll { display: block; text-align: center; width: 100%; }
+
+/* Arabiyah subject grid */
+.arabiyah-section-label { text-align: center; margin-bottom: 32px; }
+.arabiyah-section-label h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--brown-rich); margin-bottom: 8px; }
+.arabiyah-section-label p { color: var(--text-soft); font-size: 1rem; }
+.arabiyah-section-label .sub-divider { width: 40px; height: 1px; background: var(--gold); margin: 14px auto 0; opacity: 0.6; }
+
+.subjects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+
+.subject-card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 24px 20px; text-align: center; transition: all 0.3s; cursor: pointer; }
+.subject-card:hover { border-color: var(--gold); box-shadow: 0 10px 32px rgba(59,31,12,0.1); transform: translateY(-4px); }
+.subject-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--cream-dark), var(--cream)); border: 1px solid rgba(201,151,42,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; color: var(--gold); font-size: 1.05rem; transition: all 0.3s; }
+.subject-card:hover .subject-icon { background: var(--gold); color: var(--brown-deep); border-color: var(--gold); }
+.subject-card h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--brown-rich); margin-bottom: 6px; }
+.subject-card p { font-size: 0.84rem; color: var(--text-soft); line-height: 1.5; margin-bottom: 16px; }
+.btn-enroll-sm { display: inline-block; background: transparent; color: var(--gold); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.83rem; padding: 8px 18px; border-radius: 3px; text-decoration: none; letter-spacing: 0.3px; transition: all 0.2s; border: 1.5px solid var(--gold); cursor: pointer; }
+.btn-enroll-sm:hover { background: var(--gold); color: var(--brown-deep); }
+
 /* ─── TESTIMONIALS ─── */
 .testimonials-section { background: var(--cream); padding: 90px 24px; }
 .test-inner { max-width: 1100px; margin: 0 auto; }
@@ -201,6 +245,12 @@ footer a:hover { color: var(--gold); }
   .hero h1 { font-size: 1.8rem; }
   .stats-inner { grid-template-columns: repeat(2,1fr); }
   .test-grid { grid-template-columns: 1fr; }
+  .semester-grid { grid-template-columns: 1fr; }
+  .subjects-grid { grid-template-columns: repeat(2, 1fr); }
+  .semester-card-header, .semester-card-body { padding-left: 24px; padding-right: 24px; }
+}
+@media(max-width:420px){
+  .subjects-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -334,7 +384,7 @@ footer a:hover { color: var(--gold); }
   </div>
 </section>
 
-<!-- COURSES -->
+<!-- COURSES — Original quick-reference cards -->
 <section id="courses" class="courses-section">
   <div class="courses-inner">
     <div class="section-header reveal">
@@ -379,6 +429,117 @@ footer a:hover { color: var(--gold); }
     </div>
   </div>
 </section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SEMESTER PRICING + ARABIYAH — NEW SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="semester-section">
+  <div class="semester-inner">
+
+    <!-- Header -->
+    <div class="section-header reveal">
+      <span class="section-label">Full Semester Pricing</span>
+      <h2>Save More, Learn <em>Consistently</em></h2>
+      <div class="divider"></div>
+      <p style="color:var(--text-soft);margin-top:14px;font-size:1.05rem;">Pay for a full semester (3 months) and commit fully to your Qur'ānic journey.</p>
+    </div>
+
+    <!-- Two semester cards -->
+    <div class="semester-grid">
+
+      <!-- General -->
+      <div class="semester-card reveal">
+        <div class="semester-card-header">
+          <span class="badge">General Class</span>
+          <h3>General Qur'ān Class</h3>
+        </div>
+        <div class="semester-card-body">
+          <div class="pricing-row">
+            <span class="pricing-label"><i class="fas fa-calendar-alt"></i> Full Semester (3 months)</span>
+            <span class="pricing-amount">₦30,000 <span class="currency">/ semester</span></span>
+          </div>
+          <div class="pricing-row">
+            <span class="pricing-label"><i class="fas fa-calendar-day"></i> Monthly Option</span>
+            <span class="pricing-amount">₦10,000 <span class="currency">/ month</span></span>
+          </div>
+          <p class="note">Group sessions covering Qur'ān recitation, basic Tajweed, and Hifz — open to all ages and levels.</p>
+          <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll" onclick="void(0)">Join Now &nbsp;→</a>
+        </div>
+      </div>
+
+      <!-- Personalized -->
+      <div class="semester-card reveal">
+        <div class="semester-card-header">
+          <span class="badge">Personalized Class</span>
+          <h3>Personalized Qur'ān Class</h3>
+        </div>
+        <div class="semester-card-body">
+          <div class="pricing-row">
+            <span class="pricing-label"><i class="fas fa-calendar-alt"></i> Full Semester (3 months)</span>
+            <span class="pricing-amount">₦50,000 <span class="currency">/ semester</span></span>
+          </div>
+          <div class="pricing-row">
+            <span class="pricing-label"><i class="fas fa-calendar-day"></i> Monthly Option</span>
+            <span class="pricing-amount">₦20,000 <span class="currency">/ month</span></span>
+          </div>
+          <p class="note">One-to-one sessions tailored to your pace, covering Qur'ān, Fiqh, Aqeedah, Seerah, and Nūrul Bayān.</p>
+          <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll" onclick="void(0)">Join Now &nbsp;→</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Arabiyah & Islamic Studies subjects -->
+    <div class="arabiyah-section-label reveal">
+      <span class="section-label" style="display:block;margin-bottom:8px;">Arabiyah &amp; Islamic Studies</span>
+      <h3>Available Subjects</h3>
+      <p>Study individually or combine with any Qur'ān plan</p>
+      <div class="sub-divider"></div>
+    </div>
+
+    <div class="subjects-grid">
+
+      <div class="subject-card reveal">
+        <div class="subject-icon"><i class="fas fa-book-reader"></i></div>
+        <h4>Tajweed</h4>
+        <p>Master the rules of correct Qur'ānic recitation and pronunciation.</p>
+        <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll-sm">Enroll</a>
+      </div>
+
+      <div class="subject-card reveal">
+        <div class="subject-icon"><i class="fas fa-language"></i></div>
+        <h4>Nahw</h4>
+        <p>Classical Arabic grammar — the foundation of understanding the Qur'ān and Islamic texts.</p>
+        <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll-sm">Enroll</a>
+      </div>
+
+      <div class="subject-card reveal">
+        <div class="subject-icon"><i class="fas fa-feather-alt"></i></div>
+        <h4>Sarf</h4>
+        <p>Arabic morphology — learn how words are formed and root meanings unlocked.</p>
+        <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll-sm">Enroll</a>
+      </div>
+
+      <div class="subject-card reveal">
+        <div class="subject-icon"><i class="fas fa-mosque"></i></div>
+        <h4>Aqeedah</h4>
+        <p>Islamic creed and belief — a clear, authentic understanding of the fundamentals of faith.</p>
+        <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll-sm">Enroll</a>
+      </div>
+
+      <div class="subject-card reveal">
+        <div class="subject-icon"><i class="fas fa-scroll"></i></div>
+        <h4>Seerah</h4>
+        <p>The life of the Prophet ﷺ — history, character, and lessons for the modern Muslim.</p>
+        <a href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-enroll-sm">Enroll</a>
+      </div>
+
+    </div>
+    <!-- /subjects-grid -->
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════════════════════ -->
 
 <!-- TESTIMONIALS -->
 <section id="testimonials" class="testimonials-section">
@@ -464,7 +625,7 @@ footer a:hover { color: var(--gold); }
       <details><summary>Can I apply as a stay-at-home mom?</summary><p>Absolutely! We have many adult learners including moms. Our flexible scheduling accommodates family responsibilities at all levels.</p></details>
       <details><summary>Who can enroll in the courses?</summary><p>Our courses are open to students of all ages (4+), backgrounds, and skill levels — children, teenagers, adults, elderly learners, beginners, and advanced students from all countries.</p></details>
       <details><summary>What is the difference between General and Personalized classes?</summary><p>General Classes are group sessions — affordable community learning. Personalized Classes provide one-to-one tutoring with customized pacing, ideal for intensive or specific needs.</p></details>
-      <details><summary>How do I enroll?</summary><p>Click "Enroll Now" on your chosen class, fill out the application form, and proceed to payment via Paystack or bank transfer. Once confirmed, you'll receive login credentials and schedule information.</p></details>
+      <details><summary>How do I enroll?</summary><p>Click "Enroll Now" or "Join Now" on your chosen class, fill out the application form, and proceed to payment via Paystack or bank transfer. Once confirmed, you'll receive login credentials and schedule information.</p></details>
       <details><summary>How are classes conducted?</summary><p>Online via Google Meet, Telegram, and WhatsApp. Sessions are interactive, recorded for review, and scheduled at convenient times.</p></details>
       <details><summary>Is there a trial class available?</summary><p>Yes! We offer a complimentary trial session for new students to experience our teaching methodology before committing.</p></details>
       <details><summary>Do you provide certificates?</summary><p>Yes, upon successful completion students receive official certificates from Arresalah International Madrasah recognizing their achievements.</p></details>
