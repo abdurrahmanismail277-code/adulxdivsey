@@ -51,7 +51,14 @@
     display: flex; align-items: center; justify-content: space-between;
     height: 68px;
   }
-  .brand { display: flex; flex-direction: column; gap: 1px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand-logo {
+    width: 42px;
+    height: 46px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 10px rgba(0,0,0,0.28));
+  }
+  .brand-text { display: flex; flex-direction: column; gap: 1px; }
   .brand-arabic {
     font-family: 'Amiri', serif;
     color: var(--amber-light);
@@ -59,9 +66,9 @@
   }
   .brand-en {
     font-family: 'Cormorant Garamond', serif;
-    color: rgba(255,252,245,0.65);
-    font-size: 12px; font-weight: 400;
-    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,252,245,0.88);
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
   }
   nav { display: flex; gap: 6px; align-items: center; }
   nav a {
@@ -248,15 +255,15 @@
   .feature-icon { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; background: rgba(212,136,30,0.18); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
   .feature-icon svg { width: 10px; height: 10px; }
 
-  .btn-select-wa {
+  .btn-select {
     width: 100%; padding: 13px; border-radius: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
-    cursor: pointer; border: none; transition: all 0.2s;
-    background: var(--wa-green); color: #fff;
+    cursor: pointer; border: 1.5px solid rgba(212,136,30,0.50); transition: all 0.2s;
+    background: rgba(212,136,30,0.14); color: var(--amber-pale);
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    box-shadow: 0 4px 16px rgba(37,211,102,0.20);
+    box-shadow: 0 4px 16px rgba(26,13,0,0.18);
   }
-  .btn-select-wa:hover { background: #20ba59; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(37,211,102,0.35); }
+  .btn-select:hover { background: var(--amber); color: var(--brown-deep); transform: translateY(-1px); box-shadow: var(--shadow-amber); }
   .btn-select-featured {
     width: 100%; padding: 13px; border-radius: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
@@ -265,18 +272,46 @@
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
   .btn-select-featured:hover { background: var(--amber-light); transform: translateY(-1px); box-shadow: var(--shadow-amber); }
+  .enroll-icon { width: 17px; height: 17px; flex-shrink: 0; }
 
   /*  WHY  */
-  .why-bg { background: var(--brown-deep); }
-  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .why-bg { background: linear-gradient(180deg, var(--brown-deep) 0%, var(--brown-dark) 100%); }
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; }
   .why-card {
-    background: var(--brown-rich); border: 1.5px solid rgba(212,136,30,0.20);
-    border-radius: 16px; padding: 26px 22px; transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    min-height: 220px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: rgba(74,32,0,0.72);
+    border: 1.5px solid rgba(212,136,30,0.20);
+    box-shadow: 0 14px 36px rgba(10,6,0,0.22);
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
   }
-  .why-card:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(26,13,0,0.35); border-color: rgba(212,136,30,0.45); }
-  .why-icon { width: 46px; height: 46px; background: rgba(212,136,30,0.14); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 22px; }
-  .why-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: var(--text-white); margin-bottom: 7px; }
-  .why-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+  .why-card::before {
+    content: '';
+    position: absolute;
+    inset: auto -35px -50px auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(212,136,30,0.10);
+    pointer-events: none;
+  }
+  .why-card:hover {
+    transform: translateY(-3px);
+    background: rgba(88,39,4,0.82);
+    box-shadow: 0 24px 54px rgba(10,6,0,0.30);
+    border-color: rgba(212,136,30,0.42);
+  }
+  .why-card > * { position: relative; z-index: 1; }
+  .why-icon { width: 44px; height: 44px; background: rgba(212,136,30,0.15); border: 1px solid rgba(212,136,30,0.32); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--amber-light); }
+  .why-icon svg { width: 22px; height: 22px; stroke: currentColor; }
+  .why-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 10px; }
+  .why-card p { font-size: 14px; color: rgba(255,255,255,0.76); line-height: 1.7; max-width: 100%; }
 
   /*  FAQ  */
   .faq-bg { background: var(--brown-dark); }
@@ -299,8 +334,10 @@
   footer { background: #0A0600; border-top: 1px solid rgba(212,136,30,0.15); }
   .footer-inner { max-width: 1120px; margin: 0 auto; padding: 52px 24px 32px; }
   .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+  .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .footer-logo { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
   .footer-brand-arabic { font-family: 'Amiri', serif; color: var(--amber); font-size: 18px; display: block; margin-bottom: 10px; }
-  .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: var(--text-white); margin-bottom: 10px; }
+  .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: var(--text-white); line-height: 1.2; }
   .footer-desc { font-size: 13px; color: rgba(255,248,230,0.30); line-height: 1.7; max-width: 280px; }
   .footer-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
   .footer-links { display: flex; flex-direction: column; gap: 10px; }
@@ -326,7 +363,9 @@
     background: var(--brown-dark);
     border: 1px solid rgba(212,136,30,0.30);
     border-radius: 22px; width: 100%; max-width: 500px;
+    max-height: calc(100vh - 40px);
     overflow: hidden;
+    display: flex; flex-direction: column;
     animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
     box-shadow: 0 20px 80px rgba(10,6,0,0.6);
   }
@@ -338,7 +377,7 @@
     border-bottom: 1px solid rgba(212,136,30,0.15);
     display: flex; align-items: center; justify-content: space-between;
   }
-  .stage-steps { display: flex; align-items: center; gap: 0; flex: 1; }
+  .stage-steps { display: flex; align-items: center; gap: 0; flex: 1; min-width: 0; }
   .stage-step {
     display: flex; align-items: center; gap: 8px; flex: 1;
   }
@@ -362,8 +401,25 @@
     transition: background 0.2s; margin-left: 16px;
   }
   .modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .portal-mark {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    margin-left: 18px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(212,136,30,0.36);
+    background: #050301;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  }
+  .portal-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-  .modal-body { padding: 28px; }
+  .modal-body { padding: 28px; overflow-y: auto; }
 
   /* Stage panels */
   .stage-panel { display: none; }
@@ -375,6 +431,17 @@
     margin-bottom: 5px;
   }
   .stage-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
+
+  .payment-success {
+    background: rgba(37,211,102,0.08);
+    border: 1px solid rgba(37,211,102,0.25);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: rgba(255,255,255,0.88);
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
 
   .form-group { margin-bottom: 16px; }
   .form-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(240,181,63,0.7); margin-bottom: 7px; }
@@ -423,26 +490,28 @@
 
   /* Payment box */
   .payment-box {
-    background: rgba(212,136,30,0.08); border: 1px solid rgba(212,136,30,0.25);
-    border-radius: 14px; padding: 20px; margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(11,164,219,0.18), rgba(26,13,0,0.78));
+    border: 1px solid rgba(11,164,219,0.45);
+    border-radius: 14px; padding: 20px; margin-bottom: 14px;
+    box-shadow: 0 10px 36px rgba(0,0,0,0.22);
   }
-  .payment-box h4 { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 14px; }
-  .payment-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(212,136,30,0.10); }
+  .payment-box h4 { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #7DDBFF; margin-bottom: 14px; }
+  .payment-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid rgba(212,136,30,0.10); }
   .payment-row:last-child { border-bottom: none; }
   .payment-row .label { font-size: 12px; color: var(--text-muted); }
-  .payment-row .value { font-size: 13px; font-weight: 700; color: var(--text-white); }
-  .payment-row .value.amount { color: var(--amber-light); font-size: 16px; font-family: 'Cormorant Garamond', serif; }
+  .payment-row .value { font-size: 13px; font-weight: 700; color: var(--text-white); text-align: right; }
+  .payment-row .value.amount { color: var(--amber-light); font-size: 30px; font-family: 'Cormorant Garamond', serif; line-height: 1; }
   .payment-note { font-size: 12px; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(212,136,30,0.12); line-height: 1.65; }
 
   /* Summary card */
   .summary-card {
     background: rgba(26,13,0,0.6); border: 1px solid rgba(212,136,30,0.22);
-    border-radius: 14px; padding: 18px; margin-bottom: 20px;
+    border-radius: 14px; padding: 16px; margin-bottom: 14px;
   }
   .summary-card h4 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
   .summary-row { display: flex; gap: 10px; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
   .summary-row span:first-child { color: var(--text-muted); }
-  .summary-row span:last-child { color: var(--text-white); font-weight: 600; text-align: right; max-width: 60%; }
+  .summary-row span:last-child { color: var(--text-white); font-weight: 600; text-align: right; max-width: 60%; overflow-wrap: anywhere; }
   .summary-row.total span:last-child { color: var(--amber-light); font-size: 17px; font-family: 'Cormorant Garamond', serif; font-weight: 700; }
 
   /* Buttons */
@@ -464,6 +533,15 @@
   }
   .btn-wa-modal:hover { background: #20ba59; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.40); }
 
+  .btn-paystack {
+    background: linear-gradient(135deg, #0BA4DB, #0788C8);
+    box-shadow: 0 4px 20px rgba(11,164,219,0.28);
+    min-height: 52px;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+  .btn-paystack:hover { background: #0894c7; box-shadow: 0 8px 32px rgba(11,164,219,0.38); }
+
   .btn-back {
     width: 100%; padding: 11px; border-radius: 10px; margin-top: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
@@ -475,6 +553,254 @@
 
   /* WA icon */
   .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /*  TESTIMONIALS  */
+  .t-section {
+    background: linear-gradient(180deg, var(--brown-deep) 0%, var(--brown-dark) 100%);
+    padding: 64px 24px 72px;
+    overflow: hidden;
+  }
+  .t-header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .t-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(212,136,30,0.12);
+    border: 1px solid rgba(212,136,30,0.28);
+    padding: 4px 16px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .t-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700;
+    color: var(--text-white);
+    line-height: 1.15;
+    margin: 0;
+  }
+  .t-title span { color: var(--amber-light); }
+  .t-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 10px 0 0;
+    font-weight: 300;
+  }
+  .carousel-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 16px 0 32px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    padding: 8px 4px;
+  }
+  .t-card {
+    flex: 0 0 300px;
+    background: var(--brown-rich);
+    border: 1.5px solid rgba(212,136,30,0.20);
+    border-radius: 24px;
+    padding: 44px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
+    transform: scale(0.88);
+    opacity: 0.45;
+    filter: brightness(0.75);
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .t-card.active {
+    transform: scale(1.04);
+    opacity: 1;
+    filter: none;
+    border-color: rgba(212,136,30,0.55);
+    box-shadow: 0 16px 56px rgba(26,13,0,0.6), 0 0 0 1px rgba(212,136,30,0.18);
+    background: linear-gradient(145deg, #3A1A05 0%, var(--brown-rich) 100%);
+    cursor: default;
+  }
+  .t-card.near-active {
+    opacity: 0.75;
+    filter: brightness(0.9);
+    transform: scale(0.93);
+  }
+  .flag-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255,252,245,0.92);
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(26,13,0,0.45);
+    z-index: 2;
+  }
+  .flag-circle::before,
+  .flag-circle::after {
+    content: '';
+    position: absolute;
+  }
+  .flag-ng {
+    background: linear-gradient(90deg, #008751 0 33.333%, #fff 33.333% 66.666%, #008751 66.666% 100%);
+  }
+  .flag-sl {
+    background: linear-gradient(180deg, #1EB53A 0 33.333%, #fff 33.333% 66.666%, #0072C6 66.666% 100%);
+  }
+  .flag-ca {
+    background: linear-gradient(90deg, #d80621 0 24%, #fff 24% 76%, #d80621 76% 100%);
+  }
+  .flag-ca::before {
+    width: 17px;
+    height: 17px;
+    background: #d80621;
+    top: 17px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    clip-path: polygon(50% 0, 66% 28%, 100% 22%, 78% 50%, 100% 78%, 66% 72%, 50% 100%, 34% 72%, 0 78%, 22% 50%, 0 22%, 34% 28%);
+  }
+  .flag-us {
+    background: repeating-linear-gradient(180deg, #b22234 0 4px, #fff 4px 8px);
+  }
+  .flag-us::before {
+    width: 25px;
+    height: 22px;
+    top: 0;
+    left: 0;
+    background: #3c3b6e;
+  }
+  .flag-us::after {
+    width: 3px;
+    height: 3px;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 7px 0 #fff, 14px 0 #fff, 0 6px #fff, 7px 6px #fff, 14px 6px #fff, 0 12px #fff, 7px 12px #fff, 14px 12px #fff;
+  }
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    line-height: 0.6;
+    color: var(--amber);
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .t-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14.5px;
+    color: rgba(255,248,230,0.82);
+    line-height: 1.75;
+    margin-bottom: 20px;
+    flex: 1;
+  }
+  .t-footer {
+    border-top: 1px solid rgba(212,136,30,0.15);
+    padding-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .t-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brown-rich), var(--brown-warm));
+    border: 1.5px solid rgba(212,136,30,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--amber-light);
+    flex-shrink: 0;
+  }
+  .t-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin: 0 0 2px;
+  }
+  .t-country {
+    font-size: 12px;
+    color: rgba(240,181,63,0.80);
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+  .nav-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .nav-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(212,136,30,0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dots .dot.active {
+    background: var(--amber);
+    width: 20px;
+    border-radius: 3px;
+  }
+  .nav-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .arrow-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(26,13,0,0.6);
+    border: 1px solid rgba(212,136,30,0.30);
+    color: rgba(240,181,63,0.8);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .arrow-btn:hover {
+    background: rgba(212,136,30,0.15);
+    border-color: rgba(212,136,30,0.6);
+    color: var(--amber-light);
+  }
 
   /*  ANIMATIONS  */
   @keyframes fadeUp {
@@ -496,11 +822,22 @@
     .section { padding: 52px 16px; }
     .hero { padding: 52px 16px 60px; }
     .course-grid { grid-template-columns: 1fr; }
-    .modal-body { padding: 20px; }
+    .modal-overlay { padding: 10px; align-items: flex-start; }
+    .modal { max-height: calc(100vh - 20px); border-radius: 16px; }
+    .modal-body { padding: 18px; }
+    .stage-bar { padding: 14px 18px 12px; }
+    .portal-mark { width: 40px; height: 40px; min-width: 40px; margin-left: 12px; border-radius: 12px; }
   }
   @media (max-width: 480px) {
     .plans-tabs { width: 100%; }
     .tab-btn { flex: 1; text-align: center; padding: 9px 12px; }
+    .stage-title { font-size: 22px; }
+    .stage-subtitle { margin-bottom: 16px; }
+    .summary-card, .payment-box { padding: 14px; }
+    .summary-row, .payment-row { align-items: flex-start; gap: 8px; }
+    .summary-row span:last-child, .payment-row .value { max-width: 62%; }
+    .payment-row .value.amount { font-size: 26px; }
+    .portal-mark { display: none; }
   }
 </style>
 </head>
@@ -509,44 +846,39 @@
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-    <div class="brand">
-      <span class="brand-arabic"></span>
-      <span class="brand-en">Arresalah Institute</span>
-    </div>
+    <a class="brand" href="#" aria-label="Arresalah Institute home">
+      <img class="brand-logo" src="logo.jpeg" alt="" />
+      <span class="brand-text">
+        <span class="brand-en">Arresalah Institute</span>
+      </span>
+    </a>
     <nav>
       <a href="#plans">Plans</a>
       <a href="#why">Why Us</a>
       <a href="#faq">FAQs</a>
-      <a href="https://wa.me/2348082062525" target="_blank" class="btn-nav-wa">
-        <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        Contact Us
-      </a>
+      <a href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20make%20enquiry%20about%20the%20classes." target="_blank" class="btn-nav-wa">WhatsApp Us</a>
     </nav>
   </div>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-  <div style="position:relative;z-index:2;">
-    <span class="hero-label">Open Enrollment</span>
-    <p class="hero-arabic">    </p>
-    <h1>Arresalah Institute for<br><span>Qur'an Memorization</span></h1>
-    <p>Begin your journey of Qur'an memorization with qualified instructors  online classes that fit your schedule.</p>
-    <div class="hero-cta">
-      <a href="#plans" class="btn-wa-primary">
-        Begin Enrollment
-      </a>
-      <a href="https://www.instagram.com/arresalah_quran_institute?igsh=MWtvcDQ5MzcF4dzNoZw==" target="_blank" class="btn-ghost">Follow Us on Instagram</a>
-    </div>
+  <span class="hero-label">Online Qur'an Memorization</span>
+  <div class="hero-arabic"></div>
+  <h1>Begin Your Journey with the <span>Qur'an</span></h1>
+  <p>Structured online Qur'an memorization, Tajweed, and Arabiyah classes with certified instructors and personal progress support.</p>
+  <div class="hero-cta">
+    <a href="#plans" class="btn-wa-primary">View Enrollment Plans</a>
+    <a href="https://www.instagram.com/arresalah_quran_institute?igsh=MWtvcDQ5MzcF4dzNoZw==" target="_blank" class="btn-ghost">Follow Us on Instagram</a>
   </div>
 </section>
 
 <!-- STATS -->
 <div class="stats-strip">
   <div class="stats-inner">
-    <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Students Enrolled</span></div>
-    <div class="stat"><span class="stat-num">4</span><span class="stat-label">Course Plans</span></div>
-    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Online Classes</span></div>
+    <div class="stat"><span class="stat-num">Live</span><span class="stat-label">Online Classes</span></div>
+    <div class="stat"><span class="stat-num">1-on-1</span><span class="stat-label">Personalized Plans</span></div>
+    <div class="stat"><span class="stat-num">Hifdh</span><span class="stat-label">Memorization Focus</span></div>
     <div class="stat"><span class="stat-num">Hafiz</span><span class="stat-label">Certified Instructors</span></div>
   </div>
 </div>
@@ -570,7 +902,7 @@
         <h3 class="plan-name">Qur'an Class</h3>
         <p class="plan-subtitle">Core Qur'an reading &amp; memorization</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>10,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>10,000</div>
         <p class="plan-period">per month</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Weekly live Qur'an sessions</li>
@@ -578,9 +910,9 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Progress tracking &amp; feedback</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>WhatsApp student support</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;General Qur'an Class&quot;, 10000, 'Monthly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;General Qur'an Class&quot;, 10000, 'Monthly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
@@ -589,7 +921,7 @@
         <h3 class="plan-name">Qur'an + Arabiyah</h3>
         <p class="plan-subtitle">Qur'an with Arabic language foundation</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>15,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>15,000</div>
         <p class="plan-period">per month</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All General Qur'an features</li>
@@ -597,9 +929,9 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Vocabulary &amp; grammar basics</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Deeper Qur'an comprehension</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;General Qur'an + Arabiyah&quot;, 15000, 'Monthly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;General Qur'an + Arabiyah&quot;, 15000, 'Monthly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
@@ -608,7 +940,7 @@
         <h3 class="plan-name">Personalized Qur'an</h3>
         <p class="plan-subtitle">One-on-one focused instruction</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>15,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>15,000</div>
         <p class="plan-period">per month</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1-on-1 live sessions</li>
@@ -616,19 +948,19 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Flexible scheduling</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated instructor attention</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;Personalized Qur'an Class&quot;, 15000, 'Monthly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;Personalized Qur'an Class&quot;, 15000, 'Monthly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
       <div class="plan-card featured">
-        <div class="badge-best"> Best Value</div>
+        <div class="badge-best">Best Value</div>
         <div class="plan-type">Personalized</div>
         <h3 class="plan-name">Personalized Qur'an + Arabiyah</h3>
         <p class="plan-subtitle">The complete premium experience</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>25,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>25,000</div>
         <p class="plan-period">per month</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All Personalized features</li>
@@ -637,8 +969,8 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support &amp; scheduling</li>
         </ul>
         <button class="btn-select-featured" onclick="openPortal(&quot;Personalized Qur'an + Arabiyah&quot;, 25000, 'Monthly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
     </div>
@@ -650,7 +982,7 @@
         <h3 class="plan-name">Qur'an Class</h3>
         <p class="plan-subtitle">Per-term enrollment</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>27,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>27,000</div>
         <p class="plan-period">per term</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Full term Qur'an sessions</li>
@@ -658,9 +990,9 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Term-end progress report</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>WhatsApp support</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;General Qur'an Class&quot;, 27000, 'Termly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;General Qur'an Class&quot;, 27000, 'Termly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
@@ -669,7 +1001,7 @@
         <h3 class="plan-name">Qur'an + Arabiyah</h3>
         <p class="plan-subtitle">Qur'an with Arabic language</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>40,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>40,000</div>
         <p class="plan-period">per term</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All General features</li>
@@ -677,9 +1009,9 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Arabic vocabulary &amp; grammar</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Term-end progress report</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;General Qur'an + Arabiyah&quot;, 40000, 'Termly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;General Qur'an + Arabiyah&quot;, 40000, 'Termly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
@@ -688,7 +1020,7 @@
         <h3 class="plan-name">Personalized Qur'an</h3>
         <p class="plan-subtitle">One-on-one focused instruction</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>40,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>40,000</div>
         <p class="plan-period">per term</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1-on-1 sessions all term</li>
@@ -696,9 +1028,9 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Flexible scheduling</li>
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Term-end performance report</li>
         </ul>
-        <button class="btn-select-wa" onclick="openPortal(&quot;Personalized Qur'an Class&quot;, 40000, 'Termly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+        <button class="btn-select" onclick="openPortal(&quot;Personalized Qur'an Class&quot;, 40000, 'Termly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
 
@@ -708,7 +1040,7 @@
         <h3 class="plan-name">Personalized Qur'an + Arabiyah</h3>
         <p class="plan-subtitle">The complete premium experience</p>
         <div class="plan-divider"></div>
-        <div class="plan-amount"><span class="plan-currency">NGN </span>70,000</div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>70,000</div>
         <p class="plan-period">per term</p>
         <ul class="plan-features">
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All Personalized features</li>
@@ -717,8 +1049,8 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support &amp; scheduling</li>
         </ul>
         <button class="btn-select-featured" onclick="openPortal(&quot;Personalized Qur'an + Arabiyah&quot;, 70000, 'Termly')">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Enroll Now
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
         </button>
       </div>
     </div>
@@ -732,12 +1064,36 @@
     <h2 class="section-title">Learning with <span>Purpose &amp; Excellence</span></h2>
     <p class="section-sub">Everything we do is designed to help you connect deeply with the Qur'an.</p>
     <div class="why-grid">
-      <div class="why-card"><div class="why-icon"></div><h3>Qualified Instructors</h3><p>Our teachers are certified Huffadh with years of experience teaching Qur'an Memorization and Tajweed.</p></div>
-      <div class="why-card"><div class="why-icon"></div><h3>100% Online</h3><p>Learn from the comfort of your home through live, interactive sessions on your preferred device.</p></div>
-      <div class="why-card"><div class="why-icon"></div><h3>Islamic Environment</h3><p>A nurturing, values-centred learning community rooted in Islamic etiquette and adab.</p></div>
-      <div class="why-card"><div class="why-icon"></div><h3>Structured Progress</h3><p>Regular assessments, progress reports, and feedback ensure you stay on track toward your goals.</p></div>
-      <div class="why-card"><div class="why-icon"></div><h3>Ongoing Support</h3><p>Dedicated WhatsApp support so you always have access to help between your scheduled sessions.</p></div>
-      <div class="why-card"><div class="why-icon"></div><h3>Flexible Scheduling</h3><p>Choose class times that suit your lifestyle  morning, afternoon, or evening sessions available.</p></div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Qualified Instructors</h3>
+        <p>Our teachers are certified Huffadh with years of experience teaching Qur'an Memorization and Tajweed.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>100% Online</h3>
+        <p>Learn from the comfort of your home through live, interactive sessions on your preferred device.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Islamic Environment</h3>
+        <p>A nurturing, values-centered learning community rooted in Islamic etiquette and adab.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Structured Progress</h3>
+        <p>Regular assessments, progress reports, and feedback ensure you stay on track toward your goals.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Ongoing Support</h3>
+        <p>Dedicated WhatsApp support gives you access to help between your scheduled sessions.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Flexible Scheduling</h3>
+        <p>Choose class times that suit your lifestyle: morning, afternoon, or evening sessions are available.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -751,11 +1107,82 @@
     <div class="faq-list">
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What age groups do you teach?<span class="faq-icon">+</span></button><p class="faq-a">We welcome students of all ages  children, teens, and adults. Our instructors adapt their teaching style to each student's age and learning pace.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need any prior Qur'an knowledge to enroll?<span class="faq-icon">+</span></button><p class="faq-a">No prior knowledge is required! We have beginner-level classes for students who are just starting with the Arabic alphabet, all the way to advanced Hifdh programs.</p></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I pay for my enrollment?<span class="faq-icon">+</span></button><p class="faq-a">After filling your details and selecting a course, your application is saved and you will receive the Moniepoint transfer details. Send your proof of payment to +2348082062525 on WhatsApp so we can confirm your enrollment.</p></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I pay for my enrollment?<span class="faq-icon">+</span></button><p class="faq-a">After filling your details and selecting a course, your application is saved and you will continue to our Paystack payment page to complete payment securely.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What platform are classes held on?<span class="faq-icon">+</span></button><p class="faq-a">Classes are conducted via video call on Google Meet or Zoom. A smartphone, tablet, or computer with a stable internet connection is all you need.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is Arabiyah and do I need it?<span class="faq-icon">+</span></button><p class="faq-a">Arabiyah refers to Arabic language studies. While not mandatory, it greatly enhances your understanding of the Qur'an. We recommend the Qur'an + Arabiyah plans for deeper comprehension.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I switch plans later?<span class="faq-icon">+</span></button><p class="faq-a">Yes! You can upgrade or change your plan at the start of any new month or term. Contact us on WhatsApp and we'll guide you through the process.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section t-section" id="testimonials">
+  <div class="t-header">
+    <div class="t-badge">Testimonials</div>
+    <h2 class="t-title">Words from Our <span>Students &amp; Parents</span></h2>
+    <p class="t-subtitle">Real experiences from those on the journey with us</p>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="t-track">
+      <div class="t-card" data-index="0">
+        <div class="flag-circle flag-ng" aria-label="Nigeria flag"></div>
+        <span class="quote-mark">&ldquo;</span>
+        <p class="t-text">Alhamdulillah, I am truly grateful for the opportunity to be part of this great institution. It has been a journey filled with both challenges and growth. I have noticed real changes in myself â€” my recitation has improved, and I am more confident than I was before. A big Jazakumullahu khayran to our tutor for the effort and dedication. May Allah increase you in knowledge and put barakah in all that you do. Ameen.</p>
+        <div class="t-footer">
+          <div class="t-avatar">AI</div>
+          <div>
+            <p class="t-name">Aisha</p>
+            <p class="t-country">Nigeria</p>
+          </div>
+        </div>
+      </div>
+      <div class="t-card" data-index="1">
+        <div class="flag-circle flag-sl" aria-label="Sierra Leone flag"></div>
+        <span class="quote-mark">&ldquo;</span>
+        <p class="t-text">I sincerely want to appreciate you for the three months scholarship you gave me. May Allah reward you abundantly for your kindness and generosity. Through those months, I was able to learn a lot â€” not only in knowledge, but also in Islamic values, discipline, and understanding. May Allah continue to increase you in wisdom, provision, and barakah, and make all your efforts a means of reward in this life and the Hereafter.</p>
+        <div class="t-footer">
+          <div class="t-avatar">AK</div>
+          <div>
+            <p class="t-name">Adama Kalokoh</p>
+            <p class="t-country">Sierra Leone</p>
+          </div>
+        </div>
+      </div>
+      <div class="t-card" data-index="2">
+        <div class="flag-circle flag-ca" aria-label="Canada flag"></div>
+        <span class="quote-mark">&ldquo;</span>
+        <p class="t-text">Alhamdulillah, joining Arresalah Institute has been one of the best decisions for my Qur'an journey. The learning environment is peaceful, organized, and encouraging. The teachers are patient, attentive, and always willing to help students improve both in memorization and tajweed. I have become more disciplined with my revision and more connected to the Qur'an than before. May Allah reward everyone behind this beautiful institute.</p>
+        <div class="t-footer">
+          <div class="t-avatar">FA</div>
+          <div>
+            <p class="t-name">Fatimah</p>
+            <p class="t-country">Canada</p>
+          </div>
+        </div>
+      </div>
+      <div class="t-card" data-index="3">
+        <div class="flag-circle flag-us" aria-label="United States flag"></div>
+        <span class="quote-mark">&ldquo;</span>
+        <p class="t-text">As a parent, one of the greatest blessings for me has been seeing the positive transformation in my child since joining Arresalah Institute. My child has become more disciplined, more respectful, and more attached to the Qur'an. The improvement in recitation, memorization, and confidence truly makes me happy. The teachers are supportive, professional, and genuinely care about the students. JazakAllahu Khairan.</p>
+        <div class="t-footer">
+          <div class="t-avatar">UM</div>
+          <div>
+            <p class="t-name">Ummu Salman</p>
+            <p class="t-country">Parent Recommendation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-dots" id="t-dots">
+    <button class="dot" aria-label="Slide 1"></button>
+    <button class="dot" aria-label="Slide 2"></button>
+    <button class="dot active" aria-label="Slide 3"></button>
+    <button class="dot" aria-label="Slide 4"></button>
+  </div>
+  <div class="nav-arrows">
+    <button class="arrow-btn" id="t-prev" aria-label="Previous">&#8592;</button>
+    <button class="arrow-btn" id="t-next" aria-label="Next">&#8594;</button>
   </div>
 </section>
 
@@ -764,8 +1191,10 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <span class="footer-brand-arabic"></span>
-        <div class="footer-brand-name">Arresalah Institute for Qur'an Memorization</div>
+        <div class="footer-brand">
+          <img class="footer-logo" src="logo.jpeg" alt="" />
+          <div class="footer-brand-name">Arresalah Institute for Qur'an Memorization</div>
+        </div>
         <p class="footer-desc">Guiding hearts to the Qur'an through structured, quality online education rooted in Islamic values.</p>
       </div>
       <div class="footer-col">
@@ -785,7 +1214,8 @@
           <a href="https://www.facebook.com/share/1CGrB1FK4S/" target="_blank" class="social-link" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
         </div>
         <div class="footer-links">
-          <a href="https://wa.me/2348082062525" target="_blank"> WhatsApp Us: +234 808 206 2525</a>
+          <a href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20make%20enquiry%20about%20the%20classes." target="_blank"> WhatsApp Us: +234 808 206 2525</a>
+          <a href="https://whatsapp.com/channel/0029Vb7cOCtGzzKLP3Bv9k30" target="_blank">Join Our WhatsApp Channel</a>
         </div>
       </div>
     </div>
@@ -815,7 +1245,10 @@
           <div class="stage-dot" id="dot-3">3</div>
         </div>
       </div>
-      <button class="modal-close" onclick="closeModal()"></button>
+      <div class="portal-mark" aria-hidden="true">
+        <img src="logo.jpeg" alt="" />
+      </div>
+      <button type="button" class="modal-close" onclick="closeModal()" aria-label="Close application portal">&times;</button>
     </div>
 
     <div class="modal-body">
@@ -867,8 +1300,21 @@
 
       <!-- STAGE 3: Payment -->
       <div class="stage-panel" id="stage-3">
-        <div class="stage-title">Tuition Payment</div>
-        <p class="stage-subtitle">Stage 3 of 3  Your application has been saved. Pay by Moniepoint transfer, then forward proof of payment to WhatsApp.</p>
+        <div class="stage-title">Complete Payment</div>
+        <p class="stage-subtitle">Your application has been saved. Complete your tuition payment securely through Paystack.</p>
+
+        <div class="payment-success">Application saved successfully. Your enrollment is almost complete.</div>
+
+        <div class="payment-box">
+          <h4>Secure Checkout</h4>
+          <div class="payment-row"><span class="label">Amount</span><span class="value amount" id="pay-amount"></span></div>
+          <div class="payment-row"><span class="label">Course</span><span class="value" id="pay-course"></span></div>
+          <p class="payment-note">You will be taken to Paystack to complete payment with card, transfer, or any available checkout option.</p>
+        </div>
+
+        <a id="btn-paystack-final" href="https://paystack.shop/pay/arresalah" target="_blank" class="btn-wa-modal btn-paystack">
+          Continue to Paystack
+        </a>
 
         <div class="summary-card">
           <h4>Application Summary</h4>
@@ -881,19 +1327,6 @@
           <div class="summary-row total"><span>Total Due</span><span id="sum-amount"></span></div>
         </div>
 
-        <div class="payment-box">
-          <h4>Bank Transfer Details</h4>
-          <div class="payment-row"><span class="label">Bank</span><span class="value">Moniepoint MFB</span></div>
-          <div class="payment-row"><span class="label">Account Number</span><span class="value">6222367478</span></div>
-          <div class="payment-row"><span class="label">Account Name</span><span class="value">Arresalah International Madrasah</span></div>
-          <div class="payment-row"><span class="label">Amount</span><span class="value amount" id="pay-amount"></span></div>
-          <p class="payment-note">Use your <strong style="color:var(--amber-pale);">full name</strong> as the payment narration. After payment, forward proof of payment or receipt to WhatsApp: <strong style="color:var(--amber-pale);">+2348082062525</strong>.</p>
-        </div>
-
-        <a id="btn-whatsapp-final" href="#" target="_blank" class="btn-wa-modal">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Forward Proof of Payment
-        </a>
         <button class="btn-back" onclick="goStage2()"> Back</button>
       </div>
 
@@ -919,210 +1352,229 @@
   };
 
   const courseCatalog = [
-    { name: "General Qur'an Class", type: 'General', monthly: 10000, termly: 27000 },
-    { name: "General Qur'an + Arabiyah", type: 'General', monthly: 15000, termly: 40000 },
-    { name: "Personalized Qur'an Class", type: 'Personalized', monthly: 15000, termly: 40000 },
-    { name: "Personalized Qur'an + Arabiyah", type: 'Personalized', monthly: 25000, termly: 70000 },
+    { name: "General Qur'an Class", type: "General", monthly: 10000, termly: 27000 },
+    { name: "General Qur'an + Arabiyah", type: "General", monthly: 15000, termly: 40000 },
+    { name: "Personalized Qur'an Class", type: "Personalized", monthly: 15000, termly: 40000 },
+    { name: "Personalized Qur'an + Arabiyah", type: "Personalized", monthly: 25000, termly: 70000 }
   ];
 
-  const waIco = `<svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
+  const PAYSTACK_PAYMENT_URL = "https://paystack.shop/pay/arresalah";
+  let selectedCourse = null;
 
-  //  STATE 
-  let portal = { name:'', phone:'', email:'', billing:'Monthly', course:'', price:0, applicationId:null };
-  let currentStage = 1;
+  function formatNaira(amount) {
+    return "\uD83C\uDDF3\uD83C\uDDEC " + Number(amount).toLocaleString();
+  }
 
-  function fmt(n) { return 'NGN ' + n.toLocaleString('en-NG'); }
+  function showStage(stageNumber) {
+    document.querySelectorAll(".stage-panel").forEach((panel) => panel.classList.remove("active"));
+    document.getElementById(`stage-${stageNumber}`).classList.add("active");
 
-  async function saveApplication(application) {
-    const response = await fetch('http://127.0.0.1:5000/applications', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(application)
-    });
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Unable to save application');
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById(`dot-${i}`);
+      dot.classList.toggle("active", i === stageNumber);
+      dot.classList.toggle("done", i < stageNumber);
     }
-    return result.application_id;
+
+    document.getElementById("line-1").classList.toggle("done", stageNumber > 1);
+    document.getElementById("line-2").classList.toggle("done", stageNumber > 2);
   }
 
-  //  TABS 
-  function switchTab(tab, btn) {
-    document.querySelectorAll('.plans-group').forEach(g => g.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    if (btn) btn.classList.add('active');
-  }
-  function switchTabFooter(tab) {
-    switchTab(tab, document.querySelectorAll('.tab-btn')[tab === 'termly' ? 1 : 0]);
+  function openPortal(courseName, amount, billing) {
+    selectedCourse = { name: courseName, amount, billing };
+    document.getElementById("modal").classList.add("open");
+    renderSelectedCourse();
+    showStage(1);
   }
 
-  //  OPEN PORTAL 
-  function openPortal(course, price, billing) {
-    portal.course = course.replace(/Qur'[^ ]*n/g, "Qur'an");
-    portal.price = price; portal.billing = billing; portal.applicationId = null;
-    setStage(1);
-    document.getElementById('field-name').value = '';
-    document.getElementById('field-phone').value = '';
-    document.getElementById('field-email').value = '';
-    // pre-select billing in stage 2
-    portal.billing = billing;
-    document.getElementById('modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
   function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-    document.body.style.overflow = '';
+    document.getElementById("modal").classList.remove("open");
   }
-  function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
 
-  //  STAGE NAVIGATION 
-  function setStage(n) {
-    currentStage = n;
-    document.querySelectorAll('.stage-panel').forEach(p => p.classList.remove('active'));
-    const stage = document.getElementById('stage-' + n);
-    if (!stage) {
-      alert('This step could not be opened. Please refresh the page and try again.');
+  function handleOverlayClick(event) {
+    if (event.target.id === "modal") closeModal();
+  }
+
+  function renderSelectedCourse() {
+    const grid = document.getElementById("course-grid");
+    const info = document.getElementById("selected-course-info");
+    const name = document.getElementById("selected-course-name");
+    const fee = document.getElementById("selected-course-fee");
+    const button = document.getElementById("btn-to-stage3");
+
+    if (!selectedCourse) {
+      grid.innerHTML = "";
+      info.style.display = "none";
+      button.disabled = true;
       return;
     }
-    stage.classList.add('active');
-    // update dots
-    for (let i = 1; i <= 3; i++) {
-      const dot = document.getElementById('dot-' + i);
-      dot.classList.remove('active','done');
-      if (i < n) dot.classList.add('done'), dot.innerHTML = '';
-      else if (i === n) dot.classList.add('active'), dot.textContent = i;
-      else dot.textContent = i;
-    }
-    // update lines
-    for (let i = 1; i <= 2; i++) {
-      const line = document.getElementById('line-' + i);
-      line.classList.toggle('done', i < n);
-    }
+
+    grid.innerHTML = `
+      <div class="course-card selected">
+        <div class="course-card-name">${selectedCourse.name}</div>
+        <div class="course-card-price">${formatNaira(selectedCourse.amount)} ${selectedCourse.billing}</div>
+      </div>
+    `;
+
+    name.textContent = selectedCourse.name;
+    fee.textContent = `${formatNaira(selectedCourse.amount)} - ${selectedCourse.billing}`;
+    info.style.display = "block";
+    button.disabled = false;
+  }
+
+  function goStage1() {
+    showStage(1);
   }
 
   function goStage2() {
-    const name = document.getElementById('field-name').value.trim();
-    const phone = document.getElementById('field-phone').value.trim();
-    const email = document.getElementById('field-email').value.trim();
-    if (!name || !email || !phone) { alert('Please enter your full name, email address, and phone number.'); return; }
-    portal.name = name;
-    portal.phone = phone;
-    portal.email = email;
-    renderCourseGrid();
-    preselectCourse();
-    setStage(2);
-  }
+    const name = document.getElementById("field-name").value.trim();
+    const phone = document.getElementById("field-phone").value.trim();
+    const email = document.getElementById("field-email").value.trim();
 
-  function updateReceiptLink() {
-    const applicationId = portal.applicationId || 'Pending';
-    const msg = encodeURIComponent(
-      `Assalamu Alaykum!\n\nI have made payment for my Arresalah enrollment:\n\n*Application ID:* ${applicationId}\n*Name:* ${portal.name}\n*Email:* ${portal.email}\n*Phone:* ${portal.phone}\n*Course:* ${portal.course}\n*Plan:* ${portal.billing}\n*Amount Paid:* ${fmt(portal.price)}\n\nKindly find my proof of payment attached. Please confirm my enrollment. JazakAllah Khayran.`
-    );
-    document.getElementById('btn-whatsapp-final').href = `https://wa.me/2348082062525?text=${msg}`;
-  }
+    if (!name || !phone || !email) {
+      alert("Please fill in your name, phone number, and email address.");
+      return;
+    }
 
-  function fillPaymentSummary() {
-    document.getElementById('sum-name').textContent = portal.name;
-    document.getElementById('sum-phone').textContent = portal.phone;
-    document.getElementById('sum-email').textContent = portal.email;
-    document.getElementById('sum-course').textContent = portal.course;
-    document.getElementById('sum-billing').textContent = portal.billing;
-    document.getElementById('sum-application-id').textContent = portal.applicationId || 'Saving...';
-    document.getElementById('sum-amount').textContent = fmt(portal.price);
-    document.getElementById('pay-amount').textContent = fmt(portal.price);
-    updateReceiptLink();
+    renderSelectedCourse();
+    showStage(2);
   }
 
   async function goStage3() {
-    if (!portal.course) { alert('Please select a course.'); return; }
+    if (!selectedCourse) {
+      alert("Please select a course first.");
+      return;
+    }
 
-    fillPaymentSummary();
-    setStage(3);
-    document.getElementById('modal').classList.add('open');
+    const application = {
+      name: document.getElementById("field-name").value.trim(),
+      phone: document.getElementById("field-phone").value.trim(),
+      email: document.getElementById("field-email").value.trim(),
+      course: selectedCourse.name,
+      billing: selectedCourse.billing,
+      amount: selectedCourse.amount
+    };
 
-    if (portal.applicationId) return;
+    const submitButton = document.getElementById("btn-to-stage3");
+    submitButton.disabled = true;
 
     try {
-      portal.applicationId = await saveApplication({
-        name: portal.name,
-        email: portal.email,
-        phone: portal.phone,
-        selected_course: portal.course,
-        billing: portal.billing,
-        amount: portal.price
+      const response = await fetch("http://localhost:3000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(application)
       });
-      document.getElementById('sum-application-id').textContent = portal.applicationId;
-      updateReceiptLink();
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || "Could not submit application.");
+      }
+
+      const applicationId = data.applicationId || data.id || data._id || "Submitted";
+
+      document.getElementById("sum-name").textContent = application.name;
+      document.getElementById("sum-phone").textContent = application.phone;
+      document.getElementById("sum-email").textContent = application.email;
+      document.getElementById("sum-course").textContent = application.course;
+      document.getElementById("sum-billing").textContent = application.billing;
+      document.getElementById("sum-application-id").textContent = applicationId;
+      document.getElementById("sum-amount").textContent = formatNaira(application.amount);
+      document.getElementById("pay-amount").textContent = formatNaira(application.amount);
+      document.getElementById("pay-course").textContent = application.course;
+      document.getElementById("btn-paystack-final").href = PAYSTACK_PAYMENT_URL;
+
+      alert(data.message || "Application submitted successfully.");
+      showStage(3);
     } catch (error) {
-      document.getElementById('sum-application-id').textContent = 'Not saved yet';
-      alert('Payment details are shown, but the application was not saved. Please keep the server running and click Back, then submit again.');
+      alert(`Submission failed: ${error.message}`);
+    } finally {
+      submitButton.disabled = false;
     }
   }
 
-  function goStage1() { setStage(1); }
-  function goStage2Back() { setStage(2); }
+  function switchTab(tabName, button) {
+    document.querySelectorAll(".tab-btn").forEach((button) => button.classList.remove("active"));
+    document.querySelectorAll(".plans-group").forEach((group) => group.classList.remove("active"));
 
-  //  COURSE GRID 
-  function renderCourseGrid() {
-    const grid = document.getElementById('course-grid');
-    const selectedIndex = Math.max(0, courseCatalog.findIndex(c => c.name === portal.course));
-    const c = courseCatalog[selectedIndex];
-    grid.innerHTML = `
-      <div class="course-card ${portal.course === c.name ? 'selected' : ''}" id="course-card-${selectedIndex}">
-        <div class="course-card-icon">Selected Course</div>
-        <div class="course-card-price">${c.type}</div>
-        <div class="course-card-name">${c.name}</div>
-        <div class="course-plan-options">
-          <button type="button" class="course-plan-btn ${portal.course === c.name && portal.billing === 'Monthly' ? 'selected' : ''}" onclick="selectCourse(${selectedIndex}, 'Monthly')">
-            Monthly <span>${fmt(c.monthly)}</span>
-          </button>
-          <button type="button" class="course-plan-btn ${portal.course === c.name && portal.billing === 'Termly' ? 'selected' : ''}" onclick="selectCourse(${selectedIndex}, 'Termly')">
-            Termly <span>${fmt(c.termly)}</span>
-          </button>
-        </div>
-      </div>
-    `;
+    const tabButton = button || document.querySelector(`.tab-btn[onclick*="${tabName}"]`);
+    const tabPanel = document.getElementById(`tab-${tabName}`);
+
+    if (tabButton) tabButton.classList.add("active");
+    if (tabPanel) tabPanel.classList.add("active");
   }
 
-  function preselectCourse() {
-    const idx = courseCatalog.findIndex(c => c.name === portal.course);
-    if (idx >= 0) selectCourse(idx, portal.billing);
+  function switchTabFooter(tabName) {
+    switchTab(tabName);
   }
 
-  function selectCourse(idx, billing) {
-    const selected = courseCatalog[idx];
-    portal.course = selected.name;
-    portal.billing = billing;
-    portal.price = billing === 'Monthly' ? selected.monthly : selected.termly;
-    portal.applicationId = null;
-    renderCourseGrid();
-    document.getElementById('selected-course-name').textContent = selected.name;
-    document.getElementById('selected-course-fee').textContent = billing + ' - ' + fmt(portal.price);
-    document.getElementById('selected-course-info').style.display = 'block';
-    document.getElementById('btn-to-stage3').disabled = false;
+  function toggleFaq(button) {
+    button.closest(".faq-item").classList.toggle("open");
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const submitButton = document.getElementById('btn-to-stage3');
-    if (submitButton) submitButton.disabled = !portal.course;
-  });
+  //  TESTIMONIALS CAROUSEL
+  (function () {
+    const track = document.getElementById('t-track');
+    if (!track) return;
+    const cards = Array.from(track.querySelectorAll('.t-card'));
+    const dots = Array.from(document.querySelectorAll('#t-dots .dot'));
+    const total = cards.length;
+    let current = 2;
+    let autoTimer;
 
-  //  FAQ 
-  function toggleFaq(btn) {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+    function cardWidth() {
+      return cards[0].offsetWidth + 20;
+    }
 
-  //  SMOOTH SCROLL 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    function offset() {
+      const wrapW = track.parentElement.offsetWidth;
+      const cw = cardWidth();
+      return wrapW / 2 - cw / 2 - current * cw;
+    }
+
+    function render(animate) {
+      track.style.transition = animate ? 'transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+      track.style.transform = 'translateX(' + offset() + 'px)';
+
+      cards.forEach(function (card, i) {
+        card.classList.remove('active', 'near-active');
+        var diff = Math.abs(i - current);
+        if (diff === 0) card.classList.add('active');
+        else if (diff === 1) card.classList.add('near-active');
+      });
+
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('active', i === current);
+      });
+    }
+
+    function goTo(index) {
+      current = (index + total) % total;
+      render(true);
+      resetAuto();
+    }
+
+    function resetAuto() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(function () { goTo(current + 1); }, 4500);
+    }
+
+    cards.forEach(function (card, i) {
+      card.addEventListener('click', function () { if (i !== current) goTo(i); });
     });
-  });
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); });
+    });
+
+    document.getElementById('t-prev').addEventListener('click', function () { goTo(current - 1); });
+    document.getElementById('t-next').addEventListener('click', function () { goTo(current + 1); });
+
+    window.addEventListener('resize', function () { render(false); });
+
+    render(false);
+    setTimeout(function () { render(false); }, 60);
+    resetAuto();
+  })();
 </script>
 </body>
 </html>
