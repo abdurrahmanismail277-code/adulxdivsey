@@ -21,7 +21,7 @@
     --warm-white:   #FFFCF5;
     --text-white:   #FFFDF8;
     --text-yellow:  #F0B53F;
-    --text-muted:   rgba(65, 54, 26, 0.55);
+    --text-muted:   rgba(255, 248, 230, 0.72);
     --border:       rgba(212,136,30,0.25);
     --shadow:       0 4px 32px rgba(26,13,0,0.25);
     --shadow-amber: 0 8px 48px rgba(212,136,30,0.30);
@@ -132,7 +132,7 @@
   }
   .hero h1 span { color: var(--amber-light); }
   .hero p {
-    color: var(--text-muted); font-size: 16px; font-weight: 300;
+    color: rgba(255, 248, 230, 0.82); font-size: 16px; font-weight: 400;
     max-width: 500px; margin: 0 auto 38px; line-height: 1.75;
     animation: fadeUp 0.8s 0.2s ease both;
   }
@@ -339,7 +339,7 @@
   .footer-logo { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
   .footer-brand-arabic { font-family: 'Amiri', serif; color: var(--amber); font-size: 18px; display: block; margin-bottom: 10px; }
   .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: var(--text-white); line-height: 1.2; }
-  .footer-desc { font-size: 13px; color: rgba(255,248,230,0.30); line-height: 1.7; max-width: 280px; }
+  .footer-desc { font-size: 13px; color: rgba(255,248,230,0.68); line-height: 1.7; max-width: 280px; }
   .footer-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
   .footer-links { display: flex; flex-direction: column; gap: 10px; }
   .footer-links a { font-size: 13px; color: rgba(255,248,230,0.40); text-decoration: none; transition: color 0.2s; }
@@ -1440,10 +1440,24 @@
     showStage(2);
   }
 
-  const CONTACT_API_BASE_URL = window.CONTACT_API_BASE_URL || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
+  const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+  const CONTACT_API_BASE_URL =
+    window.CONTACT_API_BASE_URL ||
+    (isLocalPreview ? "http://localhost:3000" : "");
 
   function buildApiUrl(path) {
     return `${CONTACT_API_BASE_URL}${path}`;
+  }
+
+  async function parseApiResponse(response) {
+    const contentType = response.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+      return response.json().catch(() => ({}));
+    }
+
+    const message = await response.text().catch(() => "");
+    return { message };
   }
 
   async function goStage3() {
@@ -1471,7 +1485,7 @@
         body: JSON.stringify(application)
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(data.message || "Could not submit application.");
@@ -1493,7 +1507,11 @@
       alert(data.message || "Application submitted successfully.");
       showStage(3);
     } catch (error) {
-      alert(`Submission failed: ${error.message}`);
+      const apiTarget = buildApiUrl("/api/contact");
+      const localHint = isLocalPreview && window.location.port !== "3000"
+        ? " Make sure the backend is running, then open http://localhost:3000 or keep using this preview with the backend on port 3000."
+        : "";
+      alert(`Submission failed: ${error.message}. API: ${apiTarget}.${localHint}`);
     } finally {
       submitButton.disabled = false;
     }
