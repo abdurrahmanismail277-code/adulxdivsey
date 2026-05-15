@@ -21,7 +21,7 @@
     --warm-white:   #FFFCF5;
     --text-white:   #FFFDF8;
     --text-yellow:  #F0B53F;
-    --text-muted:   rgba(255,248,230,0.55);
+    --text-muted:   rgba(65, 54, 26, 0.55);
     --border:       rgba(212,136,30,0.25);
     --shadow:       0 4px 32px rgba(26,13,0,0.25);
     --shadow-amber: 0 8px 48px rgba(212,136,30,0.30);
@@ -1440,6 +1440,12 @@
     showStage(2);
   }
 
+  const CONTACT_API_BASE_URL = window.CONTACT_API_BASE_URL || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
+
+  function buildApiUrl(path) {
+    return `${CONTACT_API_BASE_URL}${path}`;
+  }
+
   async function goStage3() {
     if (!selectedCourse) {
       alert("Please select a course first.");
@@ -1459,7 +1465,7 @@
     submitButton.disabled = true;
 
     try {
-      const response = await fetch("http://localhost:3000/api/contact", {
+      const response = await fetch(buildApiUrl("/api/contact"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(application)
