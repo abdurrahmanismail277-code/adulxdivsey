@@ -1441,9 +1441,14 @@
   }
 
   const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+  const isGitHubPages = window.location.hostname.endsWith(".github.io");
   const CONTACT_API_BASE_URL =
     window.CONTACT_API_BASE_URL ||
     (isLocalPreview ? "http://localhost:3000" : "");
+
+  function hasRunnableBackend() {
+    return isLocalPreview || !isGitHubPages || Boolean(window.CONTACT_API_BASE_URL);
+  }
 
   function buildApiUrl(path) {
     return `${CONTACT_API_BASE_URL}${path}`;
@@ -1457,12 +1462,37 @@
     }
 
     const message = await response.text().catch(() => "");
-    return { message };
+    const trimmedMessage = message.trim();
+
+    const lowerMessage = trimmedMessage.toLowerCase();
+
+    if (lowerMessage.startsWith("<!doctype") || lowerMessage.startsWith("<html")) {
+      return {
+        message: `API endpoint returned a web page instead of JSON. HTTP ${response.status}. The backend route is probably not deployed or not redirected correctly.`
+      };
+    }
+
+    return { message: trimmedMessage };
+  }
+
+  function getApiErrorMessage(response, data) {
+    return (
+      data.message ||
+      data.error ||
+      data.detail ||
+      data.supabaseError ||
+      `Server returned HTTP ${response.status}.`
+    );
   }
 
   async function goStage3() {
     if (!selectedCourse) {
       alert("Please select a course first.");
+      return;
+    }
+
+    if (!hasRunnableBackend()) {
+      alert("Submission failed: GitHub Pages cannot run backend code. Deploy the API folder to Vercel/Netlify/Render, then set window.CONTACT_API_BASE_URL to that backend URL.");
       return;
     }
 
@@ -1488,7 +1518,7 @@
       const data = await parseApiResponse(response);
 
       if (!response.ok) {
-        throw new Error(data.message || "Could not submit application.");
+        throw new Error(getApiErrorMessage(response, data));
       }
 
       const applicationId = data.applicationId || data.id || data._id || "Submitted";
@@ -1511,7 +1541,10 @@
       const localHint = isLocalPreview && window.location.port !== "3000"
         ? " Make sure the backend is running, then open http://localhost:3000 or keep using this preview with the backend on port 3000."
         : "";
-      alert(`Submission failed: ${error.message}. API: ${apiTarget}.${localHint}`);
+      const networkHint = error instanceof TypeError
+        ? " The browser could not reach the backend at all."
+        : "";
+      alert(`Submission failed: ${error.message}. API: ${apiTarget}.${networkHint}${localHint}`);
     } finally {
       submitButton.disabled = false;
     }
