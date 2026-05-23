@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "routes": [
-    { "src": "/api/contact", "dest": "/server.js" },
-    { "src": "/api/health", "dest": "/server.js" }
-  ]
-}
