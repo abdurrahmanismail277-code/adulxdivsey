@@ -1,75 +1,90 @@
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const { createClient } = require('@supabase/supabase-js');
+
 const app = express();
+const port = process.env.PORT || 3000;
+const contactTable = process.env.CONTACT_TABLE || 'contacts';
 
-// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// CORS if you need it for frontend
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  next();
-});
+const hasSupabaseConfig = Boolean(
+  process.env.SUPABASE_URL &&
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
-// Log every request - check this in Vercel Runtime Logs
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  next();
-});
+const supabase = hasSupabaseConfig
+  ? createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    )
+  : null;
 
-// GET /api
-app.get('/', (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'API route is working',
-    time: new Date().toISOString()
+app.get(['/', '/api'], (req, res) => {
+  res.json({
+    success: true,
+    message: 'API is working'
   });
 });
 
-// POST /api/contact
-app.post('/contact', async (req, res) => {
+app.post(['/contact', '/api/contact'], async (req, res) => {
   try {
-    console.log('Contact form body:', req.body);
-    
-    // Replace this with your actual logic
-    const { name, email, message } = req.body;
-    
-    if (!name || !email || !message) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Missing required fields' 
+    const { name, email, phone, message, course, billing, amount } = req.body;
+
+    if (!name || !email || (!(message || phone))) {
+      return res.status(400).json({
+        success: false,
+        error: 'Required fields are missing. Provide name, email, and either message or phone.'
       });
     }
 
-    // Do your Supabase insert or whatever here
-    // const { data, error } = await supabase.from('contacts').insert({...})
+    const contact = {
+      name,
+      email,
+      phone,
+      course,
+      billing,
+      amount,
+      message
+    };
 
-    res.json({ 
-      success: true, 
-      message: 'Contact received',
-      data: { name, email }
+    if (!supabase) {
+      return res.status(500).json({
+        success: false,
+        error: 'Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables.'
+      });
+    }
+
+    const { data, error } = await supabase
+      .from(contactTable)
+      .insert([contact]);
+
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: error.message || 'Supabase insert failed'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Message saved successfully',
+      data
     });
-
   } catch (err) {
-    console.error('Error in /contact:', err);
-    res.status(500).json({ 
-      success: false, 
-      error: err.message 
+    console.error('Contact route error:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Server error'
     });
   }
 });
 
-// 404 handler for unmatched routes
-app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    error: `Route ${req.method} ${req.url} not found` 
-  });
-});
+if (require.main === module) {
+  app.listen(port, () => console.log(`Server running on port ${port}`));
+}
 
 module.exports = app;
