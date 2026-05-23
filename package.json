@@ -1,15 +1,20 @@
 {
-  "name": "supabase-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Express backend deployed on Vercel",
-  "main": "api/index.js",
+  "description": "Standalone backend server for the Firebase contact app",
+  "main": "index.js",
   "scripts": {
-    "start": "node api/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.8",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^4.21.2"
+    "@supabase/supabase-js": "^2.105.4",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   }
 }
