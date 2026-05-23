@@ -15,15 +15,23 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Home route
-app.get("/api", (req, res) => {
+// ROOT ROUTE
+app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "API is working"
+    message: "Root route is working"
   });
 });
 
-// Example POST route
+// API ROUTE
+app.get("/api", (req, res) => {
+  res.json({
+    success: true,
+    message: "API route is working"
+  });
+});
+
+// Example POST endpoint
 app.post("/api/contact", async (req, res) => {
   try {
     const { name, email, message } = req.body;
