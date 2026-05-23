@@ -1335,6 +1335,7 @@
   </div>
 </div>
 
+<script src="api-config.js"></script>
 <script>
   //  COURSES DATA 
   const courses = {
@@ -1444,14 +1445,10 @@
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
   const CONTACT_API_BASE_URL =
     window.CONTACT_API_BASE_URL ||
-    (isLocalPreview ? "http://localhost:3000" : "");
+    (isLocalPreview ? "http://localhost:3000" : "https://adulxdivsey.onrender.com");
 
   function hasRunnableBackend() {
-    return isLocalPreview || !isGitHubPages || Boolean(window.CONTACT_API_BASE_URL);
-  }
-
-  function buildApiUrl(path) {
-    return `${CONTACT_API_BASE_URL}${path}`;
+    return Boolean(CONTACT_API_BASE_URL);
   }
 
   async function parseApiResponse(response) {
@@ -1508,8 +1505,10 @@
     const submitButton = document.getElementById("btn-to-stage3");
     submitButton.disabled = true;
 
+    const apiTarget = `${CONTACT_API_BASE_URL}/api/contact`;
+
     try {
-      const response = await fetch(buildApiUrl("/api/contact"), {
+      const response = await fetch(apiTarget, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(application)
@@ -1537,7 +1536,6 @@
       alert(data.message || "Application submitted successfully.");
       showStage(3);
     } catch (error) {
-      const apiTarget = buildApiUrl("/api/contact");
       const localHint = isLocalPreview && window.location.port !== "3000"
         ? " Make sure the backend is running, then open http://localhost:3000 or keep using this preview with the backend on port 3000."
         : "";
