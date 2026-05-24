@@ -1445,7 +1445,7 @@
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
   const CONTACT_API_BASE_URL =
     window.CONTACT_API_BASE_URL ||
-    (isLocalPreview ? "http://localhost:3000" : "https://adulxdivsey.onrender.com");
+    (isLocalPreview ? "http://localhost:3000" : "https://arresalahinstitute.netlify.app");
 
   function hasRunnableBackend() {
     return Boolean(CONTACT_API_BASE_URL);
@@ -1489,7 +1489,7 @@
     }
 
     if (!hasRunnableBackend()) {
-      alert("Submission failed: GitHub Pages cannot run backend code. Deploy the API folder to Vercel/Netlify/Render, then set window.CONTACT_API_BASE_URL to that backend URL.");
+      alert("Submission failed: static hosting cannot run backend code. Deploy the Netlify Functions backend, then set window.CONTACT_API_BASE_URL to that Netlify URL.");
       return;
     }
 
