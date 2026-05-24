@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Standalone backend server for the Firebase contact app",
+  "description": "Local Express backend for the contact app. Production uses Netlify Functions.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
