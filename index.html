@@ -1445,7 +1445,7 @@
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
   const CONTACT_API_BASE_URL =
     window.CONTACT_API_BASE_URL ||
-    (isLocalPreview ? "http://localhost:3000" : "https://arresalahinstitute.netlify.app");
+    "https://arresalahinstitute.netlify.app";
 
   function hasRunnableBackend() {
     return Boolean(CONTACT_API_BASE_URL);
@@ -1536,9 +1536,7 @@
       alert(data.message || "Application submitted successfully.");
       showStage(3);
     } catch (error) {
-      const localHint = isLocalPreview && window.location.port !== "3000"
-        ? " Make sure the backend is running, then open http://localhost:3000 or keep using this preview with the backend on port 3000."
-        : "";
+      const localHint = "";
       const networkHint = error instanceof TypeError
         ? " The browser could not reach the backend at all."
         : "";
