@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 function loadEnvFile(envPath) {
   if (!fs.existsSync(envPath)) return;
@@ -35,6 +36,54 @@ function json(statusCode, body) {
   };
 }
 
+function createLocalId() {
+  return `local_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function getLocalContactsPath() {
+  return (
+    process.env.LOCAL_CONTACTS_FILE ||
+    path.join(__dirname, '..', '..', '.local', 'contacts.json')
+  );
+}
+
+function readJsonArray(filePath) {
+  if (!fs.existsSync(filePath)) return [];
+
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveLocalContact(contact) {
+  const savedContact = {
+    id: createLocalId(),
+    ...contact,
+    created_at: new Date().toISOString(),
+    storage: 'local-json'
+  };
+
+  const primaryPath = getLocalContactsPath();
+  const fallbackPath = path.join(os.tmpdir(), 'contacts.json');
+
+  for (const filePath of [primaryPath, fallbackPath]) {
+    try {
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      const contacts = readJsonArray(filePath);
+      contacts.push(savedContact);
+      fs.writeFileSync(filePath, JSON.stringify(contacts, null, 2));
+      return { savedContact, filePath };
+    } catch (error) {
+      // Try the next writable location.
+    }
+  }
+
+  throw new Error('Unable to write local contacts JSON file.');
+}
+
 exports.handler = async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return json(200, { ok: true });
@@ -67,16 +116,6 @@ exports.handler = async function handler(event) {
     process.env.VITE_SUPABASE_ANON_KEY;
   const contactTable = process.env.CONTACT_TABLE || 'contacts';
 
-  if (!supabaseUrl || !supabaseKey) {
-    return json(500, {
-      message: 'Supabase environment variables are not configured.',
-      missingSupabaseVars: [
-        supabaseUrl ? null : 'SUPABASE_URL',
-        supabaseKey ? null : 'SUPABASE_SERVICE_ROLE_KEY'
-      ].filter(Boolean)
-    });
-  }
-
   const contact = {
     name: String(name).trim(),
     phone: String(phone).trim(),
@@ -85,6 +124,29 @@ exports.handler = async function handler(event) {
     billing,
     amount
   };
+
+  if (!supabaseUrl || !supabaseKey) {
+    try {
+      const { savedContact, filePath } = saveLocalContact(contact);
+
+      return json(201, {
+        message: 'Contact form submitted successfully using local JSON fallback.',
+        id: savedContact.id,
+        contact: savedContact,
+        localFallback: true,
+        filePath,
+        missingSupabaseVars: [
+          supabaseUrl ? null : 'SUPABASE_URL',
+          supabaseKey ? null : 'SUPABASE_SERVICE_ROLE_KEY'
+        ].filter(Boolean)
+      });
+    } catch (error) {
+      return json(500, {
+        message: 'Supabase is not configured and local JSON fallback failed.',
+        detail: error.message
+      });
+    }
+  }
 
   try {
     const response = await fetch(`${supabaseUrl.replace(/\/$/, '')}/rest/v1/${contactTable}`, {
