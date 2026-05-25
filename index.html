@@ -1443,12 +1443,12 @@
 
   const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
-  const CONTACT_API_BASE_URL =
-    window.CONTACT_API_BASE_URL ||
-    "https://arresalahinstitute.netlify.app";
+  const CONTACT_API_URL =
+    window.CONTACT_API_URL ||
+    "/.netlify/functions/contact";
 
   function hasRunnableBackend() {
-    return Boolean(CONTACT_API_BASE_URL);
+    return Boolean(CONTACT_API_URL);
   }
 
   async function parseApiResponse(response) {
@@ -1489,7 +1489,7 @@
     }
 
     if (!hasRunnableBackend()) {
-      alert("Submission failed: static hosting cannot run backend code. Deploy the Netlify Functions backend, then set window.CONTACT_API_BASE_URL to that Netlify URL.");
+      alert("Submission failed: static hosting cannot run backend code. Deploy the Netlify Functions backend, then set window.CONTACT_API_URL to the contact function path.");
       return;
     }
 
@@ -1505,7 +1505,7 @@
     const submitButton = document.getElementById("btn-to-stage3");
     submitButton.disabled = true;
 
-    const apiTarget = `${CONTACT_API_BASE_URL}/api/contact`;
+    const apiTarget = CONTACT_API_URL;
 
     try {
       const response = await fetch(apiTarget, {
