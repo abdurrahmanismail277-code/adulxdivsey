@@ -1,7 +1,4 @@
-// GitHub Pages and other static hosts cannot run server.js or /api routes.
-// The deployed backend is hosted on Render.
-window.CONTACT_API_STATIC_HOSTING = true;
-const isLocalContactPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
-window.CONTACT_API_BASE_URL = isLocalContactPreview
-  ? "http://localhost:3000"
-  : "https://adulxdivsey.onrender.com";
+// Netlify production uses same-origin API routes from netlify.toml:
+// /api/contact -> /.netlify/functions/contact
+const CONTACT_NETLIFY_BACKEND_URL = "https://arresalahinstitute.netlify.app";
+window.CONTACT_API_BASE_URL = CONTACT_NETLIFY_BACKEND_URL;
