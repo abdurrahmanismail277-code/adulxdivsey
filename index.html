@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -1445,7 +1445,7 @@
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
   const CONTACT_API_URL =
     window.CONTACT_API_URL ||
-    "/.netlify/functions/contact";
+    "/api/contact";
 
   function hasRunnableBackend() {
     return Boolean(CONTACT_API_URL);
@@ -1505,19 +1505,34 @@
     const submitButton = document.getElementById("btn-to-stage3");
     submitButton.disabled = true;
 
-    const apiTarget = CONTACT_API_URL;
+    const apiTargets = CONTACT_API_URL === "/api/contact"
+      ? [CONTACT_API_URL, "/.netlify/functions/contact"]
+      : [CONTACT_API_URL, "/api/contact", "/.netlify/functions/contact"];
+    let apiTarget = apiTargets[0];
 
     try {
-      const response = await fetch(apiTarget, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(application)
-      });
+      let response;
+      let data;
 
-      const data = await parseApiResponse(response);
+      for (const target of apiTargets) {
+        apiTarget = target;
+        response = await fetch(target, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(application)
+        });
 
-      if (!response.ok) {
-        throw new Error(getApiErrorMessage(response, data));
+        data = await parseApiResponse(response);
+
+        if (response.ok) break;
+
+        if (response.status !== 404 || target === apiTargets[apiTargets.length - 1]) {
+          throw new Error(getApiErrorMessage(response, data));
+        }
+      }
+
+      if (!response || !response.ok) {
+        throw new Error("Backend route is not available.");
       }
 
       const applicationId = data.applicationId || data.id || data._id || "Submitted";
