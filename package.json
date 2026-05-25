@@ -5,9 +5,15 @@
     "dev:netlify": "netlify dev"
   },
   "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "@netlify/functions": "^5.2.2",
     "@supabase/supabase-js": "^2.105.4",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^1.0.0-beta.22",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^1.0.0-beta.22"
   }
 }
