@@ -212,23 +212,62 @@
   }
   .mission-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.72fr) minmax(300px, 0.8fr);
+    grid-template-columns: minmax(0, 0.68fr) minmax(320px, 0.9fr);
     gap: 42px;
     align-items: center;
   }
   .mission-copy .section-sub { margin-bottom: 0; }
-  .mission-image-wrap {
+  .mission-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .mission-card {
+    position: relative;
     overflow: hidden;
-    border-radius: 18px;
+    border-radius: 16px;
     border: 1px solid rgba(58,34,18,0.16);
-    background: #f8e7bf;
-    box-shadow: 0 18px 54px rgba(26,13,0,0.14);
+    background: var(--surface);
+    padding: 24px;
+    box-shadow: 0 18px 46px rgba(26,13,0,0.10);
   }
-  .mission-image {
-    display: block;
-    width: 100%;
-    height: auto;
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg, var(--amber), var(--brown-warm));
   }
+  .mission-card.vision {
+    background: linear-gradient(145deg, var(--brown-dark), var(--brown-rich));
+    border-color: rgba(212,136,30,0.34);
+    box-shadow: 0 22px 58px rgba(26,13,0,0.20);
+  }
+  .mission-kicker {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .mission-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 25px;
+    line-height: 1.16;
+    color: var(--brown-deep);
+    margin-bottom: 10px;
+  }
+  .mission-card p {
+    color: rgba(58,34,18,0.82);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .mission-card.vision h3,
+  .mission-card.vision p { color: var(--text-white); }
+  .mission-card.vision p { color: rgba(255,248,230,0.82); }
+  .mission-card.vision .mission-kicker { color: var(--amber-light); }
 
   /*  PLANS  */
   .plans-bg { background: var(--cream); }
@@ -356,7 +395,10 @@
     gap: 34px;
     align-items: center;
   }
-  .video-copy .section-sub { margin-bottom: 0; }
+  .video-copy .section-sub {
+    color: rgba(255,248,230,0.84);
+    margin-bottom: 0;
+  }
   .video-frame {
     position: relative;
     overflow: hidden;
@@ -403,6 +445,9 @@
 
   /*  FAQ  */
   .faq-bg { background: var(--brown-dark); }
+  .faq-bg .section-sub {
+    color: rgba(255,248,230,0.78);
+  }
   .faq-list { display: flex; flex-direction: column; gap: 10px; }
   .faq-item { background: rgba(26,13,0,0.5); border: 1px solid rgba(212,136,30,0.18); border-radius: 12px; overflow: hidden; }
   .faq-q {
@@ -415,7 +460,7 @@
   .faq-q:hover { background: rgba(212,136,30,0.07); }
   .faq-icon { width: 22px; height: 22px; min-width: 22px; border: 1px solid rgba(212,136,30,0.35); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--amber); font-size: 14px; transition: transform 0.25s; }
   .faq-item.open .faq-icon { transform: rotate(45deg); }
-  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; font-size: 13.5px; color: var(--text-muted); line-height: 1.7; padding: 0 22px; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; font-size: 13.5px; color: rgba(255,248,230,0.72); line-height: 1.7; padding: 0 22px; }
   .faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
 
   /*  PRIVACY POLICY  */
@@ -469,7 +514,7 @@
   .footer-desc { font-size: 13px; color: rgba(255,248,230,0.68); line-height: 1.7; max-width: 280px; }
   .footer-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
   .footer-links { display: flex; flex-direction: column; gap: 10px; }
-  .footer-links a { font-size: 13px; color: rgba(255,248,230,0.40); text-decoration: none; transition: color 0.2s; }
+  .footer-links a { font-size: 13px; color: rgba(255,248,230,0.58); text-decoration: none; transition: color 0.2s; overflow-wrap: anywhere; }
   .footer-links a:hover { color: rgba(255,248,230,0.80); }
   .social-links { display: flex; gap: 10px; margin-bottom: 16px; }
   .social-link { width: 38px; height: 38px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; }
@@ -477,7 +522,7 @@
   .social-link svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.45); }
   .social-link:hover svg { fill: var(--amber); }
   .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .footer-copy { font-size: 12px; color: rgba(255,248,230,0.20); }
+  .footer-copy { font-size: 12px; color: rgba(255,248,230,0.56); }
   .footer-legal { display: flex; gap: 14px; flex-wrap: wrap; }
   .footer-legal a { font-size: 12px; color: rgba(255,248,230,0.38); text-decoration: none; }
   .footer-legal a:hover { color: var(--amber-light); }
@@ -515,14 +560,14 @@
     width: 30px; height: 30px; min-width: 30px;
     border-radius: 50%; border: 2px solid rgba(212,136,30,0.30);
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--text-muted);
+    font-size: 12px; font-weight: 700; color: rgba(255,248,230,0.62);
     transition: all 0.3s; background: transparent;
   }
   .stage-dot.active { background: var(--amber); border-color: var(--amber); color: var(--brown-deep); }
   .stage-dot.done { background: var(--wa-green); border-color: var(--wa-green); color: #fff; }
   .stage-line { flex: 1; height: 2px; background: rgba(212,136,30,0.15); margin: 0 4px; }
   .stage-line.done { background: var(--amber); }
-  .stage-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-muted); display: none; }
+  .stage-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,248,230,0.62); display: none; }
   .stage-dot.active + .stage-label { color: var(--amber-light); }
   .modal-close {
     background: rgba(255,255,255,0.06); border: none; border-radius: 8px;
@@ -560,7 +605,7 @@
     font-size: 24px; font-weight: 700; color: var(--text-white);
     margin-bottom: 5px;
   }
-  .stage-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.55; }
+  .stage-subtitle { font-size: 13px; color: rgba(255,248,230,0.66); margin-bottom: 24px; line-height: 1.55; }
 
   .payment-success {
     background: rgba(37,211,102,0.08);
@@ -614,7 +659,7 @@
     flex: 1; padding: 10px; border: 1.5px solid rgba(212,136,30,0.22);
     background: rgba(26,13,0,0.5); border-radius: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-    color: var(--text-muted); cursor: pointer; transition: all 0.2s; text-align: center;
+    color: rgba(255,248,230,0.62); cursor: pointer; transition: all 0.2s; text-align: center;
   }
   .billing-btn.active { background: var(--brown-warm); border-color: var(--amber); color: var(--amber-pale); }
 
@@ -628,10 +673,10 @@
   .payment-box h4 { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #7DDBFF; margin-bottom: 14px; }
   .payment-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid rgba(212,136,30,0.10); }
   .payment-row:last-child { border-bottom: none; }
-  .payment-row .label { font-size: 12px; color: var(--text-muted); }
+  .payment-row .label { font-size: 12px; color: rgba(255,248,230,0.62); }
   .payment-row .value { font-size: 13px; font-weight: 700; color: var(--text-white); text-align: right; }
   .payment-row .value.amount { color: var(--amber-light); font-size: 30px; font-family: 'Cormorant Garamond', serif; line-height: 1; }
-  .payment-note { font-size: 12px; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(212,136,30,0.12); line-height: 1.65; }
+  .payment-note { font-size: 12px; color: rgba(255,248,230,0.66); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(212,136,30,0.12); line-height: 1.65; }
 
   /* Summary card */
   .summary-card {
@@ -640,7 +685,7 @@
   }
   .summary-card h4 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
   .summary-row { display: flex; gap: 10px; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
-  .summary-row span:first-child { color: var(--text-muted); }
+  .summary-row span:first-child { color: rgba(255,248,230,0.62); }
   .summary-row span:last-child { color: var(--text-white); font-weight: 600; text-align: right; max-width: 60%; overflow-wrap: anywhere; }
   .summary-row.total span:last-child { color: var(--amber-light); font-size: 17px; font-family: 'Cormorant Garamond', serif; font-weight: 700; }
 
@@ -676,7 +721,7 @@
     width: 100%; padding: 11px; border-radius: 10px; margin-top: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
     cursor: pointer; border: 1px solid rgba(212,136,30,0.22);
-    background: transparent; color: var(--text-muted);
+    background: transparent; color: rgba(255,248,230,0.64);
     transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
   }
   .btn-back:hover { border-color: rgba(212,136,30,0.45); color: var(--amber-light); }
@@ -721,7 +766,7 @@
   .t-title span { color: var(--amber-light); }
   .t-subtitle {
     font-size: 14px;
-    color: var(--text-muted);
+    color: rgba(255,248,230,0.70);
     margin: 10px 0 0;
     font-weight: 300;
   }
@@ -941,7 +986,6 @@
     from { opacity: 0; transform: scale(0.93) translateY(16px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
-A
   /*  RESPONSIVE  */
   @media (max-width: 768px) {
     nav { display: none; }
@@ -952,6 +996,7 @@ A
     .section { padding: 52px 16px; }
     .hero { padding: 52px 16px 60px; }
     .mission-layout { grid-template-columns: 1fr; gap: 24px; }
+    .mission-card { padding: 20px; }
     .video-layout { grid-template-columns: 1fr; gap: 24px; }
     .course-grid { grid-template-columns: 1fr; }
     .modal-overlay { padding: 10px; align-items: flex-start; }
@@ -1030,8 +1075,17 @@ A
       <h2 class="section-title">Rooted in the <span>Qur'an</span></h2>
       <p class="section-sub">A clear reminder of Arresalah Institute's purpose: disciplined memorization, correct tajweed, Islamic manners, and a generation whose homes and communities reflect the guidance of the Qur'an.</p>
     </div>
-    <div class="mission-image-wrap">
-      <img class="mission-image" src="assets/mission-vision.jpeg" alt="Arresalah Institute mission and vision statement" />
+    <div class="mission-card-grid">
+      <article class="mission-card">
+        <span class="mission-kicker">Mission</span>
+        <h3>Nurturing Hearts Through the Qur'an</h3>
+        <p>ArResalah Institute exists to provide structured, sincere, and disciplined Qur'an memorization rooted in ikhlas, correct tajweed, and sound Islamic manners, raising students who live by the Qur'an before reciting it.</p>
+      </article>
+      <article class="mission-card vision">
+        <span class="mission-kicker">Vision</span>
+        <h3>A Generation Anchored to Guidance</h3>
+        <p>To raise a generation whose hearts are anchored to the Qur'an, whose tongues recite it with excellence, and whose lives reflect its guidance as sources of light, integrity, and leadership in their homes and communities.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -1425,7 +1479,7 @@ A
         </div>
         <div class="privacy-item">
           <h3>Contact Us</h3>
-          <p>For privacy questions or requests to update your information, contact us on WhatsApp at +234 808 206 2525.</p>
+          <p>For privacy questions or requests to update your information, email support@arresalahinstitute.com or contact us on WhatsApp at +234 808 206 2525.</p>
         </div>
       </div>
     </div>
@@ -1469,6 +1523,7 @@ A
           <a href="https://www.facebook.com/share/1CGrB1FK4S/" target="_blank" rel="noopener" class="social-link" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
         </div>
         <div class="footer-links">
+          <a href="mailto:support@arresalahinstitute.com">support@arresalahinstitute.com</a>
           <a href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20make%20enquiry%20about%20the%20classes." target="_blank" rel="noopener">WhatsApp Us: +234 808 206 2525</a>
           <a href="https://whatsapp.com/channel/0029Vb7cOCtGzzKLP3Bv9k30" target="_blank" rel="noopener">Join Our WhatsApp Channel</a>
         </div>
