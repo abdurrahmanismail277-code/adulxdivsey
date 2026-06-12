@@ -1,6 +1,6 @@
 const AUTH_API_BASE =
   window.AUTH_API_BASE ||
-  'https://adulxdivsey-3.onrender.com/api/auth';
+  'https://adulxdivsey-4.onrender.com/api/auth';
 
 async function sendAuthRequest(path, payload) {
   try {
