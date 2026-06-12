@@ -8,4 +8,4 @@ const isLocalStaticPreview =
 
 window.CONTACT_API_URL =
   window.CONTACT_API_URL ||
-  (isBackendHost ? '/api/contact' : isLocalStaticPreview ? 'http://localhost:3000/api/contact' : '/api/contact');
+  'https://adulxdivsey-3.onrender.com/api/contact';
