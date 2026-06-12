@@ -56,7 +56,11 @@ The server will run on port 3000 by default.
 
 ## Deployment
 
-This backend is designed to work with Netlify Functions for production deployment. The `netlify.toml` file in the root directory handles the routing.
+This backend is a standalone Node.js server for the contact form API. Deploy it to Vercel, Render, Netlify (as a Node app), or another Node-compatible host.
+
+If you want to serve frontend assets from the same backend, put them in `backend/public` and configure `index.js` to use `express.static('public')`.
+
+This folder also includes `backend/vercel.json` so the backend can be deployed as a separate Vercel project.
 
 ## Environment Variables
 
