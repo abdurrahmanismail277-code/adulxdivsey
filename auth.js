@@ -1,6 +1,6 @@
 const AUTH_API_BASE =
   window.AUTH_API_BASE ||
-  (window.location.protocol === "file:" ? "http://localhost:3000/api/auth" : "/api/auth");
+  'https://adulxdivsey-3.onrender.com/api/auth';
 
 async function sendAuthRequest(path, payload) {
   try {
