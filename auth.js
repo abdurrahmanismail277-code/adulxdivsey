@@ -1,6 +1,19 @@
+const isBackendHost =
+  ['localhost', '127.0.0.1'].includes(window.location.hostname) &&
+  window.location.port === '3000';
+const isLocalStaticPreview =
+  window.location.protocol === 'file:' ||
+  (['localhost', '127.0.0.1'].includes(window.location.hostname) &&
+    window.location.port !== '3000');
+const localAuthApiBase = 'http://localhost:3000/api/auth';
+
 const AUTH_API_BASE =
   window.AUTH_API_BASE ||
-  'https://adulxdivsey-4.onrender.com/api/auth';
+  (isBackendHost
+    ? '/api/auth'
+    : isLocalStaticPreview
+      ? localAuthApiBase
+      : '/api/auth');
 
 async function sendAuthRequest(path, payload) {
   try {
