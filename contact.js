@@ -164,7 +164,26 @@ exports.handler = async function handler(event) {
 
     if (!response.ok) {
       const message = data && (data.message || data.error || data.details);
-      return json(response.status, { message: message || 'Supabase save failed.' });
+      try {
+        const { savedContact, filePath } = saveLocalContact(contact);
+
+        return json(201, {
+          message: 'Contact form submitted successfully using local JSON fallback.',
+          id: savedContact.id,
+          contact: savedContact,
+          localFallback: true,
+          filePath,
+          supabaseError: message || 'Supabase save failed.',
+          detail: response.status === 401
+            ? 'The Supabase API key is not valid for the configured SUPABASE_URL.'
+            : undefined
+        });
+      } catch (fallbackError) {
+        return json(response.status, {
+          message: message || 'Supabase save failed.',
+          detail: fallbackError.message
+        });
+      }
     }
 
     const savedContact = Array.isArray(data) ? data[0] : data;
