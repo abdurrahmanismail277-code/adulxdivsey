@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
-const contactHandler = require("../api/contact");
+const contactHandler = require(path.join(__dirname, "..", "api", "contact"));
 const authStore = require("./auth-store");
 
 function loadEnvFile(envPath) {
