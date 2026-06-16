@@ -1,13 +1,21 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Local Express backend for the contact app. Production uses Netlify Functions.",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev:backend": "node server.js",
-    "dev:netlify": "netlify dev"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "uuid": "^9.0.1"
   }
 }
