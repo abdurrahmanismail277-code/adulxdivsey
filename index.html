@@ -495,6 +495,99 @@
   .plans-group.active { display: grid; }
   .plans-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
 
+  /*  OTHER COURSES  */
+  .other-courses-bg {
+    background:
+      linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+    border-top: 1px solid rgba(58,34,18,0.08);
+    border-bottom: 1px solid rgba(58,34,18,0.08);
+  }
+  .other-courses-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 34px;
+  }
+  .other-courses-head .section-sub { margin-bottom: 0; }
+  .other-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .other-course-card {
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1.5px solid rgba(58,34,18,0.13);
+    box-shadow: 0 16px 44px rgba(26,13,0,0.12);
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  }
+  .other-course-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,136,30,0.42);
+    box-shadow: 0 24px 58px rgba(26,13,0,0.16);
+  }
+  .other-course-image {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #120a03;
+    overflow: hidden;
+  }
+  .other-course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s;
+  }
+  .other-course-card:hover .other-course-image img { transform: scale(1.04); }
+  .other-course-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 48%, rgba(10,6,0,0.72) 100%);
+  }
+  .other-course-label {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    z-index: 1;
+    color: var(--amber-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .other-course-body { padding: 22px; }
+  .other-course-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px;
+    line-height: 1.15;
+    color: var(--brown-deep);
+    margin-bottom: 8px;
+  }
+  .other-course-body p {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin-bottom: 18px;
+  }
+  .other-course-link {
+    color: var(--brown-warm);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .other-course-link:hover { color: var(--amber); }
+  .other-courses-cta {
+    width: auto;
+    min-width: 190px;
+  }
+
   /*  PLAN CARD  */
   .plan-card {
     background: var(--surface);
@@ -728,6 +821,16 @@
   .social-link:hover { background: rgba(212,136,30,0.15); border-color: rgba(212,136,30,0.35); }
   .social-link svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.45); }
   .social-link:hover svg { fill: var(--amber); }
+  .social-handle {
+    color: rgba(255,248,230,0.52);
+    font-size: 12px;
+    line-height: 1.6;
+    margin: -2px 0 14px;
+  }
+  .social-handle strong {
+    color: var(--amber-light);
+    font-weight: 700;
+  }
   .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
   .footer-copy { font-size: 12px; color: rgba(255,248,230,0.56); }
   .footer-legal { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -1207,6 +1310,8 @@
     .mission-logo-wrap { width: 126px; height: 126px; border-radius: 18px; }
     .mission-logo { width: 98px; height: 98px; }
     .video-layout { grid-template-columns: 1fr; gap: 24px; }
+    .other-courses-head { display: block; margin-bottom: 26px; }
+    .other-courses-grid { grid-template-columns: 1fr; }
     .course-grid { grid-template-columns: 1fr; }
     .modal-overlay { padding: 10px; align-items: flex-start; }
     .modal { max-height: calc(100vh - 20px); border-radius: 16px; }
@@ -1245,6 +1350,7 @@
     <nav>
       <a href="#mission">Mission</a>
       <a href="#plans">Plans</a>
+      <a href="#other-courses">Other Courses</a>
       <a href="#why">Why Us</a>
       <a href="#video">Video</a>
       <a href="#faq">FAQs</a>
@@ -1532,6 +1638,60 @@
   </div>
 </section>
 
+<!-- OTHER COURSES -->
+<section class="section other-courses-bg" id="other-courses">
+  <div class="section-inner">
+    <div class="other-courses-head">
+      <div>
+        <span class="section-badge">Other Courses Available</span>
+        <h2 class="section-title">Deepen Your <span>Islamic Studies</span></h2>
+        <p class="section-sub">Expand beyond the main Qur'an tracks with selected texts in Seerah, Arabic grammar, and Arabic reading.</p>
+      </div>
+      <a class="btn-select other-courses-cta" href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20to%20ask%20about%20the%20other%20courses%20available." target="_blank" rel="noopener">
+        Ask About Courses
+      </a>
+    </div>
+
+    <div class="other-courses-grid">
+      <article class="other-course-card">
+        <div class="other-course-image">
+          <img src="assets/course-nurul-yaqeen.jpeg" alt="Nurul Yaqeen course book" loading="lazy" />
+          <span class="other-course-label">Seerah</span>
+        </div>
+        <div class="other-course-body">
+          <h3>Nurul Yaqeen</h3>
+          <p>Study the Seerah of the Prophet, peace be upon him, with guided reading and structured discussion.</p>
+          <a class="other-course-link" href="https://wa.me/2348082062525?text=Assalamualaikum%20I%20want%20to%20ask%20about%20Nurul%20Yaqeen%20course." target="_blank" rel="noopener">Enquire on WhatsApp <span aria-hidden="true">-></span></a>
+        </div>
+      </article>
+
+      <article class="other-course-card">
+        <div class="other-course-image">
+          <img src="assets/course-arabiyyah-nahwiyyah.jpeg" alt="Al-Arabiyyah An-Nahwiyyah course book" loading="lazy" />
+          <span class="other-course-label">Arabic Grammar</span>
+        </div>
+        <div class="other-course-body">
+          <h3>Al-Arabiyyah An-Nahwiyyah</h3>
+          <p>Build grammar strength through a classical Arabic text, ideal for students growing in Qur'an comprehension.</p>
+          <a class="other-course-link" href="https://wa.me/2348082062525?text=Assalamualaikum%20I%20want%20to%20ask%20about%20Al-Arabiyyah%20An-Nahwiyyah%20course." target="_blank" rel="noopener">Enquire on WhatsApp <span aria-hidden="true">-></span></a>
+        </div>
+      </article>
+
+      <article class="other-course-card">
+        <div class="other-course-image">
+          <img src="assets/course-arabic-lessons.jpeg" alt="Arabic Lessons for non-native speakers book" loading="lazy" />
+          <span class="other-course-label">Arabic Reading</span>
+        </div>
+        <div class="other-course-body">
+          <h3>Arabic Lessons</h3>
+          <p>Develop reading, vocabulary, and sentence foundations with clear lessons for non-native Arabic learners.</p>
+          <a class="other-course-link" href="https://wa.me/2348082062525?text=Assalamualaikum%20I%20want%20to%20ask%20about%20Arabic%20Lessons%20course." target="_blank" rel="noopener">Enquire on WhatsApp <span aria-hidden="true">-></span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- WHY CHOOSE US -->
 <section class="section why-bg" id="why">
   <div class="section-inner">
@@ -1732,6 +1892,7 @@
         <div class="footer-links">
           <a href="#plans">Monthly Plans</a>
           <a href="#plans" onclick="switchTabFooter('termly')">Termly Plans</a>
+          <a href="#other-courses">Other Courses</a>
           <a href="#why">Why Choose Us</a>
           <a href="#video">Watch Preview</a>
           <a href="#faq">FAQs</a>
@@ -1742,16 +1903,17 @@
         <div class="footer-links">
           <a href="#privacy">Privacy Policy</a>
           <a href="#faq">FAQs</a>
-          <a href="https://paystack.shop/pay/arresalah" target="_blank" rel="noopener">Payment Page</a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Follow Us</h4>
         <div class="social-links">
           <a href="https://www.instagram.com/arresalah_quran_institute?igsh=MWtvcDQ5MzcF4dzNoZw==" target="_blank" rel="noopener" class="social-link" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://x.com/arqm_institute" target="_blank" rel="noopener" class="social-link" title="X / Twitter"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.832L0 1.154h7.594l5.243 6.932 6.064-6.932Zm-1.292 19.492h2.039L6.486 3.239H4.298l13.311 17.406Z"/></svg></a>
           <a href="https://www.youtube.com/@aresalahinstitute" target="_blank" rel="noopener" class="social-link" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
           <a href="https://www.facebook.com/share/1CGrB1FK4S/" target="_blank" rel="noopener" class="social-link" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
         </div>
+        <p class="social-handle">X / Twitter: <strong>@arqm_institute</strong></p>
         <div class="footer-links">
           <a href="mailto:support@arresalahinstitute.com">support@arresalahinstitute.com</a>
           <a href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20make%20enquiry%20about%20the%20classes." target="_blank" rel="noopener">WhatsApp Us: +234 808 206 2525</a>
@@ -1848,10 +2010,9 @@
           <p class="payment-note">You will be taken to Paystack to complete payment with card, transfer, or any available checkout option.</p>
         </div>
 
-        <a id="btn-paystack-final" href="https://paystack.shop/pay/arresalah" target="_blank" rel="noopener" class="btn-wa-modal btn-paystack">
+        <a id="btn-paystack-final" href="#" target="_blank" rel="noopener" class="btn-wa-modal btn-paystack">
           Continue to Paystack
         </a>
-
         <div class="summary-card">
           <h4>Application Summary</h4>
           <div class="summary-row"><span>Applicant</span><span id="sum-name"></span></div>
@@ -1899,8 +2060,25 @@
     { name: "Personalized Qur'an + Arabiyah", type: "Personalized", monthly: 25000, termly: 70000 }
   ];
 
-  const PAYSTACK_PAYMENT_URL = "https://paystack.shop/pay/arresalah";
+  const PAYSTACK_PAYMENT_URLS = {
+    "General Qur'an Class|Monthly": "https://paystack.shop/pay/z6bhxnht19",
+    "General Qur'an + Arabiyah|Monthly": "https://paystack.shop/pay/generalclassarqm",
+    "Personalized Qur'an Class|Monthly": "https://paystack.shop/pay/ysyyutggra",
+    "Kids Qur'an Session (Ages 5-12)|Monthly": "https://paystack.shop/pay/kidclassarqm",
+    "Teens Qur'an Class (Ages 13-19)|Monthly": "https://paystack.shop/pay/ujnklkevv-",
+    "Personalized Qur'an + Arabiyah|Monthly": "https://paystack.shop/pay/b79ia5pmhw",
+    "General Qur'an Class|Termly": "https://paystack.shop/pay/c023459b83",
+    "General Qur'an + Arabiyah|Termly": "https://paystack.shop/pay/kdr-qcer81",
+    "Personalized Qur'an Class|Termly": "https://paystack.shop/pay/1restyv97a",
+    "Personalized Qur'an + Arabiyah|Termly": "https://paystack.shop/pay/1af-rxurmj"
+  };
+
   let selectedCourse = null;
+
+  function getPaystackUrl(course) {
+    if (!course) return "#";
+    return PAYSTACK_PAYMENT_URLS[`${course.name}|${course.billing}`] || "#";
+  }
 
   function formatNaira(amount) {
     return "\uD83C\uDDF3\uD83C\uDDEC " + Number(amount).toLocaleString();
@@ -2063,7 +2241,7 @@
       document.getElementById("sum-amount").textContent = formatNaira(application.amount);
       document.getElementById("pay-amount").textContent = formatNaira(application.amount);
       document.getElementById("pay-course").textContent = application.course;
-      document.getElementById("btn-paystack-final").href = PAYSTACK_PAYMENT_URL;
+      document.getElementById("btn-paystack-final").href = getPaystackUrl(selectedCourse);
 
       alert(data.message || "Application submitted successfully.");
       showStage(3);
