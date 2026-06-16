@@ -1,8 +1,30 @@
 const crypto = require("crypto");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 
-const usersPath = path.join(__dirname, "users.json");
+function resolveUsersPath() {
+  const fallbackPaths = [
+    process.env.LOCAL_USERS_FILE,
+    path.join(__dirname, "users.json"),
+    path.join(os.tmpdir(), "users.json")
+  ].filter(Boolean);
+
+  for (const candidate of fallbackPaths) {
+    try {
+      const dir = path.dirname(candidate);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.accessSync(dir, fs.constants.W_OK);
+      return candidate;
+    } catch {
+      // try next candidate
+    }
+  }
+
+  return fallbackPaths[fallbackPaths.length - 1];
+}
+
+const usersPath = resolveUsersPath();
 
 function readUsers() {
   if (!fs.existsSync(usersPath)) return [];
@@ -68,7 +90,19 @@ function registerUser({ username, email, password }) {
   };
 
   users.push(user);
-  writeUsers(users);
+
+  try {
+    writeUsers(users);
+  } catch (error) {
+    return {
+      status: 500,
+      body: {
+        success: false,
+        msg: "Unable to save user data.",
+        error: error.message
+      }
+    };
+  }
 
   return {
     status: 201,
