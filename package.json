@@ -8,7 +8,7 @@
     "dev:netlify": "netlify dev"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",
