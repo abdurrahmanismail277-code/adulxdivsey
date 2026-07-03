@@ -214,6 +214,76 @@
     display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
     animation: fadeUp 0.8s 0.3s ease both;
   }
+  .class-countdown {
+    background:
+      linear-gradient(180deg, rgba(26,13,0,0.96), rgba(44,21,3,0.98)),
+      var(--brown-dark);
+    border-top: 1px solid rgba(212,136,30,0.26);
+    border-bottom: 1px solid rgba(212,136,30,0.18);
+    padding: 22px 24px;
+  }
+  .class-countdown-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    gap: 22px;
+    align-items: center;
+  }
+  .countdown-kicker {
+    display: block;
+    color: var(--amber-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .countdown-title {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-white);
+    font-size: clamp(25px, 3vw, 36px);
+    line-height: 1.08;
+    margin-bottom: 6px;
+  }
+  .countdown-copy {
+    color: rgba(255,248,230,0.74);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 520px;
+  }
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(70px, 86px));
+    gap: 10px;
+  }
+  .countdown-unit {
+    min-height: 86px;
+    border: 1px solid rgba(212,136,30,0.34);
+    border-radius: 8px;
+    background: rgba(255,248,230,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .countdown-value {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--amber-pale);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown-label {
+    color: rgba(255,248,230,0.68);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
   .btn-wa-primary {
     background: var(--wa-green);
     color: #fff; padding: 14px 28px;
@@ -1384,6 +1454,12 @@
     .stat:last-child { border-bottom: none; }
     .section { padding: 52px 16px; }
     .hero { padding: 52px 16px 60px; }
+    .class-countdown { padding: 22px 16px 24px; }
+    .class-countdown-inner { grid-template-columns: 1fr; text-align: center; gap: 18px; }
+    .countdown-copy { margin: 0 auto; }
+    .countdown-grid { grid-template-columns: repeat(4, minmax(60px, 1fr)); width: 100%; }
+    .countdown-unit { min-height: 76px; }
+    .countdown-value { font-size: 30px; }
     .mission-layout { grid-template-columns: 1fr; gap: 24px; }
     .mission-card { min-height: 300px; padding: 24px 20px; }
     .mission-logo-wrap { width: 126px; height: 126px; border-radius: 18px; }
@@ -1412,6 +1488,8 @@
     .video-caption { align-items: flex-start; flex-direction: column; gap: 5px; }
     .portal-mark { display: none; }
     .btn-wa-primary, .btn-ghost { width: 100%; justify-content: center; }
+    .countdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .countdown-unit { min-height: 72px; }
   }
 </style>
 </head>
@@ -1451,6 +1529,23 @@
   <div class="hero-cta">
     <a href="#plans" class="btn-wa-primary">View Enrollment Plans</a>
     <a href="https://www.instagram.com/arresalah_quran_institute?igsh=MWtvcDQ5MzcF4dzNoZw==" target="_blank" rel="noopener" class="btn-ghost">Follow Us on Instagram</a>
+  </div>
+</section>
+
+<!-- CLASS COUNTDOWN -->
+<section class="class-countdown" aria-labelledby="countdown-title" data-countdown-minutes="44770">
+  <div class="class-countdown-inner">
+    <div class="countdown-text">
+      <span class="countdown-kicker">Next Class Application</span>
+      <h2 class="countdown-title" id="countdown-title">Application Starts Soon</h2>
+      <p class="countdown-copy">Enrollment opens for the next Qur'an and Arabiyah class intake. Prepare your details and choose your learning path when the portal opens.</p>
+    </div>
+    <div class="countdown-grid" aria-live="polite">
+      <div class="countdown-unit"><span class="countdown-value" id="count-days">30</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-unit"><span class="countdown-value" id="count-hours">24</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-unit"><span class="countdown-value" id="count-minutes">10</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-unit"><span class="countdown-value" id="count-seconds">00</span><span class="countdown-label">Seconds</span></div>
+    </div>
   </div>
 </section>
 
@@ -2144,6 +2239,54 @@
     window.addEventListener("resize", function () {
       if (window.innerWidth > 768) setMenu(false);
     });
+  })();
+
+  //  NEXT CLASS APPLICATION COUNTDOWN
+  (function () {
+    const countdown = document.querySelector(".class-countdown");
+    if (!countdown) return;
+
+    const totalMinutes = Number(countdown.dataset.countdownMinutes || 44770);
+    const storageKey = "arresalahClassApplicationStartAt";
+    let targetTime = Number(localStorage.getItem(storageKey));
+
+    if (!targetTime) {
+      targetTime = Date.now() + totalMinutes * 60 * 1000;
+      localStorage.setItem(storageKey, String(targetTime));
+    }
+
+    const days = document.getElementById("count-days");
+    const hours = document.getElementById("count-hours");
+    const minutes = document.getElementById("count-minutes");
+    const seconds = document.getElementById("count-seconds");
+    const title = document.getElementById("countdown-title");
+    let timer;
+
+    function twoDigits(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function renderCountdown() {
+      const remaining = Math.max(0, targetTime - Date.now());
+      const totalSeconds = Math.floor(remaining / 1000);
+      const dayCount = Math.floor(totalSeconds / 86400);
+      const hourCount = Math.floor((totalSeconds % 86400) / 3600);
+      const minuteCount = Math.floor((totalSeconds % 3600) / 60);
+      const secondCount = totalSeconds % 60;
+
+      days.textContent = String(dayCount);
+      hours.textContent = twoDigits(hourCount);
+      minutes.textContent = twoDigits(minuteCount);
+      seconds.textContent = twoDigits(secondCount);
+
+      if (remaining <= 0) {
+        title.textContent = "Applications Are Open";
+        clearInterval(timer);
+      }
+    }
+
+    renderCountdown();
+    timer = setInterval(renderCountdown, 1000);
   })();
 
   //  COURSES DATA 
