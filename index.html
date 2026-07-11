@@ -2297,9 +2297,10 @@
 
   const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
   const isGitHubPages = window.location.hostname.endsWith(".github.io");
+  const isRailwayHost = window.location.hostname.endsWith(".railway.app") || window.location.hostname.endsWith(".up.railway.app");
   const CONTACT_API_URL =
     window.CONTACT_API_URL ||
-    "/api/contact";
+    (isLocalPreview || isRailwayHost ? "/api/contact" : "");
 
   function hasRunnableBackend() {
     return Boolean(CONTACT_API_URL);
@@ -2343,7 +2344,7 @@
     }
 
     if (!hasRunnableBackend()) {
-      alert("Submission failed: static hosting cannot run backend code. Deploy the backend API, then set window.CONTACT_API_URL to the contact endpoint.");
+      alert("Submission failed: this website host does not expose /api/contact. Set RAILWAY_API_ORIGIN in api-config.js to your Railway public URL, then redeploy.");
       return;
     }
 
