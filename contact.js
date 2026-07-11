@@ -1,5 +1,5 @@
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 
 function loadEnvFile(envPath) {
@@ -18,33 +18,26 @@ function loadEnvFile(envPath) {
   }
 }
 
-loadEnvFile(path.join(__dirname, '..', '..', '.env'));
-loadEnvFile(path.join(__dirname, '..', '..', 'backend', '.env'));
+loadEnvFile(path.join(__dirname, '..', 'backend', '.env'));
+loadEnvFile(path.join(__dirname, '..', '.env'));
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json'
+  'Access-Control-Allow-Headers': 'Content-Type'
 };
 
-function json(statusCode, body) {
-  return {
-    statusCode,
-    headers: corsHeaders,
-    body: JSON.stringify(body)
-  };
+function send(res, statusCode, body) {
+  Object.entries({
+    ...corsHeaders,
+    'Content-Type': 'application/json'
+  }).forEach(([key, value]) => res.setHeader(key, value));
+
+  return res.status(statusCode).json(body);
 }
 
 function createLocalId() {
-  return `local_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-}
-
-function getLocalContactsPath() {
-  return (
-    process.env.LOCAL_CONTACTS_FILE ||
-    path.join(__dirname, '..', '..', '.local', 'contacts.json')
-  );
+  return 'local_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
 }
 
 function readJsonArray(filePath) {
@@ -58,24 +51,27 @@ function readJsonArray(filePath) {
   }
 }
 
-function saveLocalContact(contact) {
-  const savedContact = {
+function saveContactLocally(contact) {
+  const contactWithId = {
     id: createLocalId(),
     ...contact,
     created_at: new Date().toISOString(),
     storage: 'local-json'
   };
 
-  const primaryPath = getLocalContactsPath();
-  const fallbackPath = path.join(os.tmpdir(), 'contacts.json');
+  const candidatePaths = [
+    process.env.LOCAL_CONTACTS_FILE,
+    path.join(__dirname, '..', '.local', 'contacts.json'),
+    path.join(os.tmpdir(), 'contacts.json')
+  ].filter(Boolean);
 
-  for (const filePath of [primaryPath, fallbackPath]) {
+  for (const contactsPath of candidatePaths) {
     try {
-      fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      const contacts = readJsonArray(filePath);
-      contacts.push(savedContact);
-      fs.writeFileSync(filePath, JSON.stringify(contacts, null, 2));
-      return { savedContact, filePath };
+      fs.mkdirSync(path.dirname(contactsPath), { recursive: true });
+      const contacts = readJsonArray(contactsPath);
+      contacts.push(contactWithId);
+      fs.writeFileSync(contactsPath, JSON.stringify(contacts, null, 2));
+      return { contactWithId, contactsPath };
     } catch (error) {
       // Try the next writable location.
     }
@@ -84,27 +80,20 @@ function saveLocalContact(contact) {
   throw new Error('Unable to write local contacts JSON file.');
 }
 
-exports.handler = async function handler(event) {
-  if (event.httpMethod === 'OPTIONS') {
-    return json(200, { ok: true });
+module.exports = async function handler(req, res) {
+  if (req.method === 'OPTIONS') {
+    Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
+    return res.status(204).end();
   }
 
-  if (event.httpMethod !== 'POST') {
-    return json(405, { message: 'Method not allowed.' });
+  if (req.method !== 'POST') {
+    return send(res, 405, { message: 'Method not allowed.' });
   }
 
-  let payload;
-
-  try {
-    payload = JSON.parse(event.body || '{}');
-  } catch (error) {
-    return json(400, { message: 'Invalid JSON body.' });
-  }
-
-  const { name, phone, email, course, billing, amount } = payload;
+  const { name, phone, email, course, billing, amount } = req.body || {};
 
   if (!name || !phone || !email) {
-    return json(400, { message: 'Name, phone, and email are required.' });
+    return send(res, 400, { message: 'Name, phone, and email are required.' });
   }
 
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
@@ -127,23 +116,18 @@ exports.handler = async function handler(event) {
 
   if (!supabaseUrl || !supabaseKey) {
     try {
-      const { savedContact, filePath } = saveLocalContact(contact);
-
-      return json(201, {
-        message: 'Contact form submitted successfully using local JSON fallback.',
-        id: savedContact.id,
-        contact: savedContact,
+      const { contactWithId, contactsPath } = saveContactLocally(contact);
+      return send(res, 201, {
+        message: 'Contact form submitted successfully (saved locally).',
+        id: contactWithId.id,
+        contact: contactWithId,
         localFallback: true,
-        filePath,
-        missingSupabaseVars: [
-          supabaseUrl ? null : 'SUPABASE_URL',
-          supabaseKey ? null : 'SUPABASE_SERVICE_ROLE_KEY'
-        ].filter(Boolean)
+        filePath: contactsPath
       });
-    } catch (error) {
-      return json(500, {
-        message: 'Supabase is not configured and local JSON fallback failed.',
-        detail: error.message
+    } catch (fallbackError) {
+      return send(res, 500, {
+        message: 'Supabase environment variables are not configured and local save failed.',
+        detail: fallbackError.message
       });
     }
   }
@@ -165,21 +149,21 @@ exports.handler = async function handler(event) {
     if (!response.ok) {
       const message = data && (data.message || data.error || data.details);
       try {
-        const { savedContact, filePath } = saveLocalContact(contact);
+        const { contactWithId, contactsPath } = saveContactLocally(contact);
 
-        return json(201, {
-          message: 'Contact form submitted successfully using local JSON fallback.',
-          id: savedContact.id,
-          contact: savedContact,
+        return send(res, 201, {
+          message: 'Contact form submitted successfully (saved locally).',
+          id: contactWithId.id,
+          contact: contactWithId,
           localFallback: true,
-          filePath,
+          filePath: contactsPath,
           supabaseError: message || 'Supabase save failed.',
           detail: response.status === 401
             ? 'The Supabase API key is not valid for the configured SUPABASE_URL.'
             : undefined
         });
       } catch (fallbackError) {
-        return json(response.status, {
+        return send(res, response.status, {
           message: message || 'Supabase save failed.',
           detail: fallbackError.message
         });
@@ -188,19 +172,28 @@ exports.handler = async function handler(event) {
 
     const savedContact = Array.isArray(data) ? data[0] : data;
 
-    return json(201, {
+    return send(res, 201, {
       message: 'Contact form submitted successfully.',
       id: savedContact && savedContact.id,
       contact: savedContact
     });
   } catch (error) {
-    return json(500, {
-      message: 'Server error while submitting contact form.',
-      detail: error.message
-    });
-  }
-};
+    // Fallback to local JSON file if Supabase is unavailable
+    try {
+      const { contactWithId, contactsPath } = saveContactLocally(contact);
 
-exports.config = {
-  path: '/api/contact'
+      return send(res, 201, {
+        message: 'Contact form submitted successfully (saved locally).',
+        id: contactWithId.id,
+        contact: contactWithId,
+        localFallback: true,
+        filePath: contactsPath
+      });
+    } catch (fallbackError) {
+      return send(res, 500, {
+        message: 'Server error while submitting contact form.',
+        detail: fallbackError.message
+      });
+    }
+  }
 };
