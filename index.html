@@ -75,6 +75,14 @@
     font-size: 15px; font-weight: 700;
     letter-spacing: 1.2px; text-transform: uppercase;
   }
+  .brand-subtitle {
+    color: rgba(240,181,63,0.86);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.35px;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
   nav {
     position: absolute;
     top: calc(100% + 10px);
@@ -1448,6 +1456,7 @@
     .brand { max-width: calc(100% - 58px); }
     .brand-logo { width: 38px; height: 42px; }
     .brand-en { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-subtitle { font-size: 9px; letter-spacing: 0.8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .menu-toggle { display: inline-flex; right: 16px; }
     nav {
       top: calc(100% + 8px);
@@ -1556,6 +1565,7 @@
       <img class="brand-logo" src="logo.jpeg" alt="" />
       <span class="brand-text">
         <span class="brand-en">Arresalah Institute</span>
+        <span class="brand-subtitle">Qur'an Memorization &amp; Islamic Studies</span>
       </span>
     </a>
     <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-nav" aria-expanded="false">
@@ -2697,13 +2707,3 @@
 
     document.getElementById('t-prev').addEventListener('click', function () { goTo(current - 1); });
     document.getElementById('t-next').addEventListener('click', function () { goTo(current + 1); });
-
-    window.addEventListener('resize', function () { render(false); });
-
-    render(false);
-    setTimeout(function () { render(false); }, 60);
-    resetAuto();
-  })();
-</script>
-</body>
-</html>
