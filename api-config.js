@@ -1,15 +1,7 @@
-const isBackendHost =
-  ['localhost', '127.0.0.1'].includes(window.location.hostname) &&
-  window.location.port === '3000';
-const isLocalStaticPreview =
-  window.location.protocol === 'file:' ||
-  (['localhost', '127.0.0.1'].includes(window.location.hostname) &&
-    window.location.port !== '3000');
-const localBackendOrigin = 'http://localhost:3000';
-const productionBackendOrigin = 'https://arresalah-institute-api.onrender.com';
+const RAILWAY_API_ORIGIN = '';
+const currentContactApiUrl = window.CONTACT_API_URL || '';
+const isOldRenderApi = currentContactApiUrl.includes('arresalah-institute-api.onrender.com');
 
-window.CONTACT_API_URL =
-  window.CONTACT_API_URL ||
-  (isLocalStaticPreview && !isBackendHost
-    ? `${localBackendOrigin}/api/contact`
-    : `${productionBackendOrigin}/api/contact`);
+window.CONTACT_API_URL = RAILWAY_API_ORIGIN
+  ? `${RAILWAY_API_ORIGIN.replace(/\/$/, '')}/api/contact`
+  : (!currentContactApiUrl || isOldRenderApi ? '/api/contact' : currentContactApiUrl);
