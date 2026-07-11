@@ -54,6 +54,7 @@
     padding: 0 24px;
     display: flex; align-items: center; justify-content: space-between;
     height: 68px;
+    position: relative;
   }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .brand-logo {
@@ -62,7 +63,7 @@
     object-fit: contain;
     filter: drop-shadow(0 3px 10px rgba(0,0,0,0.28));
   }
-  .brand-text { display: flex; flex-direction: column; gap: 1px; }
+  .brand-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
   .brand-arabic {
     font-family: 'Amiri', serif;
     color: var(--amber-light);
@@ -74,11 +75,35 @@
     font-size: 15px; font-weight: 700;
     letter-spacing: 1.2px; text-transform: uppercase;
   }
-  nav { display: flex; gap: 6px; align-items: center; }
+  nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 24px;
+    width: min(320px, calc(100vw - 48px));
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 10px;
+    border: 1px solid rgba(212,136,30,0.24);
+    border-radius: 14px;
+    background: rgba(44,21,3,0.98);
+    box-shadow: 0 18px 42px rgba(26,13,0,0.42);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.22s, visibility 0.22s, transform 0.22s;
+  }
+  body.menu-open nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
   nav a {
-    color: rgba(255,248,230,0.55); text-decoration: none;
-    font-size: 13px; font-weight: 500;
-    padding: 6px 12px; border-radius: 6px;
+    width: 100%;
+    color: rgba(255,248,230,0.82); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    padding: 12px 14px; border-radius: 10px;
     transition: color 0.2s, background 0.2s;
   }
   nav a:hover { color: var(--amber-light); background: rgba(212,136,30,0.10); }
@@ -86,11 +111,64 @@
     background: var(--wa-green) !important;
     color: #fff !important;
     font-weight: 700 !important;
-    padding: 8px 16px !important;
+    padding: 12px 14px !important;
     border-radius: 8px !important;
-    display: flex; align-items: center; gap: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 6px;
   }
   .btn-nav-wa:hover { background: #20ba59 !important; }
+  .menu-toggle {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    z-index: 220;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(240,181,63,0.38);
+    border-radius: 10px;
+    background: rgba(0,0,0,0.32);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    color: var(--amber-light);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .menu-toggle:hover {
+    background: rgba(212,136,30,0.14);
+    border-color: rgba(240,181,63,0.62);
+    transform: translateY(-50%);
+  }
+  .menu-toggle:focus-visible {
+    outline: 2px solid var(--amber-light);
+    outline-offset: 3px;
+  }
+  .menu-toggle-lines {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    display: block;
+  }
+  .menu-toggle-lines::before,
+  .menu-toggle-lines::after,
+  .menu-toggle-lines span {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    border-radius: 99px;
+    background: currentColor;
+    transition: transform 0.24s, opacity 0.2s, top 0.24s;
+  }
+  .menu-toggle-lines::before { top: 0; }
+  .menu-toggle-lines span { top: 6px; }
+  .menu-toggle-lines::after { top: 12px; }
+  body.menu-open .menu-toggle-lines::before { top: 6px; transform: rotate(45deg); }
+  body.menu-open .menu-toggle-lines span { opacity: 0; }
+  body.menu-open .menu-toggle-lines::after { top: 6px; transform: rotate(-45deg); }
 
   /*  HERO  */
   .hero {
@@ -143,24 +221,6 @@
     display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
     animation: fadeUp 0.8s 0.3s ease both;
   }
-  .btn-wa-primary {
-    background: var(--wa-green);
-    color: #fff; padding: 14px 28px;
-    border-radius: 10px; font-weight: 700; font-size: 15px;
-    text-decoration: none; border: none; cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex; align-items: center; gap: 8px;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.30);
-  }
-  .btn-wa-primary:hover { background: #20ba59; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.4); }
-  .btn-ghost {
-    background: transparent; color: rgba(255,248,230,0.65);
-    padding: 14px 28px; border-radius: 10px; font-weight: 500; font-size: 14px;
-    text-decoration: none; border: 1px solid rgba(255,248,230,0.18); cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--amber); color: var(--amber-light); }
-
   .class-countdown {
     background:
       linear-gradient(180deg, rgba(26,13,0,0.96), rgba(44,21,3,0.98)),
@@ -231,6 +291,23 @@
     text-transform: uppercase;
     margin-top: 8px;
   }
+  .btn-wa-primary {
+    background: var(--wa-green);
+    color: #fff; padding: 14px 28px;
+    border-radius: 10px; font-weight: 700; font-size: 15px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.30);
+  }
+  .btn-wa-primary:hover { background: #20ba59; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.4); }
+  .btn-ghost {
+    background: transparent; color: rgba(255,248,230,0.65);
+    padding: 14px 28px; border-radius: 10px; font-weight: 500; font-size: 14px;
+    text-decoration: none; border: 1px solid rgba(255,248,230,0.18); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--amber); color: var(--amber-light); }
 
   /*  STATS  */
   .stats-strip {
@@ -421,8 +498,6 @@
     border-color: rgba(212,136,30,0.55);
     color: var(--amber);
     transform: translateY(-1px);
-  }
-    transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
   .mission-card {
     min-width: 100%;
@@ -1369,7 +1444,17 @@
   }
   /*  RESPONSIVE  */
   @media (max-width: 768px) {
-    nav { display: none; }
+    .header-inner { position: relative; height: 64px; padding: 0 16px; }
+    .brand { max-width: calc(100% - 58px); }
+    .brand-logo { width: 38px; height: 42px; }
+    .brand-en { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .menu-toggle { display: inline-flex; right: 16px; }
+    nav {
+      top: calc(100% + 8px);
+      left: 12px;
+      right: 12px;
+      width: auto;
+    }
     .footer-top { grid-template-columns: 1fr; gap: 28px; }
     .stats-inner { flex-direction: column; }
     .stat { border-right: none; border-bottom: 1px solid rgba(212,136,30,0.12); padding: 14px; }
@@ -1413,6 +1498,53 @@
     .countdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .countdown-unit { min-height: 72px; }
   }
+
+  @media (min-width: 769px) {
+    .header-inner {
+      position: relative;
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+    }
+
+    nav {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 24px;
+      width: min(320px, calc(100vw - 48px));
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+      padding: 10px;
+      border: 1px solid rgba(212,136,30,0.24);
+      border-radius: 14px;
+      background: rgba(44,21,3,0.98);
+      box-shadow: 0 18px 42px rgba(26,13,0,0.42);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.22s, visibility 0.22s, transform 0.22s;
+      z-index: 200;
+    }
+
+    body.menu-open nav {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    nav a {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    .btn-nav-wa {
+      margin-top: 6px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1426,7 +1558,10 @@
         <span class="brand-en">Arresalah Institute</span>
       </span>
     </a>
-    <nav>
+    <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-nav" aria-expanded="false">
+      <span class="menu-toggle-lines" aria-hidden="true"><span></span></span>
+    </button>
+    <nav id="site-nav" aria-label="Main navigation">
       <a href="#mission">Mission</a>
       <a href="#plans">Plans</a>
       <a href="#other-courses">Other Courses</a>
@@ -2129,6 +2264,37 @@
 
 <script src="api-config.js"></script>
 <script>
+  //  MOBILE NAVIGATION
+  (function () {
+    const menuButton = document.querySelector(".menu-toggle");
+    const siteNav = document.getElementById("site-nav");
+    if (!menuButton || !siteNav) return;
+
+    function setMenu(open) {
+      document.body.classList.toggle("menu-open", open);
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuButton.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    }
+
+    menuButton.addEventListener("click", function () {
+      setMenu(!document.body.classList.contains("menu-open"));
+    });
+
+    siteNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        setMenu(false);
+      });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") setMenu(false);
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 768) setMenu(false);
+    });
+  })();
+
   //  NEXT CLASS APPLICATION COUNTDOWN
   (function () {
     const countdown = document.querySelector(".class-countdown");
