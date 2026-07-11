@@ -94,8 +94,7 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
 
-app.post("/api/contact", contactHandler);
-app.options("/api/contact", contactHandler);
+app.all("/api/contact", contactHandler);
 
 function sendAuthResult(res, result) {
   res.status(result.status).json(result.body);
