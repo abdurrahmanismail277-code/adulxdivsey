@@ -86,12 +86,12 @@ Only provide Supabase credentials in a secure environment (Railway's env panel o
 
 ```json
 {
-  "name": "string",
-  "phone": "string",
-  "email": "string",
-  "course": "string",
-  "billing": "string",
-  "amount": 0
+	"name": "string",
+	"phone": "string",
+	"email": "string",
+	"course": "string",
+	"billing": "string",
+	"amount": 0
 }
 ```
 
@@ -105,4 +105,18 @@ If you want to serve frontend assets from this backend, place them in `backend/p
 - Confirm environment variables are present in Railway's Environment panel.
 - For production, prefer Supabase or another hosted DB instead of the local JSON fallback.
 
+### Railway health check failures
+
+If you see a message like: "The health check endpoint didn't respond as expected", try the following:
+
+- **Set the health check path to** `/api/health` in the Railway project settings (or update the health-check URL to match your app).
+- **Ensure project root is `backend`** if your repository is a monorepo so Railway runs the correct `package.json` and `start` script.
+- **Verify the `start` script** in `backend/package.json` is `node server.js` (Railway runs this to start the app).
+- **Check logs** in the Deploy Logs tab or run `railway logs` for stack traces or startup errors.
+- **Confirm `process.env.PORT` usage** — Railway provides a dynamic port; the app must listen on `process.env.PORT` (this project does).
+- **Node version / fetch:** the code uses the global `fetch` API in server requests; if your Railway environment uses Node < 18, install a fetch polyfill or set `engines.node` to `>=18` in `package.json`.
+
+If you want, I can add `engines.node` to `backend/package.json` to recommend Node 18+ or add a small `node-fetch` polyfill for older Node versions.
+
 If you'd like, I can also update the `package.json` `start` script or add a `Procfile`/Railway-specific notes — tell me which you'd prefer.
+
