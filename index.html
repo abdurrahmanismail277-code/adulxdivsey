@@ -2707,3 +2707,13 @@
 
     document.getElementById('t-prev').addEventListener('click', function () { goTo(current - 1); });
     document.getElementById('t-next').addEventListener('click', function () { goTo(current + 1); });
+
+    window.addEventListener('resize', function () { render(false); });
+
+    render(false);
+    setTimeout(function () { render(false); }, 60);
+    resetAuto();
+  })();
+</script>
+</body>
+</html>
