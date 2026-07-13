@@ -2,8 +2,21 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
-const contactHandler = require("./api/contact");
-const authStore = require("./backend/auth-store");
+
+function requireFirstAvailable(paths) {
+  for (const modulePath of paths) {
+    try {
+      return require(modulePath);
+    } catch (error) {
+      if (error.code !== "MODULE_NOT_FOUND") throw error;
+    }
+  }
+
+  throw new Error(`None of these modules could be loaded: ${paths.join(", ")}`);
+}
+
+const contactHandler = requireFirstAvailable(["./contact", "./api/contact"]);
+const authStore = requireFirstAvailable(["./auth-store", "./backend/auth-store"]);
 
 function loadEnvFile(envPath) {
   if (!fs.existsSync(envPath)) return;
