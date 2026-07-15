@@ -2208,11 +2208,11 @@
         </div>
         <div class="form-group">
           <label class="form-label">Phone Number</label>
-          <input type="tel" class="form-input" id="field-phone" placeholder="e.g. 08012345678" />
+          <input type="tel" class="form-input" id="field-phone" placeholder="e.g. 08012345678" autocomplete="tel" />
         </div>
         <div class="form-group">
           <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" id="field-email" placeholder="e.g. you@example.com" />
+          <input type="email" class="form-input" id="field-email" placeholder="e.g. you@example.com" autocomplete="email" />
         </div>
         <button class="btn-amber" onclick="goStage2()">
           Continue - Choose Course
@@ -2404,6 +2404,52 @@
     return "\uD83C\uDDF3\uD83C\uDDEC " + Number(amount).toLocaleString();
   }
 
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email).trim());
+  }
+
+  function isValidPhone(phone) {
+    const cleanedPhone = String(phone).trim();
+    const digitsOnly = cleanedPhone.replace(/\D/g, "");
+
+    return (
+      digitsOnly.length >= 7 &&
+      digitsOnly.length <= 15 &&
+      /^\+?[0-9][0-9\s().-]*$/.test(cleanedPhone)
+    );
+  }
+
+  function validateApplicantDetails() {
+    const nameInput = document.getElementById("field-name");
+    const phoneInput = document.getElementById("field-phone");
+    const emailInput = document.getElementById("field-email");
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const email = emailInput.value.trim();
+
+    if (!name || !phone || !email) {
+      alert("Please fill in your name, phone number, and email address.");
+      if (!name) nameInput.focus();
+      else if (!phone) phoneInput.focus();
+      else emailInput.focus();
+      return false;
+    }
+
+    if (!isValidPhone(phone)) {
+      alert("Invalid phone number. Please enter a correct phone number.");
+      phoneInput.focus();
+      return false;
+    }
+
+    if (!isValidEmail(email)) {
+      alert("Invalid email address. Please enter a correct email address.");
+      emailInput.focus();
+      return false;
+    }
+
+    return true;
+  }
+
   function showStage(stageNumber) {
     document.querySelectorAll(".stage-panel").forEach((panel) => panel.classList.remove("active"));
     document.getElementById(`stage-${stageNumber}`).classList.add("active");
@@ -2458,12 +2504,7 @@
   }
 
   function goStage2() {
-    const name = document.getElementById("field-name").value.trim();
-    const phone = document.getElementById("field-phone").value.trim();
-    const email = document.getElementById("field-email").value.trim();
-
-    if (!name || !phone || !email) {
-      alert("Please fill in your name, phone number, and email address.");
+    if (!validateApplicantDetails()) {
       return;
     }
 
@@ -2516,6 +2557,10 @@
   async function goStage3() {
     if (!selectedCourse) {
       alert("Please select a course first.");
+      return;
+    }
+
+    if (!validateApplicantDetails()) {
       return;
     }
 
