@@ -18,7 +18,7 @@ function loadEnvFile(envPath) {
   }
 }
 
-loadEnvFile(path.join(__dirname, '..', 'backend', '.env'));
+loadEnvFile(path.join(__dirname, '.env'));
 loadEnvFile(path.join(__dirname, '..', '.env'));
 
 const corsHeaders = {
@@ -61,6 +61,7 @@ function saveContactLocally(contact) {
 
   const candidatePaths = [
     process.env.LOCAL_CONTACTS_FILE,
+    path.join(__dirname, 'contacts.json'),
     path.join(__dirname, '..', '.local', 'contacts.json'),
     path.join(os.tmpdir(), 'contacts.json')
   ].filter(Boolean);
@@ -178,7 +179,6 @@ module.exports = async function handler(req, res) {
       contact: savedContact
     });
   } catch (error) {
-    // Fallback to local JSON file if Supabase is unavailable
     try {
       const { contactWithId, contactsPath } = saveContactLocally(contact);
 
