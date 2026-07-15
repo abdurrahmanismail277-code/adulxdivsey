@@ -4,13 +4,18 @@ const os = require("os");
 const path = require("path");
 
 function resolveUsersPath() {
-  const fallbackPaths = [
-    process.env.LOCAL_USERS_FILE,
-    path.join(__dirname, "users.json"),
-    path.join(os.tmpdir(), "users.json")
-  ].filter(Boolean);
+  const serverlessUsersPath = path.join(os.tmpdir(), "users.json");
+  const localUsersPath = path.join(__dirname, "users.json");
+  const isServerless = Boolean(process.env.NETLIFY || process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+  const fallbackPaths = [process.env.LOCAL_USERS_FILE];
 
-  for (const candidate of fallbackPaths) {
+  if (isServerless) {
+    fallbackPaths.push(serverlessUsersPath, localUsersPath);
+  } else {
+    fallbackPaths.push(localUsersPath, serverlessUsersPath);
+  }
+
+  for (const candidate of fallbackPaths.filter(Boolean)) {
     try {
       const dir = path.dirname(candidate);
       fs.mkdirSync(dir, { recursive: true });
@@ -21,7 +26,7 @@ function resolveUsersPath() {
     }
   }
 
-  return fallbackPaths[fallbackPaths.length - 1];
+  return serverlessUsersPath;
 }
 
 const usersPath = resolveUsersPath();
@@ -43,6 +48,10 @@ function writeUsers(users) {
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email).trim());
 }
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
@@ -74,6 +83,10 @@ function registerUser({ username, email, password }) {
 
   if (!cleanEmail || !password) {
     return { status: 400, body: { success: false, msg: "Email and password are required." } };
+  }
+
+  if (!isValidEmail(cleanEmail)) {
+    return { status: 400, body: { success: false, msg: "Invalid email address." } };
   }
 
   const users = readUsers();
@@ -119,6 +132,10 @@ function loginUser({ email, password }) {
 
   if (!cleanEmail || !password) {
     return { status: 400, body: { success: false, msg: "Email and password are required." } };
+  }
+
+  if (!isValidEmail(cleanEmail)) {
+    return { status: 400, body: { success: false, msg: "Invalid email address." } };
   }
 
   const user = readUsers().find((item) => item.email === cleanEmail);
