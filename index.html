@@ -647,7 +647,7 @@
   .tab-btn.active { background: var(--brown-warm); color: var(--text-white); box-shadow: 0 2px 12px rgba(26,13,0,0.18); }
   .plans-group { display: none; }
   .plans-group.active { display: grid; }
-  .plans-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .plans-grid { grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px; }
 
   /*  OTHER COURSES  */
   .other-courses-bg {
@@ -845,9 +845,19 @@
   }
   .video-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.72fr) minmax(320px, 1.28fr);
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
     gap: 34px;
     align-items: center;
+  }
+  .video-stack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    width: 100%;
+  }
+  .video-card {
+    display: flex;
+    width: 100%;
   }
   .video-copy .section-sub {
     color: rgba(255,248,230,0.84);
@@ -860,6 +870,7 @@
     border: 1px solid rgba(212,136,30,0.32);
     background: #050301;
     box-shadow: 0 22px 70px rgba(10,6,0,0.52), 0 0 0 1px rgba(255,252,245,0.04) inset;
+    width: 100%;
   }
   .video-frame::before {
     content: '';
@@ -872,10 +883,22 @@
   .feature-video {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 9 / 16;
     max-height: 560px;
     object-fit: contain;
     background: #050301;
+  }
+  .video-frame.shorts {
+    max-width: 380px;
+    justify-self: center;
+    width: min(100%, 380px);
+  }
+  .video-frame.formal {
+    width: 100%;
+  }
+  .feature-video.formal-video {
+    aspect-ratio: 16 / 9;
+    max-height: 360px;
   }
   .video-caption {
     display: flex;
@@ -1141,6 +1164,7 @@
   .payment-row .value { font-size: 13px; font-weight: 700; color: var(--text-white); text-align: right; }
   .payment-row .value.amount { color: var(--amber-light); font-size: 30px; font-family: 'Cormorant Garamond', serif; line-height: 1; }
   .payment-note { font-size: 12px; color: rgba(255,248,230,0.66); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(212,136,30,0.12); line-height: 1.65; }
+  .payment-note.warning { color: var(--amber-pale); }
 
   /* Summary card */
   .summary-card {
@@ -1485,7 +1509,7 @@
     .other-courses-grid { grid-template-columns: 1fr; }
     .course-grid { grid-template-columns: 1fr; }
     .modal-overlay { padding: 10px; align-items: flex-start; }
-    .modal { max-height: calc(100vh - 20px); border-radius: 16px; }
+    .modal { max-height: calc(100dvh - 20px); border-radius: 16px; }
     .modal-body { padding: 18px; }
     .stage-bar { padding: 14px 18px 12px; }
     .portal-mark { width: 40px; height: 40px; min-width: 40px; margin-left: 12px; border-radius: 12px; }
@@ -1501,6 +1525,7 @@
     .summary-row span:last-child, .payment-row .value { max-width: 62%; }
     .payment-row .value.amount { font-size: 26px; }
     .video-frame { border-radius: 14px; }
+    .feature-video { max-height: 70vh; }
     .video-caption { align-items: flex-start; flex-direction: column; gap: 5px; }
     .portal-mark { display: none; }
     .btn-wa-primary, .btn-ghost { width: 100%; justify-content: center; }
@@ -1573,7 +1598,7 @@
     </button>
     <nav id="site-nav" aria-label="Main navigation">
       <a href="#mission">Mission</a>
-      <a href="#plans">Plans</a>
+      <a href="#plans">Enrollment</a>
       <a href="#other-courses">Other Courses</a>
       <a href="#why">Why Us</a>
       <a href="#video">Video</a>
@@ -1771,6 +1796,25 @@
           <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Progress tracking &amp; support</li>
         </ul>
         <button class="btn-select" onclick="openPortal(&quot;Teens Qur'an Class (Ages 13-19)&quot;, 15000, 'Monthly')">
+          <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Start Enrollment
+        </button>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-type">Revision</div>
+        <h3 class="plan-name">Muraja'ah Class</h3>
+        <p class="plan-subtitle">For students who have completed the Qur'an</p>
+        <div class="plan-divider"></div>
+        <div class="plan-amount"><span class="plan-currency">&#x1F1F3;&#x1F1EC; </span>10,000</div>
+        <p class="plan-period">per month</p>
+        <ul class="plan-features">
+          <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Structured Qur'an revision</li>
+          <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Retention and fluency support</li>
+          <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tajweed correction during review</li>
+          <li><span class="feature-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#D4881E" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Consistent accountability</li>
+        </ul>
+        <button class="btn-select" onclick="openPortal(&quot;Muraja'ah Class&quot;, 10000, 'Monthly')">
           <svg class="enroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
           Start Enrollment
         </button>
@@ -1982,11 +2026,33 @@
       <h2 class="section-title">See the <span>Arresalah Experience</span></h2>
       <p class="section-sub">A short look at our online Qur'an learning environment, built around clarity, discipline, and personal support.</p>
     </div>
-    <div class="video-frame">
-      <iframe class="feature-video" src="https://www.youtube.com/embed/O2o5pqL2tI8?si=7m3yK-_WRybfFAma" title="Arresalah Institute Preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="video-caption">
-        <strong>Watch Preview</strong>
-        <span>Learn more about the classes before choosing your enrollment plan.</span>
+    <div class="video-stack">
+      <div class="video-card">
+        <div class="video-frame shorts">
+          <iframe class="feature-video" src="https://www.youtube.com/embed/vn7IMYGSZ7A?si=HuqC-0CxhSW3-NZt" title="Arresalah Kid Class" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="video-caption">
+            <strong>Kid Class</strong>
+            <span>Watch a short preview before choosing your enrollment plan.</span>
+          </div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-frame shorts">
+          <iframe class="feature-video" src="https://www.youtube.com/embed/O2o5pqL2tI8?si=xkekcNONyzgdTd0O" title="Arresalah YouTube Short 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="video-caption">
+            <strong>Short Video</strong>
+            <span>Official short from the institute channel.</span>
+          </div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-frame shorts">
+          <iframe class="feature-video" src="https://www.youtube.com/embed/sfttGE9uEAA?si=rkdIbIkgV5f1Tnce" title="Arresalah YouTube Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="video-caption">
+            <strong>Institute Video</strong>
+            <span>The second requested video stays in a clean, working layout.</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2001,7 +2067,7 @@
     <div class="faq-list">
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What age groups do you teach?<span class="faq-icon">+</span></button><p class="faq-a">We welcome students of all ages: children, teens, and adults. Our instructors adapt their teaching style to each student's age and learning pace.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need any prior Qur'an knowledge to enroll?<span class="faq-icon">+</span></button><p class="faq-a">No prior knowledge is required! We have beginner-level classes for students who are just starting with the Arabic alphabet, all the way to advanced Hifdh programs.</p></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I pay for my enrollment?<span class="faq-icon">+</span></button><p class="faq-a">After filling your details and selecting a course, your application is saved and you will continue to our Paystack payment page to complete payment securely.</p></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I pay for my enrollment?<span class="faq-icon">+</span></button><p class="faq-a">After filling your details and selecting a course, you will continue to the Paystack payment page to complete registration and payment securely.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What platform are classes held on?<span class="faq-icon">+</span></button><p class="faq-a">Classes are conducted via video call on Google Meet or Zoom. A smartphone, tablet, or computer with a stable internet connection is all you need.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is Arabiyah and do I need it?<span class="faq-icon">+</span></button><p class="faq-a">Arabiyah refers to Arabic language studies. While not mandatory, it greatly enhances your understanding of the Qur'an. We recommend the Qur'an + Arabiyah plans for deeper comprehension.</p></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I switch plans later?<span class="faq-icon">+</span></button><p class="faq-a">Yes! You can upgrade or change your plan at the start of any new month or term. Contact us on WhatsApp and we'll guide you through the process.</p></div>
@@ -2090,11 +2156,11 @@
       <div class="privacy-grid">
         <div class="privacy-item">
           <h3>Information We Collect</h3>
-          <p>We collect the details you submit during enrollment, including your name, phone number, email address, selected course, billing plan, and payment-related application details.</p>
+          <p>Enrollment details are collected through the Paystack checkout and any direct messages you send to the institute, including your name, phone number, email address, selected course, billing plan, and payment-related details.</p>
         </div>
         <div class="privacy-item">
           <h3>How We Use It</h3>
-          <p>Your information is used to process applications, contact you about classes, provide student support, confirm payment status, and improve our enrollment experience.</p>
+          <p>Your information is used to process enrollment, contact you about classes, provide student support, confirm payment status, and improve our enrollment experience.</p>
         </div>
         <div class="privacy-item">
           <h3>Payments</h3>
@@ -2131,7 +2197,7 @@
       <div class="footer-col">
         <h4>Enrollment</h4>
         <div class="footer-links">
-          <a href="#plans">Monthly Plans</a>
+          <a href="#plans" onclick="switchTabFooter('monthly')">Monthly Plans</a>
           <a href="#plans" onclick="switchTabFooter('termly')">Termly Plans</a>
           <a href="#other-courses">Other Courses</a>
           <a href="#why">Why Choose Us</a>
@@ -2240,15 +2306,15 @@
       <!-- STAGE 3: Payment -->
       <div class="stage-panel" id="stage-3">
         <div class="stage-title">Complete Payment</div>
-        <p class="stage-subtitle">Your application has been saved. Complete your tuition payment securely through Paystack.</p>
+        <p class="stage-subtitle">Complete your tuition payment securely through Paystack.</p>
 
-        <div class="payment-success">Application saved successfully. Your enrollment is almost complete.</div>
+        <div class="payment-success">Your details are ready. Paystack will receive the registration when you continue to checkout.</div>
 
         <div class="payment-box">
           <h4>Secure Checkout</h4>
           <div class="payment-row"><span class="label">Amount</span><span class="value amount" id="pay-amount"></span></div>
           <div class="payment-row"><span class="label">Course</span><span class="value" id="pay-course"></span></div>
-          <p class="payment-note">You will be taken to Paystack to complete payment with card, transfer, or any available checkout option.</p>
+          <p class="payment-note" id="payment-note">You will be taken to Paystack to complete payment with card, transfer, or any available checkout option.</p>
         </div>
 
         <a id="btn-paystack-final" href="#" target="_blank" rel="noopener" class="btn-wa-modal btn-paystack">
@@ -2261,7 +2327,7 @@
           <div class="summary-row"><span>Email</span><span id="sum-email"></span></div>
           <div class="summary-row"><span>Course</span><span id="sum-course"></span></div>
           <div class="summary-row"><span>Billing</span><span id="sum-billing"></span></div>
-          <div class="summary-row"><span>Application ID</span><span id="sum-application-id">Saving...</span></div>
+          <div class="summary-row"><span>Reference</span><span id="sum-application-id">Pending Paystack checkout</span></div>
           <div class="summary-row total"><span>Total Due</span><span id="sum-amount"></span></div>
         </div>
 
@@ -2272,7 +2338,6 @@
   </div>
 </div>
 
-<script src="api-config.js"></script>
 <script>
   //  MOBILE NAVIGATION
   (function () {
@@ -2303,6 +2368,16 @@
     window.addEventListener("resize", function () {
       if (window.innerWidth > 768) setMenu(false);
     });
+  })();
+
+  (function () {
+    if (window.location.pathname !== "/enrollment") return;
+    const plans = document.getElementById("plans");
+    if (plans) {
+      setTimeout(function () {
+        plans.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+    }
   })();
 
   //  NEXT CLASS APPLICATION COUNTDOWN
@@ -2361,6 +2436,7 @@
       { name: "Personalized Qur'an Class", price: 15000 },
       { name: "Kids Qur'an Session (Ages 5-12)", price: 15000 },
       { name: "Teens Qur'an Class (Ages 13-19)", price: 15000 },
+      { name: "Muraja'ah Class", price: 10000 },
       { name: "Personalized Qur'an + Arabiyah", price: 25000 },
     ],
     Termly: [
@@ -2377,6 +2453,7 @@
     { name: "Personalized Qur'an Class", type: "Personalized", monthly: 15000, termly: 40000 },
     { name: "Kids Qur'an Session (Ages 5-12)", type: "Age Group", monthly: 15000, termly: null },
     { name: "Teens Qur'an Class (Ages 13-19)", type: "Age Group", monthly: 15000, termly: null },
+    { name: "Muraja'ah Class", type: "Revision", monthly: 10000, termly: null },
     { name: "Personalized Qur'an + Arabiyah", type: "Personalized", monthly: 25000, termly: 70000 }
   ];
 
@@ -2386,6 +2463,7 @@
     "Personalized Qur'an Class|Monthly": "https://paystack.shop/pay/ysyyutggra",
     "Kids Qur'an Session (Ages 5-12)|Monthly": "https://paystack.shop/pay/kidclassarqm",
     "Teens Qur'an Class (Ages 13-19)|Monthly": "https://paystack.shop/pay/ujnklkevv-",
+    "Muraja'ah Class|Monthly": "",
     "Personalized Qur'an + Arabiyah|Monthly": "https://paystack.shop/pay/b79ia5pmhw",
     "General Qur'an Class|Termly": "https://paystack.shop/pay/c023459b83",
     "General Qur'an + Arabiyah|Termly": "https://paystack.shop/pay/kdr-qcer81",
@@ -2397,7 +2475,7 @@
 
   function getPaystackUrl(course) {
     if (!course) return "#";
-    return PAYSTACK_PAYMENT_URLS[`${course.name}|${course.billing}`] || "#";
+    return PAYSTACK_PAYMENT_URLS[`${course.name}|${course.billing}`] || "";
   }
 
   function formatNaira(amount) {
@@ -2512,60 +2590,24 @@
     showStage(2);
   }
 
-  const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
-  const isGitHubPages = window.location.hostname.endsWith(".github.io");
-  const isRailwayHost = window.location.hostname.endsWith(".railway.app") || window.location.hostname.endsWith(".up.railway.app");
-  const CONTACT_API_URL =
-    window.CONTACT_API_URL ||
-    (isLocalPreview || isRailwayHost ? "/api/contact" : "");
-
-  function hasRunnableBackend() {
-    return Boolean(CONTACT_API_URL);
+  function buildApplicationReference(application) {
+    const initials = application.name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0].toUpperCase())
+      .join("") || "AI";
+    const stamp = Date.now().toString(36).toUpperCase();
+    return `ENR-${initials}-${stamp}`;
   }
 
-  async function parseApiResponse(response) {
-    const contentType = response.headers.get("content-type") || "";
-
-    if (contentType.includes("application/json")) {
-      return response.json().catch(() => ({}));
-    }
-
-    const message = await response.text().catch(() => "");
-    const trimmedMessage = message.trim();
-
-    const lowerMessage = trimmedMessage.toLowerCase();
-
-    if (lowerMessage.startsWith("<!doctype") || lowerMessage.startsWith("<html")) {
-      return {
-        message: `API endpoint returned a web page instead of JSON. HTTP ${response.status}. The backend route is probably not deployed or not redirected correctly.`
-      };
-    }
-
-    return { message: trimmedMessage };
-  }
-
-  function getApiErrorMessage(response, data) {
-    return (
-      data.message ||
-      data.error ||
-      data.detail ||
-      data.supabaseError ||
-      `Server returned HTTP ${response.status}.`
-    );
-  }
-
-  async function goStage3() {
+  function goStage3() {
     if (!selectedCourse) {
       alert("Please select a course first.");
       return;
     }
 
     if (!validateApplicantDetails()) {
-      return;
-    }
-
-    if (!hasRunnableBackend()) {
-      alert("Submission failed: this website host does not expose /api/contact. Set RAILWAY_API_ORIGIN in api-config.js to your Railway public URL, then redeploy.");
       return;
     }
 
@@ -2578,51 +2620,38 @@
       amount: selectedCourse.amount
     };
 
-    const submitButton = document.getElementById("btn-to-stage3");
-    submitButton.disabled = true;
+    const applicationId = buildApplicationReference(application);
+    const paystackUrl = getPaystackUrl(selectedCourse);
+    const paystackButton = document.getElementById("btn-paystack-final");
+    const paymentNote = document.getElementById("payment-note");
 
-    const apiTarget = CONTACT_API_URL;
+    document.getElementById("sum-name").textContent = application.name;
+    document.getElementById("sum-phone").textContent = application.phone;
+    document.getElementById("sum-email").textContent = application.email;
+    document.getElementById("sum-course").textContent = application.course;
+    document.getElementById("sum-billing").textContent = application.billing;
+    document.getElementById("sum-application-id").textContent = applicationId;
+    document.getElementById("sum-amount").textContent = formatNaira(application.amount);
+    document.getElementById("pay-amount").textContent = formatNaira(application.amount);
+    document.getElementById("pay-course").textContent = application.course;
 
-    try {
-      const response = await fetch(apiTarget, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(application)
-      });
+    if (paystackUrl) {
+      paystackButton.href = paystackUrl;
+      paystackButton.removeAttribute("aria-disabled");
+      paystackButton.textContent = "Continue to Paystack";
+      paymentNote.classList.remove("warning");
+      paymentNote.textContent = "You will be taken to Paystack to complete payment with card, transfer, or any available checkout option.";
+    } else {
+      paystackButton.href = "https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20to%20enroll%20for%20Muraja'ah%20Class.";
+      paystackButton.textContent = "Request Payment Link";
+      paystackButton.setAttribute("aria-disabled", "true");
+      paymentNote.classList.add("warning");
+      paymentNote.textContent = "The Paystack payment link for this class needs to be added. Please request the payment link on WhatsApp.";
+    }
 
-      const data = await parseApiResponse(response);
-
-      if (!response.ok) {
-        throw new Error(getApiErrorMessage(response, data));
-      }
-
-      const applicationId = data.applicationId || data.id || data._id || "Submitted";
-
-      document.getElementById("sum-name").textContent = application.name;
-      document.getElementById("sum-phone").textContent = application.phone;
-      document.getElementById("sum-email").textContent = application.email;
-      document.getElementById("sum-course").textContent = application.course;
-      document.getElementById("sum-billing").textContent = application.billing;
-      document.getElementById("sum-application-id").textContent = applicationId;
-      document.getElementById("sum-amount").textContent = formatNaira(application.amount);
-      document.getElementById("pay-amount").textContent = formatNaira(application.amount);
-      document.getElementById("pay-course").textContent = application.course;
-      const paystackUrl = getPaystackUrl(selectedCourse);
-      document.getElementById("btn-paystack-final").href = paystackUrl;
-
-      alert(data.message || "Application submitted successfully.");
-      showStage(3);
-      if (paystackUrl && paystackUrl !== "#") {
-        window.location.href = paystackUrl;
-      }
-    } catch (error) {
-      const localHint = "";
-      const networkHint = error instanceof TypeError
-        ? " The browser could not reach the backend at all."
-        : "";
-      alert(`Submission failed: ${error.message}. API: ${apiTarget}.${networkHint}${localHint}`);
-    } finally {
-      submitButton.disabled = false;
+    showStage(3);
+    if (paystackUrl) {
+      window.location.href = paystackUrl;
     }
   }
 
