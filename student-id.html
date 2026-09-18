@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student ID | Arresalah Institute</title>
+<link rel="icon" type="image/jpeg" href="./logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brown-deep: #1a0d00;
+    --brown-dark: #2c1503;
+    --brown-rich: #4a2000;
+    --brown-warm: #8b4513;
+    --amber: #d4881e;
+    --amber-light: #f0b53f;
+    --cream: #f7f3ec;
+    --warm-white: #fefcf8;
+    --surface: #ffffff;
+    --ink: #3a2210;
+    --muted: rgba(58, 34, 18, 0.68);
+    --border: rgba(58, 34, 18, 0.14);
+    --danger: #a3341f;
+    --shadow: 0 22px 56px rgba(26, 13, 0, 0.14);
+    --green: #25d366;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(247, 243, 236, 0.96)),
+      var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  .topbar {
+    background: var(--brown-dark);
+    border-bottom: 1px solid rgba(212, 136, 30, 0.3);
+    box-shadow: 0 2px 20px rgba(26, 13, 0, 0.32);
+  }
+
+  .topbar-inner {
+    width: min(1120px, calc(100% - 40px));
+    height: 68px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .brand img {
+    width: 42px;
+    height: 46px;
+    object-fit: contain;
+  }
+
+  .brand span {
+    display: block;
+    min-width: 0;
+  }
+
+  .brand-name {
+    font-family: "Cormorant Garamond", serif;
+    color: var(--warm-white);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .brand-sub {
+    color: rgba(240, 181, 63, 0.86);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.15px;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .top-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .top-links a {
+    color: rgba(255, 248, 230, 0.78);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .top-links a:hover {
+    color: var(--amber-light);
+    background: rgba(212, 136, 30, 0.1);
+  }
+
+  .page {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 52px 0 68px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(330px, 1fr);
+    gap: 34px;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .kicker {
+    display: inline-flex;
+    width: fit-content;
+    color: var(--amber);
+    background: rgba(212, 136, 30, 0.12);
+    border: 1px solid rgba(212, 136, 30, 0.28);
+    border-radius: 99px;
+    padding: 5px 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: "Cormorant Garamond", serif;
+    color: var(--brown-deep);
+    font-size: clamp(34px, 6vw, 64px);
+    line-height: 0.98;
+    margin: 0 0 18px;
+  }
+
+  .hero-copy {
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .hero-note {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 26px;
+    max-width: 560px;
+  }
+
+  .note {
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+  }
+
+  .note strong {
+    display: block;
+    color: var(--brown-deep);
+    font-size: 18px;
+    margin-bottom: 3px;
+  }
+
+  .note span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    background: linear-gradient(135deg, var(--brown-dark), var(--brown-rich));
+    padding: 24px 28px;
+    color: var(--warm-white);
+  }
+
+  .panel-head h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 28px;
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+
+  .panel-head p {
+    color: rgba(255, 248, 230, 0.74);
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .panel-body {
+    padding: 28px;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .level-group, .submit-row, .form-note {
+    grid-column: 1 / -1;
+  }
+
+  label, .level-label {
+    color: var(--brown-deep);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+  }
+
+  .req { color: var(--danger); margin-left: 2px; }
+
+  input, select {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(58, 34, 18, 0.18);
+    border-radius: 8px;
+    background: #fffdf9;
+    color: var(--ink);
+    font: inherit;
+    font-size: 15px;
+    padding: 12px 13px;
+    outline: none;
+    transition: border-color 0.16s, box-shadow 0.16s, background 0.16s;
+  }
+
+  input::placeholder { color: rgba(58, 34, 18, 0.42); }
+
+  input:focus, select:focus {
+    border-color: rgba(212, 136, 30, 0.78);
+    box-shadow: 0 0 0 4px rgba(212, 136, 30, 0.14);
+    background: #fff;
+  }
+
+  .field.error input, .field.error select {
+    border-color: var(--danger);
+  }
+
+  .err {
+    display: none;
+    color: var(--danger);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .field.error .err, .level-group.error .err {
+    display: block;
+  }
+
+  .level-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 7px;
+  }
+
+  .level-btn {
+    min-height: 48px;
+    border: 1px solid rgba(58, 34, 18, 0.16);
+    border-radius: 8px;
+    background: #fffdf9;
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.16s, border-color 0.16s, background 0.16s, color 0.16s;
+  }
+
+  .level-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(212, 136, 30, 0.55);
+  }
+
+  .level-btn[aria-pressed="true"] {
+    background: var(--brown-warm);
+    border-color: var(--brown-warm);
+    color: var(--warm-white);
+  }
+
+  .primary {
+    width: 100%;
+    min-height: 52px;
+    border: none;
+    border-radius: 8px;
+    background: var(--green);
+    color: #fff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.26);
+    transition: transform 0.16s, box-shadow 0.16s, background 0.16s;
+  }
+
+  .primary:hover {
+    background: #20ba59;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 34px rgba(37, 211, 102, 0.32);
+  }
+
+  .form-note {
+    margin: -2px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  #resultView { display: none; }
+  #resultView.show { display: block; }
+  #formView.hide { display: none; }
+
+  .id-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(58, 34, 18, 0.16);
+    border-radius: 8px;
+    background:
+      linear-gradient(90deg, rgba(212, 136, 30, 0.12), transparent 34%),
+      linear-gradient(180deg, #fffdf8, #f7f3ec);
+    padding: 26px;
+  }
+
+  .id-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: linear-gradient(180deg, var(--amber-light), var(--brown-warm));
+  }
+
+  .id-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(58, 34, 18, 0.12);
+  }
+
+  .id-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .id-brand img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .id-brand h3 {
+    font-family: "Cormorant Garamond", serif;
+    color: var(--brown-deep);
+    font-size: 22px;
+    line-height: 1;
+    margin: 0 0 4px;
+  }
+
+  .id-brand span, .issued-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .issued {
+    text-align: right;
+    color: var(--brown-deep);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .id-number-wrap {
+    padding: 24px 0 22px;
+  }
+
+  .id-caption {
+    color: var(--amber);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .id-number {
+    color: var(--brown-deep);
+    font-size: clamp(25px, 4.8vw, 42px);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    overflow-wrap: anywhere;
+  }
+
+  .id-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+  }
+
+  .id-details div {
+    border-top: 1px solid rgba(58, 34, 18, 0.1);
+    padding-top: 12px;
+  }
+
+  .id-details dt {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.15px;
+    text-transform: uppercase;
+    margin: 0 0 5px;
+  }
+
+  .id-details dd {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .level-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 99px;
+    background: var(--brown-warm);
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+  }
+
+  .id-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .id-actions button, .reset-row button {
+    min-height: 46px;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .btn-copy {
+    border: none;
+    background: var(--brown-dark);
+    color: #fff;
+  }
+
+  .btn-copy.copied { background: #257a3c; }
+
+  .btn-download {
+    border: 1px solid rgba(58, 34, 18, 0.16);
+    background: #fffdf9;
+    color: var(--brown-deep);
+  }
+
+  .reset-row {
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  .reset-row button {
+    min-height: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    text-decoration: underline;
+    padding: 9px;
+  }
+
+  .page-footer {
+    margin-top: 34px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media (max-width: 860px) {
+    .topbar-inner, .page { width: min(100% - 32px, 680px); }
+    .hero { grid-template-columns: 1fr; }
+    .hero-note { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 580px) {
+    .brand-sub { display: none; }
+    .brand-name { font-size: 15px; }
+    .top-links a { padding-inline: 8px; }
+    .page { padding-top: 36px; }
+    form, .id-details, .id-actions { grid-template-columns: 1fr; }
+    .level-options { grid-template-columns: 1fr; }
+    .panel-head, .panel-body, .id-card { padding: 22px; }
+    .id-top { align-items: flex-start; flex-direction: column; }
+    .issued { text-align: left; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html" aria-label="Arresalah Institute home">
+        <img src="./logo.jpeg" alt="">
+        <span>
+          <span class="brand-name">Arresalah Institute</span>
+          <span class="brand-sub">Qur'an Memorization &amp; Islamic Studies</span>
+        </span>
+      </a>
+      <nav class="top-links" aria-label="Student ID navigation">
+        <a href="./index.html">Home</a>
+        <a href="./index.html#plans">Enroll</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <span class="kicker">Student ID Portal</span>
+        <h1 id="page-title">Generate your Arresalah student ID.</h1>
+        <p class="hero-copy">Use this page after enrollment to create a simple student reference number for your class records. The card is generated in your browser and can be copied or downloaded.</p>
+        <div class="hero-note" aria-label="Page highlights">
+          <div class="note"><strong>01</strong><span>Fill your details</span></div>
+          <div class="note"><strong>02</strong><span>Choose your level</span></div>
+          <div class="note"><strong>03</strong><span>Save your ID</span></div>
+        </div>
+      </div>
+
+      <section class="panel" id="formView" aria-labelledby="form-title">
+        <div class="panel-head">
+          <h2 id="form-title">Student Details</h2>
+          <p>Enter the same information you used for your enrollment so your ID is easy to recognize later.</p>
+        </div>
+        <div class="panel-body">
+          <form id="regForm" novalidate>
+            <div class="field">
+              <label for="fullName">Full name<span class="req">*</span></label>
+              <input type="text" id="fullName" name="fullName" autocomplete="name" required minlength="2" placeholder="e.g. Aisha Bello">
+              <span class="err">Please enter your full name.</span>
+            </div>
+
+            <div class="field">
+              <label for="email">Email address<span class="req">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" required placeholder="you@example.com">
+              <span class="err">Please enter a valid email address.</span>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone number<span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" required minlength="7" placeholder="e.g. +234 812 345 6789">
+              <span class="err">Please enter a valid phone number.</span>
+            </div>
+
+            <div class="field">
+              <label for="country">Country<span class="req">*</span></label>
+              <select id="country" name="country" required>
+                <option value="" disabled selected>Select your country</option>
+                <option>Nigeria</option>
+                <option>Ghana</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Saudi Arabia</option>
+                <option>United Arab Emirates</option>
+                <option>Qatar</option>
+                <option>South Africa</option>
+                <option>Kenya</option>
+                <option>Egypt</option>
+                <option>Malaysia</option>
+                <option>Indonesia</option>
+                <option>Pakistan</option>
+                <option>India</option>
+                <option>Other</option>
+              </select>
+              <span class="err">Please select your country.</span>
+            </div>
+
+            <div class="field">
+              <label for="city">City<span class="req">*</span></label>
+              <input type="text" id="city" name="city" autocomplete="address-level2" required minlength="2" placeholder="e.g. Kano">
+              <span class="err">Please enter your city.</span>
+            </div>
+
+            <div class="field">
+              <label for="university">School or university<span class="req">*</span></label>
+              <input type="text" id="university" name="university" required minlength="2" placeholder="e.g. Bayero University Kano">
+              <span class="err">Please enter your school or university.</span>
+            </div>
+
+            <div class="level-group">
+              <div class="level-label" id="levelLabel">Current memorization level<span class="req">*</span></div>
+              <div class="level-options" role="group" aria-labelledby="levelLabel">
+                <button type="button" class="level-btn" data-level="beginner" aria-pressed="false">Beginner</button>
+                <button type="button" class="level-btn" data-level="intermediate" aria-pressed="false">Intermediate</button>
+                <button type="button" class="level-btn" data-level="advanced" aria-pressed="false">Advanced</button>
+              </div>
+              <span class="err" id="levelErr">Please choose your level.</span>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" class="primary" id="submitBtn">Generate Student ID</button>
+            </div>
+            <p class="form-note">Your information stays on this page unless you choose to copy or save the card.</p>
+          </form>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel" id="resultView" aria-live="polite">
+      <div class="panel-head">
+        <h2>Student ID Ready</h2>
+        <p>Keep a copy of this card for your records and share the ID number when requested by the institute.</p>
+      </div>
+      <div class="panel-body">
+        <div class="id-card" id="idCard">
+          <div class="id-top">
+            <div class="id-brand">
+              <img src="./logo.jpeg" alt="">
+              <div>
+                <h3>Arresalah Institute</h3>
+                <span>Qur'an Memorization &amp; Islamic Studies</span>
+              </div>
+            </div>
+            <div class="issued">
+              <div class="issued-label">Issued</div>
+              <div id="outDate">-</div>
+            </div>
+          </div>
+
+          <div class="id-number-wrap">
+            <div class="id-caption">Student ID Number</div>
+            <div class="id-number" id="idNumber">ARQM-000-00-00000</div>
+          </div>
+
+          <dl class="id-details">
+            <div>
+              <dt>Full name</dt>
+              <dd id="outName">-</dd>
+            </div>
+            <div>
+              <dt>Level</dt>
+              <dd><span class="level-tag" id="outLevel">-</span></dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd id="outEmail">-</dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd id="outPhone">-</dd>
+            </div>
+            <div>
+              <dt>School</dt>
+              <dd id="outUniversity">-</dd>
+            </div>
+            <div>
+              <dt>Location</dt>
+              <dd id="outLocation">-</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="id-actions">
+          <button type="button" class="btn-copy" id="copyBtn">Copy ID Number</button>
+          <button type="button" class="btn-download" id="downloadBtn">Download Card</button>
+        </div>
+
+        <div class="reset-row">
+          <button type="button" id="resetBtn">Register another student</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="page-footer">Arresalah Institute for Qur'an Memorization and Islamic Studies</p>
+  </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var formView = document.getElementById("formView");
+  var resultView = document.getElementById("resultView");
+  var form = document.getElementById("regForm");
+  var levelBtns = Array.prototype.slice.call(document.querySelectorAll(".level-btn"));
+  var levelErr = document.getElementById("levelErr");
+  var selectedLevel = null;
+
+  var CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  var LEVEL_CODE = { beginner: "BEG", intermediate: "INT", advanced: "ADV" };
+  var LEVEL_LABEL = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
+
+  levelBtns.forEach(function (button) {
+    button.addEventListener("click", function () {
+      levelBtns.forEach(function (item) {
+        item.setAttribute("aria-pressed", "false");
+      });
+      button.setAttribute("aria-pressed", "true");
+      selectedLevel = button.getAttribute("data-level");
+      levelErr.parentElement.classList.remove("error");
+    });
+  });
+
+  function setFieldError(field, hasError) {
+    var wrap = field.closest(".field");
+    if (wrap) wrap.classList.toggle("error", hasError);
+  }
+
+  function validate() {
+    var ok = true;
+    var fields = form.querySelectorAll("input[required], select[required]");
+
+    fields.forEach(function (field) {
+      var valid = field.checkValidity();
+      setFieldError(field, !valid);
+      if (!valid) ok = false;
+    });
+
+    if (!selectedLevel) {
+      levelErr.parentElement.classList.add("error");
+      ok = false;
+    }
+
+    return ok;
+  }
+
+  function randomCode(length) {
+    var cryptoObj = window.crypto || window.msCrypto;
+    var code = "";
+
+    if (cryptoObj && cryptoObj.getRandomValues) {
+      var values = new Uint32Array(length);
+      cryptoObj.getRandomValues(values);
+      for (var i = 0; i < length; i += 1) {
+        code += CODE_CHARS[values[i] % CODE_CHARS.length];
+      }
+      return code;
+    }
+
+    for (var j = 0; j < length; j += 1) {
+      code += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
+    }
+    return code;
+  }
+
+  function generateId(level) {
+    var yy = new Date().getFullYear().toString().slice(-2);
+    return "ARQM-" + LEVEL_CODE[level] + "-" + yy + "-" + randomCode(5);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    if (!validate()) {
+      var firstError = form.querySelector(".field.error input, .field.error select, .level-group.error");
+      if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    var data = {
+      fullName: document.getElementById("fullName").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      country: document.getElementById("country").value,
+      city: document.getElementById("city").value.trim(),
+      university: document.getElementById("university").value.trim(),
+      level: selectedLevel
+    };
+
+    var id = generateId(data.level);
+    var issued = new Date().toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    document.getElementById("idNumber").textContent = id;
+    document.getElementById("outName").textContent = data.fullName;
+    document.getElementById("outLevel").textContent = LEVEL_LABEL[data.level];
+    document.getElementById("outEmail").textContent = data.email;
+    document.getElementById("outPhone").textContent = data.phone;
+    document.getElementById("outUniversity").textContent = data.university;
+    document.getElementById("outLocation").textContent = data.city + ", " + data.country;
+    document.getElementById("outDate").textContent = issued;
+
+    formView.classList.add("hide");
+    resultView.classList.add("show");
+    resultView.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    form.reset();
+    selectedLevel = null;
+    levelBtns.forEach(function (button) {
+      button.setAttribute("aria-pressed", "false");
+    });
+    document.querySelectorAll(".field.error, .level-group.error").forEach(function (item) {
+      item.classList.remove("error");
+    });
+    resultView.classList.remove("show");
+    formView.classList.remove("hide");
+    formView.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  var copyBtn = document.getElementById("copyBtn");
+  copyBtn.addEventListener("click", function () {
+    var id = document.getElementById("idNumber").textContent;
+
+    function showCopied() {
+      copyBtn.textContent = "Copied";
+      copyBtn.classList.add("copied");
+      setTimeout(function () {
+        copyBtn.textContent = "Copy ID Number";
+        copyBtn.classList.remove("copied");
+      }, 1600);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(id).then(showCopied).catch(function () {
+        window.prompt("Copy your ID number:", id);
+      });
+    } else {
+      window.prompt("Copy your ID number:", id);
+    }
+  });
+
+  document.getElementById("downloadBtn").addEventListener("click", function () {
+    var button = this;
+    var card = document.getElementById("idCard");
+    var idText = document.getElementById("idNumber").textContent;
+
+    if (typeof html2canvas !== "function") {
+      window.print();
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Preparing...";
+
+    html2canvas(card, { backgroundColor: null, scale: 2 }).then(function (canvas) {
+      var link = document.createElement("a");
+      link.download = idText + ".png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      button.textContent = "Downloaded";
+      setTimeout(function () {
+        button.textContent = "Download Card";
+        button.disabled = false;
+      }, 1600);
+    }).catch(function () {
+      button.textContent = "Download Card";
+      button.disabled = false;
+      window.print();
+    });
+  });
+})();
+</script>
+</body>
+</html>
