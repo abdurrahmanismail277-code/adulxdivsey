@@ -177,7 +177,6 @@
   body.menu-open .menu-toggle-lines::before { top: 6px; transform: rotate(45deg); }
   body.menu-open .menu-toggle-lines span { opacity: 0; }
   body.menu-open .menu-toggle-lines::after { top: 6px; transform: rotate(-45deg); }
-  nav a.nav-student-portal { color:#fff8e8; background:linear-gradient(110deg,#bd8f3e,#6b3510); font-weight:700; }
 
   /*  HERO  */
   .hero {
@@ -1118,6 +1117,7 @@
   }
   .form-input::placeholder { color: rgba(255,248,230,0.25); }
   .form-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(212,136,30,0.15); background: rgba(26,13,0,0.8); }
+  @media (max-width: 700px) { #sponsor .section-inner { grid-template-columns: 1fr !important; } }
 
   /* Course cards for stage 1 */
   .course-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
@@ -1598,13 +1598,13 @@
       <span class="menu-toggle-lines" aria-hidden="true"><span></span></span>
     </button>
     <nav id="site-nav" aria-label="Main navigation">
-      <a class="nav-student-portal" href="studentportal.html">Student Portal</a>
       <a href="#mission">Mission</a>
       <a href="#plans">Enrollment</a>
+      <a href="#sponsor">Sponsor a class</a>
       <a href="#other-courses">Other Courses</a>
+      <a href="./frontend/studentportal.html">Student Portal</a>
       <a href="#why">Why Us</a>
       <a href="#video">Video</a>
-      <a href="student-id.html">Student ID</a>
       <a href="#faq">FAQs</a>
       <a href="#privacy">Privacy</a>
       <a href="https://wa.me/2348082062525?text=Assalamualaikum%20Waramatullahi%20Wabarakatu%20I%20want%20make%20enquiry%20about%20the%20classes." target="_blank" rel="noopener" class="btn-nav-wa">WhatsApp Us</a>
@@ -1926,6 +1926,22 @@
   </div>
 </section>
 
+<!-- QUR'AN CLASS SPONSORSHIP -->
+<section class="section" id="sponsor" style="background:#f6efe4;color:#2f241d;">
+  <div class="section-inner" style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.8fr);gap:36px;align-items:center;">
+    <div>
+      <span class="section-badge">A place in the class for everyone</span>
+      <h2 class="section-title" style="color:#2f241d;">Sponsor a student's <span style="color:#805a2b;">Qur'an learning</span></h2>
+      <p style="max-width:620px;color:#62574c;font-size:16px;line-height:1.8;margin:14px 0 22px;">Help a student join Qur'an memorization and Tajweed classes. If you would like to sponsor a learner or need support with fees, speak with our team and we will help arrange the details.</p>
+      <a class="btn-wa-primary" href="https://wa.me/2348082062525?text=Assalamu%20alaykum%2C%20I%20would%20like%20to%20ask%20about%20sponsoring%20a%20student%27s%20Qur%27an%20class." target="_blank" rel="noopener">Ask about sponsorship</a>
+    </div>
+    <div style="padding:26px;background:#fffaf4;border:1px solid rgba(82,61,37,.14);border-radius:16px;box-shadow:0 12px 32px rgba(44,31,17,.07);">
+      <p style="font-family:'Amiri',serif;font-size:23px;color:#805a2b;margin-bottom:8px;">Give knowledge a home</p>
+      <p style="color:#62574c;line-height:1.75;font-size:14px;">Our team can talk through full or partial class sponsorship and connect support with a learner who needs it. No online payment is taken on this page.</p>
+    </div>
+  </div>
+</section>
+
 <!-- OTHER COURSES -->
 <section class="section other-courses-bg" id="other-courses">
   <div class="section-inner">
@@ -2205,7 +2221,6 @@
           <a href="#other-courses">Other Courses</a>
           <a href="#why">Why Choose Us</a>
           <a href="#video">Watch Preview</a>
-          <a href="student-id.html">Student ID</a>
           <a href="#faq">FAQs</a>
         </div>
       </div>
