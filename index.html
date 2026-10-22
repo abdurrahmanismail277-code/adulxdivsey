@@ -364,6 +364,7 @@
   .countdown-notify input::placeholder { color: rgba(255,248,230,0.62); }
   .countdown-notify button { padding: 11px 16px; border: 1px solid var(--amber); border-radius: 6px; background: var(--amber); color: var(--brown-deep); font: 600 14px 'Source Sans 3', sans-serif; cursor: pointer; }
   .countdown-notify-status, .countdown-date { flex-basis: 100%; color: rgba(255,248,230,0.76); font-size: 12px; text-align: left; }
+  .countdown-notify-privacy { flex-basis: 100%; color: rgba(255,248,230,0.76); font-size: 12px; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   .countdown-grid {
     display: grid;
@@ -1940,8 +1941,9 @@
       <p class="countdown-copy">Enrollment opens for the next Qur'an and Arabiyah class intake. Prepare your details and choose your learning path when the portal opens.</p>
       <form class="countdown-notify" id="countdown-notify-form">
         <label class="sr-only" for="countdown-contact">Email or WhatsApp number</label>
-        <input id="countdown-contact" name="contact" type="text" autocomplete="email" placeholder="Email or WhatsApp number" required />
+        <input id="countdown-contact" name="contact" type="text" placeholder="Email or WhatsApp number with country code" maxlength="254" required />
         <button type="submit">Notify me</button>
+        <p class="countdown-notify-privacy">We will use this contact for application updates.</p>
         <p class="countdown-notify-status" id="countdown-notify-status" role="status" aria-live="polite"></p>
         <p class="countdown-date" id="countdown-date"></p>
       </form>
@@ -2853,12 +2855,13 @@
       event.preventDefault();
       const contact = form.elements.contact.value.trim();
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
-      const isPhone = /^\+?[0-9 ()-]{7,20}$/.test(contact);
+      const digits = contact.replace(/\D/g, "");
+      const isPhone = /^\+?[0-9 ()-]{7,20}$/.test(contact) && digits.length >= 7 && digits.length <= 15;
       if (!isEmail && !isPhone) {
         status.textContent = "Enter a valid email address or WhatsApp number.";
         return;
       }
-      status.textContent = "Sending request...";
+      status.textContent = "Saving your contact...";
       try {
         const response = await fetch("/api/contact", {
           method: "POST",
@@ -2867,7 +2870,7 @@
         });
         const result = await response.json().catch(function () { return {}; });
         if (!response.ok) throw new Error(result.message || "Could not save your request.");
-        status.textContent = result.message || "You're on the list. We'll notify you when applications open.";
+        status.textContent = result.message || "Your contact has been saved for application updates.";
         form.reset();
       } catch (error) {
         status.textContent = error.message || "Could not send your request. Please try again.";

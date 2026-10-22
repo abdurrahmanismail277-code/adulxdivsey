@@ -81,6 +81,69 @@ function saveContactLocally(contact) {
   throw new Error('Unable to write local contacts JSON file.');
 }
 
+function normalizeNotificationContact(value) {
+  const input = String(value || '').trim();
+  if (!input || input.length > 254) return null;
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+  if (isEmail) return { contact_type: 'email', contact_value: input.toLowerCase() };
+
+  const phone = input.replace(/[\s().-]/g, '');
+  const digits = phone.replace(/^\+/, '');
+  if (/^\+?\d{7,15}$/.test(phone) && digits.length >= 7 && digits.length <= 15) {
+    return { contact_type: 'whatsapp', contact_value: phone };
+  }
+
+  return null;
+}
+
+async function saveApplicationNotification(req, res) {
+  const contact = normalizeNotificationContact(req.body?.contact);
+  if (!contact) {
+    return send(res, 400, { message: 'Enter a valid email address or WhatsApp number, including the country code.' });
+  }
+
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').replace(/\/$/, '');
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+  const notificationTable = process.env.NOTIFICATION_TABLE || 'application_notifications';
+
+  if (!supabaseUrl || !supabaseKey) {
+    return send(res, 503, { message: 'Application notifications are not configured yet. Please try again later.' });
+  }
+  if (!/^[a-z_][a-z0-9_]*$/i.test(notificationTable)) {
+    return send(res, 500, { message: 'Application notifications are temporarily unavailable.' });
+  }
+
+  try {
+    const url = `${supabaseUrl}/rest/v1/${notificationTable}?on_conflict=contact_type%2Ccontact_value`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=ignore-duplicates,return=representation'
+      },
+      body: JSON.stringify(contact)
+    });
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      console.error('[application-notification] Supabase write failed:', response.status, result?.message || result?.code || 'Unknown error');
+      return send(res, 503, { message: 'We could not save your contact right now. Please try again later.' });
+    }
+
+    const alreadyRegistered = Array.isArray(result) && result.length === 0;
+    return send(res, 200, {
+      message: alreadyRegistered
+        ? 'This contact is already on the application update list.'
+        : 'Thanks. Your contact has been saved for application updates.'
+    });
+  } catch (error) {
+    console.error('[application-notification] Request failed:', error.message);
+    return send(res, 503, { message: 'We could not save your contact right now. Please try again later.' });
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     Object.entries(corsHeaders).forEach(([key, value]) => res.setHeader(key, value));
@@ -89,6 +152,10 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return send(res, 405, { message: 'Method not allowed.' });
+  }
+
+  if (req.body?.source === 'application-notification') {
+    return saveApplicationNotification(req, res);
   }
 
   const { name, phone, email, course, billing, amount } = req.body || {};

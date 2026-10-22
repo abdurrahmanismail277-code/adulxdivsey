@@ -73,6 +73,7 @@ Set the following environment variables in Railway (or locally in `.env`):
 - `SUPABASE_URL` - Your Supabase project URL (optional)
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (required for server-side writes when using Supabase)
 - `CONTACT_TABLE` - Table name for contacts (default: `contacts`)
+- `NOTIFICATION_TABLE` - Table for application update signups (default: `application_notifications`)
 - `PORT` - Optional override of the port (Railway provides this automatically)
 
 Only provide Supabase credentials in a secure environment (Railway's env panel or secret store).
@@ -81,6 +82,12 @@ Only provide Supabase credentials in a secure environment (Railway's env panel o
 
 - `GET /api/health` — Health check
 - `POST /api/contact` — Submit contact form
+
+### Application opening notifications
+
+The homepage's **Notify me** form accepts an email address or WhatsApp number and saves it to the `application_notifications` table. Before enabling the form, run [`supabase/application-notifications.sql`](./supabase/application-notifications.sql) in the Supabase SQL Editor, then set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in the server environment. Set `NOTIFICATION_TABLE` only if you use a different table name. Keep the service role key on the server; it must never be added to the website JavaScript.
+
+Signups are stored for follow-up. The form does not send an email or WhatsApp message automatically when applications open.
 
 ### Contact payload example
 
