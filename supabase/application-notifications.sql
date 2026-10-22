@@ -11,4 +11,15 @@ create table if not exists public.application_notifications (
 
 alter table public.application_notifications enable row level security;
 revoke all on table public.application_notifications from anon, authenticated;
+grant insert on table public.application_notifications to anon;
 grant all on table public.application_notifications to service_role;
+
+drop policy if exists "Allow public application notification signups"
+  on public.application_notifications;
+create policy "Allow public application notification signups"
+  on public.application_notifications
+  for insert to anon
+  with check (
+    contact_type in ('email', 'whatsapp')
+    and length(contact_value) between 7 and 254
+  );

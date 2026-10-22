@@ -2863,14 +2863,22 @@
       }
       status.textContent = "Saving your contact...";
       try {
-        const response = await fetch("/api/contact", {
+        // Public signups use Supabase directly so this static site does not need Railway.
+        // The anon key is safe to expose; RLS restricts the table to inserts only.
+        const supabaseUrl = "https://lgmwolyyeexhpaisihen.supabase.co";
+        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnbXdvbHl5ZWV4aHBhaXNpaGVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyODg3MjEsImV4cCI6MjA5Mjg2NDcyMX0.n8VYgF-mn2nOxtzbI1KlgfnDl7F26y3vkxS95nD6uzs";
+        const response = await fetch(supabaseUrl + "/rest/v1/application_notifications?on_conflict=contact_type%2Ccontact_value", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contact, email: isEmail ? contact : "", phone: isPhone ? contact : "", source: "application-notification" })
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": supabaseAnonKey,
+            "Authorization": "Bearer " + supabaseAnonKey,
+            "Prefer": "resolution=ignore-duplicates,return=minimal"
+          },
+          body: JSON.stringify({ contact_type: isEmail ? "email" : "whatsapp", contact_value: contact })
         });
-        const result = await response.json().catch(function () { return {}; });
-        if (!response.ok) throw new Error(result.message || "Could not save your request.");
-        status.textContent = result.message || "Your contact has been saved for application updates.";
+        if (!response.ok) throw new Error("Could not save your request. Please try again later.");
+        status.textContent = "Thanks. Your contact has been saved for application updates.";
         form.reset();
       } catch (error) {
         status.textContent = error.message || "Could not send your request. Please try again.";
