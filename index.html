@@ -2691,13 +2691,24 @@
     const countdown = document.querySelector(".class-countdown");
     if (!countdown) return;
 
-    const totalMinutes = Number(countdown.dataset.countdownMinutes || 44770);
+    const configuredMinutes = Number(countdown.dataset.countdownMinutes);
+    const totalMinutes = Number.isFinite(configuredMinutes) && configuredMinutes > 0 ? configuredMinutes : 44770;
     const storageKey = "arresalahClassApplicationStartAt";
-    let targetTime = Number(localStorage.getItem(storageKey));
+    let storedTarget = null;
+    try {
+      storedTarget = window.localStorage.getItem(storageKey);
+    } catch (error) {
+      // Continue with an in-memory deadline when this device blocks browser storage.
+    }
+    let targetTime = storedTarget === null ? NaN : Number(storedTarget);
 
-    if (!targetTime) {
+    if (!Number.isFinite(targetTime) || targetTime <= 0) {
       targetTime = Date.now() + totalMinutes * 60 * 1000;
-      localStorage.setItem(storageKey, String(targetTime));
+      try {
+        window.localStorage.setItem(storageKey, String(targetTime));
+      } catch (error) {
+        // The countdown still runs for this visit if persistent storage is unavailable.
+      }
     }
 
     const days = document.getElementById("count-days");
@@ -2734,6 +2745,9 @@
 
     renderCountdown();
     timer = setInterval(renderCountdown, 1000);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) renderCountdown();
+    });
   })();
 
 
