@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.arresalahinstitute.com/</loc>
-    <lastmod>2026-10-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://www.arresalahinstitute.com/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/about/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/plans/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/enrollment/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/courses/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/sponsor/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/classes/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/faq/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/testimonials/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/privacy/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://www.arresalahinstitute.com/contact/</loc><lastmod>2026-10-23</lastmod></url>
 </urlset>

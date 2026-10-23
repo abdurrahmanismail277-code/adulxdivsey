@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const { verifyTurnstile } = require('./turnstile');
 
 function loadEnvFile(envPath) {
   if (!fs.existsSync(envPath)) return;
@@ -152,6 +153,13 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return send(res, 405, { message: 'Method not allowed.' });
+  }
+
+  // Both public signup flows must pass Turnstile before any database or local write.
+  const clientIp = req.headers['cf-connecting-ip'] || req.ip || req.socket?.remoteAddress;
+  const verification = await verifyTurnstile(req.body?.['cf-turnstile-response'], clientIp);
+  if (!verification.ok) {
+    return send(res, verification.status, { message: verification.message });
   }
 
   if (req.body?.source === 'application-notification') {

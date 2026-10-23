@@ -47,6 +47,11 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
 
+app.get("/api/turnstile-config", (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.json({ siteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "" });
+});
+
 app.all("/api/contact", contactHandler);
 
 function sendAuthResult(res, result) {

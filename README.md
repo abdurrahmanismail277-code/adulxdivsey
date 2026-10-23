@@ -1,5 +1,15 @@
 # Firebase Contact Backend (Railway deployment)
 
+## Static website
+
+The institute website is published from this repository as a GitHub Pages site (the repository has a `CNAME` and `.nojekyll`). Its source page is `templates/source.html`; shared navigation and footer markup live in `templates/partials/`. Run `npm run build` to generate the static pages directly in the repository root using the `folder/index.html` layout. GitHub Pages serves the generated clean URLs and `404.html`.
+
+Run `npm run dev` to build the site and serve it locally at `http://localhost:4173`. The local server returns a real 404 for unknown paths.
+
+The current GitHub Pages host does not support per-path 301 rules or a custom host redirect config in this repo. Configure apex-to-`www` and HTTP-to-HTTPS at the domain/GitHub Pages settings; `CNAME` keeps the canonical Pages host at `www.arresalahinstitute.com`. Legacy section hashes are redirected by the homepage JavaScript.
+
+Update `templates/source.html` and the shared partials, then rebuild before publishing. Keep the backend `npm start` and `npm run dev:backend` scripts for Railway.
+
 A Node.js backend for handling contact form submissions with optional Supabase integration. This README focuses on deploying the backend to Railway.
 
 ## Features
@@ -72,6 +82,8 @@ Set the following environment variables in Railway (or locally in `.env`):
 
 - `SUPABASE_URL` - Your Supabase project URL (optional)
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (required for server-side writes when using Supabase)
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY` - Cloudflare Turnstile site key; the backend returns this public key to the page
+- `TURNSTILE_SECRET_KEY` - Cloudflare Turnstile secret key; backend only, never put this in website JavaScript
 - `CONTACT_TABLE` - Table name for contacts (default: `contacts`)
 - `NOTIFICATION_TABLE` - Table for application update signups (default: `application_notifications`)
 - `PORT` - Optional override of the port (Railway provides this automatically)
@@ -81,11 +93,14 @@ For server-side contact endpoints, provide Supabase credentials through the host
 ## API Endpoints
 
 - `GET /api/health` — Health check
+- `GET /api/turnstile-config` — Returns the public Turnstile site key
 - `POST /api/contact` — Submit contact form
 
 ### Application opening notifications
 
-The homepage's **Notify me** form accepts an email address or WhatsApp number and saves it to the `application_notifications` table directly through Supabase, so it works on static hosting without Railway. Run [`supabase/application-notifications.sql`](./supabase/application-notifications.sql) in the Supabase SQL Editor first. The public anon key is used by the browser, and row-level security allows public inserts only; never put a service role key in website JavaScript.
+Both the homepage's **Notify me** form and the enrollment form require a valid Cloudflare Turnstile token. The backend verifies each token with Cloudflare before writing to Supabase or the local fallback. Run [`supabase/application-notifications.sql`](./supabase/application-notifications.sql) in the Supabase SQL Editor to enable notification signups.
+
+Create a Turnstile widget in Cloudflare in Managed mode with the dark theme, then set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` in the backend hosting environment. The frontend loads the public site key from `GET /api/turnstile-config`; the secret is only used by `turnstile.js`. The homepage and API must be served from the same origin, or the frontend's `CONTACT_API_URL` must point to this backend. Configure the backend CORS policy for the website origin if they are hosted separately.
 
 Signups are stored for follow-up. The form does not send an email or WhatsApp message automatically when applications open.
 
