@@ -22,19 +22,34 @@
     return span;
   };
 
-  for (let index = 0; index < words.length; index += 1) {
-    if (words[index] === "meaningful" && words[index + 1] === "moments") {
-      highlight = document.createElement("span");
-      highlight.className = "hero-highlight";
-      fragment.append(highlight);
-      makeWord(words[index], index, highlight);
-      highlight.append(document.createTextNode(" "));
-      makeWord(words[index + 1], index + 1, highlight);
-      index += 1;
-    } else {
-      makeWord(words[index], index, fragment);
+  if (paragraph.querySelector(".circle-word")) {
+    let wordIndex = 0;
+    [...paragraph.childNodes].forEach(node => {
+      if (node.nodeType !== Node.TEXT_NODE) {
+        fragment.append(node);
+        return;
+      }
+      const parts = node.nodeValue.match(/\s+|\S+/g) || [];
+      parts.forEach(part => {
+        if (/^\s+$/.test(part)) fragment.append(document.createTextNode(part));
+        else makeWord(part, wordIndex++, fragment);
+      });
+    });
+  } else {
+    for (let index = 0; index < words.length; index += 1) {
+      if (words[index] === "meaningful" && words[index + 1] === "moments") {
+        highlight = document.createElement("span");
+        highlight.className = "hero-highlight";
+        fragment.append(highlight);
+        makeWord(words[index], index, highlight);
+        highlight.append(document.createTextNode(" "));
+        makeWord(words[index + 1], index + 1, highlight);
+        index += 1;
+      } else {
+        makeWord(words[index], index, fragment);
+      }
+      if (index < words.length - 1) fragment.append(document.createTextNode(" "));
     }
-    if (index < words.length - 1) fragment.append(document.createTextNode(" "));
   }
   paragraph.replaceChildren(fragment);
   paragraph.style.minHeight = `${originalParagraphHeight}px`;
@@ -295,6 +310,8 @@
         }, 100);
       }), { threshold: 0.25 });
       sequenceObserver.observe(heading);
+    } else if (cards.length) {
+      armCards();
     }
   }
 
