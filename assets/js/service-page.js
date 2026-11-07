@@ -95,6 +95,13 @@ footer.append(otherServices);
 const home = make("a", "svc-full-home", "Back to home");
 home.href = "index.html";
 footer.append(home);
+const credit = make("a", "footer-credit", "Built by ");
+credit.href = "https://itqancodes.vercel.app/";
+credit.target = "_blank";
+credit.rel = "noopener noreferrer";
+credit.setAttribute("aria-label", "Website built by Itqancodes, opens in a new tab");
+credit.append(make("strong", "", "Itqancodes"));
+footer.append(credit);
 
 navigation.addEventListener("click", event => {
   const link = event.target.closest("a[href^='#svc-full-']");
