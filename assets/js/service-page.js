@@ -82,26 +82,7 @@ sectionDefinitions.forEach(definition => {
   sections.append(section);
 });
 
-const footer = root.querySelector("[data-svc-full-footer]");
-footer.append(make("p", "svc-full-footer-label", "Explore our other services"));
-const otherServices = make("nav", "svc-full-other-services");
-otherServices.setAttribute("aria-label", "Other Apex House services");
-SERVICE_ORDER.filter(key => key !== root.dataset.servicePage).forEach(key => {
-  const link = make("a", "svc-full-other-link", serviceLabel(key));
-  link.href = SERVICE_PAGES[key].page;
-  otherServices.append(link);
-});
-footer.append(otherServices);
-const home = make("a", "svc-full-home", "Back to home");
-home.href = "index.html";
-footer.append(home);
-const credit = make("a", "footer-credit", "Built by ");
-credit.href = "https://itqancodes.vercel.app/";
-credit.target = "_blank";
-credit.rel = "noopener noreferrer";
-credit.setAttribute("aria-label", "Website built by Itqancodes, opens in a new tab");
-credit.append(make("strong", "", "Itqancodes"));
-footer.append(credit);
+// Shared footer markup is provided directly by each service page.
 
 navigation.addEventListener("click", event => {
   const link = event.target.closest("a[href^='#svc-full-']");

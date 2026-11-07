@@ -47,11 +47,10 @@
       text.setAttribute("aria-pressed", "false"); contrast.setAttribute("aria-pressed", "false");
       try { localStorage.removeItem("apex-large-text"); localStorage.removeItem("apex-high-contrast"); } catch {}
     });
-    const close = () => { panel.hidden = true; trigger.setAttribute("aria-expanded", "false"); trigger.setAttribute("aria-label", "Open accessibility settings"); };
+    const close = () => { panel.hidden = true; trigger.setAttribute("aria-expanded", "false"); };
     trigger.addEventListener("click", () => {
       const open = trigger.getAttribute("aria-expanded") !== "true";
       trigger.setAttribute("aria-expanded", String(open));
-      trigger.setAttribute("aria-label", open ? "Close accessibility settings" : "Open accessibility settings");
       panel.hidden = !open;
       if (open) text.focus();
     });

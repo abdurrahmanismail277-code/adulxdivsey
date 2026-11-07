@@ -1,8 +1,15 @@
 import { calculatePrice } from "../../services.js";
 
+const SECURITY_HEADERS = {
+  "Cache-Control": "no-store",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Frame-Options": "DENY",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
 const json = (body, status = 200, headers = {}) => Response.json(body, {
   status,
-  headers: { "Cache-Control": "no-store", ...headers },
+  headers: { ...SECURITY_HEADERS, ...headers },
 });
 
 const allowedOrigins = new Set(["https://theapexxhouse.com", "https://www.theapexxhouse.com"]);
@@ -24,6 +31,9 @@ const idempotentBookings = new Map();
 const money = amount => `₦${Number(amount).toLocaleString("en-NG")}`;
 const BANK = Object.freeze({ name: "Moniepoint MFB", accountName: "The Apex House", accountNumber: "9115595519" });
 const OWNER_WHATSAPP = "2348038326349";
+const PAYMENT_WINDOW_MS = 24 * 60 * 60 * 1000;
+const MAX_PAYMENT_PROOF_BYTES = 4 * 1024 * 1024;
+const BOOKING_RETENTION_SECONDS = 90 * 24 * 60 * 60;
 
 async function verifyRecaptchaToken(token, env) {
   if (!env.RECAPTCHA_SECRET_KEY) {
@@ -94,6 +104,7 @@ function bookingFields(input, quote, reference, narration, whatsappUrl) {
     amountKnown,
     amountText,
     whatsappUrl,
+    status: "pending_payment",
   };
 }
 
@@ -114,13 +125,13 @@ function emailMarkup(booking, internal = false) {
     ? `<div style="margin-top:20px;padding:16px;border-radius:12px;background:#edf4ff"><h2 style="margin:0 0 10px;font-size:16px">Transfer details</h2><p style="margin:5px 0">Bank: <strong>${BANK.name}</strong></p><p style="margin:5px 0">Account name: <strong>${BANK.accountName}</strong></p><p style="margin:5px 0">Account number: <strong>${BANK.accountNumber}</strong></p><p style="margin:5px 0">Amount: <strong>${escapeHtml(money(booking.amount))}</strong></p><p style="margin:5px 0">Narration: <strong>${escapeHtml(booking.narration)}</strong></p></div>`
     : `<div style="margin-top:20px;padding:16px;border-radius:12px;background:#fff7e4;color:#463914"><strong>To be confirmed, please contact us on WhatsApp for the final amount before you transfer.</strong></div>`;
   const receipt = `<p style="margin:22px 0"><a href="${escapeHtml(booking.whatsappUrl)}" style="display:inline-block;padding:13px 18px;border-radius:8px;background:#0164ff;color:#fff;text-decoration:none;font-weight:bold">Send your receipt on WhatsApp</a></p>`;
-  return `<div style="margin:0;background:#f3f6fb;padding:24px 10px;font-family:Arial,sans-serif;color:#142d50"><div style="max-width:600px;margin:auto;background:#fff;border-radius:14px;overflow:hidden"><div style="padding:24px;background:#021a40;color:#fff"><div style="color:#a9c9ff;font-size:12px;letter-spacing:2px">THE APEX HOUSE</div><h1 style="margin:8px 0 0;font-size:24px">${internal ? "New booking request" : "We received your booking"}</h1></div><div style="padding:24px"><p>Hello ${escapeHtml(booking.name)},</p><p>${internal ? "A new booking was submitted." : "Thank you. Your booking request is with our team."}</p><div style="padding:15px;border:1px solid #c9ddfb;border-radius:10px;background:#f5f9ff"><div style="font-size:11px;color:#60718a">BOOKING REFERENCE / PAYMENT NARRATION</div><strong style="display:block;margin-top:5px;font-size:22px;color:#0164ff">${escapeHtml(booking.reference)}</strong></div><p style="margin:18px 0 8px">Amount: <strong>${escapeHtml(booking.amountText)}</strong></p><table role="presentation" style="width:100%;border-collapse:collapse">${detailRows}</table>${payment}${internal ? "" : receipt}<p style="margin-top:22px;color:#60718a;font-size:12px">The Apex House · +234 803 832 6349</p></div></div></div>`;
+  return `<div style="margin:0;background:#f3f6fb;padding:24px 10px;font-family:Arial,sans-serif;color:#142d50"><div style="max-width:600px;margin:auto;background:#fff;border-radius:14px;overflow:hidden"><div style="padding:24px;background:#021a40;color:#fff"><div style="color:#a9c9ff;font-size:12px;letter-spacing:2px">THE APEX HOUSE</div><h1 style="margin:8px 0 0;font-size:24px">${internal ? "New booking request" : "We received your booking"}</h1></div><div style="padding:24px"><p>Hello ${escapeHtml(booking.name)},</p><p>${internal ? "A new booking was submitted. Status: Pending payment." : "We received your booking. Your payment is pending until we receive and verify your transfer proof."}</p><div style="padding:15px;border:1px solid #c9ddfb;border-radius:10px;background:#f5f9ff"><div style="font-size:11px;color:#60718a">BOOKING REFERENCE / PAYMENT NARRATION</div><strong style="display:block;margin-top:5px;font-size:22px;color:#0164ff">${escapeHtml(booking.reference)}</strong></div><p style="margin:18px 0 8px">Amount: <strong>${escapeHtml(booking.amountText)}</strong></p><table role="presentation" style="width:100%;border-collapse:collapse">${detailRows}</table>${payment}${internal ? "" : receipt}<p style="margin-top:22px;color:#60718a;font-size:12px">The Apex House · +234 803 832 6349</p></div></div></div>`;
 }
 
 function emailText(booking, internal = false) {
   const details = `Reference / narration: ${booking.reference}\n${internal ? `Client: ${booking.name} <${booking.email}>\nWhatsApp: ${booking.whatsapp}\n` : ""}Service: ${booking.category} / ${booking.service}\nMode: ${booking.mode}\nPackage: ${booking.package}\nQuantity: ${booking.quantity} ${booking.unit}\nAdditional hours: ${booking.extraHours || 0}\nEvent: ${booking.eventName} (${booking.eventType})\nPreferred date: ${booking.eventDate}${booking.eventTime ? ` at ${booking.eventTime}` : ""}\nSecond-choice date: ${booking.alternateDate || "Not provided"}\nCountry: ${booking.country} (${booking.countryISO})\nTime zone: ${booking.eventTimezone || "Not applicable"}\nVenue: ${booking.venue || "Not provided"}\nPlatform: ${booking.platform || "Not provided"}\nAudience size: ${booking.audienceSize}\nAdditional notes: ${booking.additionalNotes || "Not provided"}\nBrief: ${booking.brief || "Not provided"}\nAmount: ${booking.amountText}`;
   const payment = booking.amountKnown ? `\n\nTransfer details\nBank: ${BANK.name}\nAccount name: ${BANK.accountName}\nAccount number: ${BANK.accountNumber}\nAmount: ${money(booking.amount)}\nNarration: ${booking.narration}` : "\n\nTo be confirmed, please contact us on WhatsApp for the final amount before you transfer.";
-  return `${internal ? "New booking request" : `Hello ${booking.name}, we received your booking request.`}\n\n${details}${payment}${internal ? "" : `\n\nSend your receipt on WhatsApp: ${booking.whatsappUrl}`}`;
+  return `${internal ? "New booking request · Pending payment" : `Hello ${booking.name}, we received your booking. Your payment is pending until we receive and verify your transfer proof.`}\n\n${details}${payment}${internal ? "" : `\n\nSend your receipt on WhatsApp: ${booking.whatsappUrl}`}`;
 }
 
 async function checkRateLimit(ip, env) {
@@ -140,6 +151,224 @@ async function checkRateLimit(ip, env) {
   }
   record.count++;
   return record.count <= 5;
+}
+
+const validReference = value => typeof value === "string" && /^APX-[A-F0-9]{24}$/.test(value);
+const privatePaymentDetails = () => ({ bankName: BANK.name, accountName: BANK.accountName, accountNumber: BANK.accountNumber });
+
+async function loadBooking(reference, env) {
+  if (!validReference(reference)) return null;
+  const index = await env.APEX_HOUSE_BOOKINGS.get(`booking-ref:${reference}`, { type: "json" });
+  if (!index?.idempotencyKey) return null;
+  const record = await env.APEX_HOUSE_BOOKINGS.get(`booking:${index.idempotencyKey}`, { type: "json" });
+  return record ? { record, idempotencyKey: index.idempotencyKey } : null;
+}
+
+async function saveBooking(reference, idempotencyKey, record, env) {
+  await env.APEX_HOUSE_BOOKINGS.put(`booking:${idempotencyKey}`, JSON.stringify(record), { expirationTtl: BOOKING_RETENTION_SECONDS });
+  await env.APEX_HOUSE_BOOKINGS.put(`booking-ref:${reference}`, JSON.stringify({ idempotencyKey }), { expirationTtl: BOOKING_RETENTION_SECONDS });
+}
+
+async function markExpired(loaded, env) {
+  const { record, idempotencyKey } = loaded;
+  if (record.status === "pending_payment" && record.expiresAt && Date.now() >= Date.parse(record.expiresAt)) {
+    record.status = "expired";
+    record.booking.status = "expired";
+    record.updatedAt = new Date().toISOString();
+    record.response.status = "expired";
+    record.response.booking.status = "expired";
+    await saveBooking(record.booking.reference, idempotencyKey, record, env);
+  }
+  return record;
+}
+
+function emailHeaders(env) {
+  return { from: env.RESEND_FROM_EMAIL || env.RESEND_FROM || "The Apex House <bookings@theapexxhouse.com>" };
+}
+
+async function sendResend(env, message) {
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ ...emailHeaders(env), ...message }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error(`Resend returned ${response.status}: ${await response.text()}`);
+}
+
+const isValidEmail = value => typeof value === "string" && value.length <= 254 && emailPattern.test(value);
+
+async function retrieveBooking(request, env) {
+  const origin = request.headers.get("Origin");
+  if (!origin || !originAllowed(origin, env)) return json({ error: "Request origin is not allowed." }, 403);
+  const headers = verificationCorsHeaders(origin);
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...SECURITY_HEADERS, ...headers } });
+  if (request.method !== "POST") return json({ error: "Method not allowed." }, 405, headers);
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  if (!await checkRateLimit(`retrieve:${ip}`, env)) return json({ error: "Too many attempts. Please wait a minute and try again." }, 429, headers);
+  let input;
+  try { input = await request.json(); } catch { return json({ error: "Please send a valid booking reference and email." }, 400, headers); }
+  const reference = typeof input?.reference === "string" ? input.reference.trim().toUpperCase() : "";
+  const email = typeof input?.email === "string" ? input.email.trim().toLowerCase() : "";
+  if (!validReference(reference) || !isValidEmail(email)) return json({ error: "Booking not found. Check the reference and email and try again." }, 404, headers);
+  let loaded;
+  try { loaded = await loadBooking(reference, env); } catch { return json({ error: "We could not retrieve the booking right now. Please try again." }, 503, headers); }
+  if (!loaded || loaded.record.booking.email.toLowerCase() !== email) return json({ error: "Booking not found. Check the reference and email and try again." }, 404, headers);
+  try {
+    const record = await markExpired(loaded, env);
+    return json({ ok: true, booking: record.booking, status: record.status, expiresAt: record.expiresAt, emailStatus: record.response.emailStatus || "failed", paymentDetails: privatePaymentDetails() }, 200, headers);
+  } catch { return json({ error: "We could not update this booking status right now. Please try again." }, 503, headers); }
+}
+
+function proofFileType(bytes, contentType) {
+  const starts = (...signature) => signature.every((byte, index) => bytes[index] === byte);
+  if (contentType === "image/png" && starts(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)) return contentType;
+  if (contentType === "image/jpeg" && starts(0xff, 0xd8, 0xff)) return contentType;
+  if (contentType === "image/webp" && starts(0x52, 0x49, 0x46, 0x46) && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP") return contentType;
+  if (contentType === "application/pdf" && String.fromCharCode(...bytes.slice(0, 5)) === "%PDF-") return contentType;
+  return "";
+}
+
+async function submitPaymentProof(request, env) {
+  const origin = request.headers.get("Origin");
+  if (!origin || !originAllowed(origin, env)) return json({ error: "Request origin is not allowed." }, 403);
+  const headers = verificationCorsHeaders(origin);
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...SECURITY_HEADERS, ...headers } });
+  if (request.method !== "POST") return json({ error: "Method not allowed." }, 405, headers);
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  if (!await checkRateLimit(`proof:${ip}`, env)) return json({ error: "Too many proof submissions. Please wait a minute and try again." }, 429, headers);
+  const length = Number(request.headers.get("Content-Length") || 0);
+  if (length > MAX_PAYMENT_PROOF_BYTES + 65_536) return json({ error: "The proof file must be 4 MB or smaller." }, 413, headers);
+
+  let input;
+  let proofFile = null;
+  try {
+    if (request.headers.get("Content-Type")?.includes("multipart/form-data")) {
+      const form = await request.formData();
+      input = Object.fromEntries(["reference", "email", "method", "senderName", "transferTime"].map(key => [key, form.get(key)]));
+      const file = form.get("receipt");
+      if (file && typeof file.arrayBuffer === "function" && file.size > 0) proofFile = file;
+    } else {
+      input = await request.json();
+    }
+  } catch { return json({ error: "Please submit valid payment proof details." }, 400, headers); }
+
+  const reference = typeof input?.reference === "string" ? input.reference.trim().toUpperCase() : "";
+  const email = typeof input?.email === "string" ? input.email.trim().toLowerCase() : "";
+  const method = input?.method === "whatsapp" ? "whatsapp" : "form";
+  const senderName = clean(input?.senderName, 120);
+  const transferTime = typeof input?.transferTime === "string" ? input.transferTime.trim() : "";
+  if (!validReference(reference) || !isValidEmail(email)) return json({ error: "Booking not found. Check the reference and email and try again." }, 404, headers);
+  if (method === "form" && !proofFile && (!senderName || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(transferTime) || Number.isNaN(Date.parse(transferTime)))) {
+    return json({ error: "Upload a receipt or enter the sender name and transfer time." }, 400, headers);
+  }
+
+  let loaded;
+  try { loaded = await loadBooking(reference, env); } catch { return json({ error: "We could not retrieve the booking right now. Please try again." }, 503, headers); }
+  if (!loaded || loaded.record.booking.email.toLowerCase() !== email) return json({ error: "Booking not found. Check the reference and email and try again." }, 404, headers);
+  let record;
+  try { record = await markExpired(loaded, env); } catch { return json({ error: "We could not update this booking status right now." }, 503, headers); }
+  if (record.status === "expired" || record.status === "cancelled") return json({ error: "This payment window has expired. Start a new booking to continue.", status: record.status }, 410, headers);
+  if (record.status === "confirmed") return json({ error: "This booking is already confirmed.", status: record.status }, 409, headers);
+  if (record.status === "awaiting_confirmation") return json({ ok: true, status: record.status, message: "Your proof is already awaiting confirmation." }, 200, headers);
+
+  let fileMetadata = null;
+  if (proofFile) {
+    if (proofFile.size > MAX_PAYMENT_PROOF_BYTES) return json({ error: "The proof file must be 4 MB or smaller." }, 413, headers);
+    const bytes = new Uint8Array(await proofFile.arrayBuffer());
+    const contentType = proofFileType(bytes, proofFile.type);
+    if (!contentType) return json({ error: "Use a JPEG, PNG, WebP, or PDF receipt file." }, 400, headers);
+    fileMetadata = { contentType, size: bytes.byteLength, uploadedAt: new Date().toISOString() };
+    try { await env.APEX_HOUSE_BOOKINGS.put(`payment-proof:${reference}`, bytes, { metadata: fileMetadata, expirationTtl: BOOKING_RETENTION_SECONDS }); }
+    catch { return json({ error: "We could not save that proof file. Please try again or send it on WhatsApp." }, 503, headers); }
+  }
+
+  record.status = "awaiting_confirmation";
+  record.updatedAt = new Date().toISOString();
+  record.proof = { method, senderName: method === "whatsapp" ? "" : senderName, transferTime: method === "whatsapp" ? "" : transferTime, file: fileMetadata };
+  record.booking.status = record.status;
+  record.response.status = record.status;
+  record.response.booking.status = record.status;
+  try { await saveBooking(reference, loaded.idempotencyKey, record, env); }
+  catch { return json({ error: "We saved the proof but could not update the booking status. Please contact us on WhatsApp.", status: "awaiting_confirmation" }, 503, headers); }
+
+  let emailStatus = "sent";
+  const proofDescription = method === "whatsapp"
+    ? "The customer selected WhatsApp and confirmed that they sent proof there."
+    : `Transfer sender: ${escapeHtml(senderName || "Not provided")}<br>Transfer time: ${escapeHtml(transferTime || "Not provided")}<br>Receipt file: ${fileMetadata ? `${fileMetadata.contentType}, ${fileMetadata.size} bytes` : "No file attached"}`;
+  const message = `We received your booking, and we are verifying your payment. Your status is Awaiting confirmation. We will email you again only after we verify the transfer.\nReference: ${reference}`;
+  try {
+    if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) throw new Error("Email settings are not configured.");
+    await Promise.all([
+      sendResend(env, { to: [record.booking.email], subject: `Payment proof received · ${reference}`, text: `Hello ${record.booking.name},\n\n${message}`, html: `<p>Hello ${escapeHtml(record.booking.name)},</p><p>We received your booking, and we are verifying your payment.</p><p>Reference: <strong>${reference}</strong></p><p>Your status is <strong>Awaiting confirmation</strong>. We will email you again only after we verify the transfer.</p>` }),
+      sendResend(env, { to: [env.NOTIFY_EMAIL], reply_to: record.booking.email, subject: `Payment proof submitted · ${reference}`, text: `Payment proof submitted for ${reference}.\nClient: ${record.booking.name} <${record.booking.email}>\nMethod: ${method}\nSender: ${senderName || "Not provided"}\nTransfer time: ${transferTime || "Not provided"}\nFile: ${fileMetadata ? `${fileMetadata.contentType}, ${fileMetadata.size} bytes` : "None"}\nRetrieve file via authenticated POST /api/admin/proof with the reference.`, html: `<p>Payment proof submitted for <strong>${reference}</strong>.</p><p>Client: ${escapeHtml(record.booking.name)} &lt;${escapeHtml(record.booking.email)}&gt;</p><p>${proofDescription}</p><p>Current status: <strong>Awaiting confirmation</strong>. Review the transfer in the bank account before using the protected admin status endpoint to confirm it.</p>` }),
+    ]);
+  } catch (error) {
+    emailStatus = "failed";
+    console.error("Payment proof saved, but email delivery failed", { reference, error: error instanceof Error ? error.message : "Unknown error" });
+  }
+  return json({ ok: true, status: record.status, emailStatus, message: "Payment awaiting confirmation" }, 201, headers);
+}
+
+function authorizedAdmin(request, env) {
+  const secret = typeof env.BOOKING_ADMIN_TOKEN === "string" ? env.BOOKING_ADMIN_TOKEN : "";
+  const authorization = request.headers.get("Authorization") || "";
+  const provided = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  if (!secret || provided.length !== secret.length) return false;
+  let difference = 0;
+  for (let index = 0; index < secret.length; index++) difference |= secret.charCodeAt(index) ^ provided.charCodeAt(index);
+  return difference === 0;
+}
+
+async function updateAdminStatus(request, env) {
+  if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
+  if (!authorizedAdmin(request, env)) return json({ error: "Admin authorization required." }, 401);
+  let input;
+  try { input = await request.json(); } catch { return json({ error: "Invalid status update." }, 400); }
+  const reference = typeof input?.reference === "string" ? input.reference.trim().toUpperCase() : "";
+  const status = input?.status;
+  if (!validReference(reference) || !["confirmed", "cancelled"].includes(status)) return json({ error: "Use a valid reference and status of confirmed or cancelled." }, 400);
+  let loaded;
+  try { loaded = await loadBooking(reference, env); } catch { return json({ error: "Booking storage is unavailable." }, 503); }
+  if (!loaded) return json({ error: "Booking not found." }, 404);
+  const { record, idempotencyKey } = loaded;
+  if (["confirmed", "cancelled", "expired"].includes(record.status)) return json({ error: `This booking is already ${record.status}.`, status: record.status }, 409);
+  if (status === "confirmed" && record.status !== "awaiting_confirmation") return json({ error: "Payment proof must be submitted before confirming this booking.", status: record.status }, 409);
+  record.status = status;
+  record.updatedAt = new Date().toISOString();
+  record.booking.status = status;
+  record.response.status = status;
+  record.response.booking.status = status;
+  try { await saveBooking(reference, idempotencyKey, record, env); }
+  catch { return json({ error: "We could not save the status change." }, 503); }
+
+  let emailStatus = "not_sent";
+  if (status === "confirmed") {
+    try {
+      await sendResend(env, {
+        to: [record.booking.email],
+        subject: `Booking confirmed · ${reference}`,
+        text: `Hello ${record.booking.name},\n\nWe verified your transfer. Your booking is confirmed.\nReference: ${reference}\nService: ${record.booking.category} / ${record.booking.service}\n\nThe Apex House team`,
+        html: `<p>Hello ${escapeHtml(record.booking.name)},</p><p>We verified your transfer. Your booking is confirmed.</p><p>Reference: <strong>${reference}</strong></p><p>Service: ${escapeHtml(record.booking.category)} / ${escapeHtml(record.booking.service)}</p><p>The Apex House team</p>`,
+      });
+      emailStatus = "sent";
+    } catch (error) {
+      emailStatus = "failed";
+      console.error("Booking confirmed, but confirmation email delivery failed", { reference, error: error instanceof Error ? error.message : "Unknown error" });
+    }
+  }
+  return json({ ok: true, reference, status, emailStatus });
+}
+
+async function getAdminProof(request, env) {
+  if (request.method !== "GET") return json({ error: "Method not allowed." }, 405);
+  if (!authorizedAdmin(request, env)) return json({ error: "Admin authorization required." }, 401);
+  const reference = new URL(request.url).searchParams.get("reference")?.toUpperCase() || "";
+  if (!validReference(reference)) return json({ error: "A valid reference is required." }, 400);
+  const object = await env.APEX_HOUSE_BOOKINGS.get(`payment-proof:${reference}`);
+  if (!object) return json({ error: "No uploaded proof file exists for this reference." }, 404);
+  const contentType = object.customMetadata?.contentType || "application/octet-stream";
+  return new Response(object.body, { status: 200, headers: { ...SECURITY_HEADERS, "Cache-Control": "no-store", "Content-Type": contentType, "Content-Disposition": `attachment; filename="payment-proof-${reference}.${contentType === "application/pdf" ? "pdf" : contentType === "image/png" ? "png" : contentType === "image/webp" ? "webp" : "jpg"}"` } });
 }
 
 async function submitBooking(request, env) {
@@ -193,20 +422,22 @@ async function submitBooking(request, env) {
   if (!quote) return json({ error: "That service or package is unavailable. Please review your selection." }, 400, corsHeaders);
   if (booking.mode === "virtual" && booking.eventTimezone !== "Africa/Lagos") return json({ error: "Please select Nigeria time (WAT) for your virtual event." }, 400, corsHeaders);
 
-  const random = new Uint8Array(6);
+  const random = new Uint8Array(12);
   crypto.getRandomValues(random);
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const reference = `APX-${[...random].map(value => alphabet[value % alphabet.length]).join("")}`;
+  const reference = `APX-${[...random].map(value => value.toString(16).padStart(2, "0")).join("").toUpperCase()}`;
   const whatsappMessage = `Hello Apex House, I have paid for booking ${reference} (${quote.service.name}). My name is ${booking.name}. Receipt attached.`;
   const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(whatsappMessage)}`;
   const complete = bookingFields(booking, quote, reference, reference, whatsappUrl);
+  const createdAt = new Date().toISOString();
+  const expiresAt = new Date(Date.now() + PAYMENT_WINDOW_MS).toISOString();
+  complete.expiresAt = expiresAt;
   const sender = env.RESEND_FROM_EMAIL || env.RESEND_FROM || "The Apex House <bookings@theapexxhouse.com>";
   const clientMessage = { from: sender, to: [booking.email], subject: `Booking received · ${reference}`, html: emailMarkup(complete), text: emailText(complete) };
   const ownerMessage = { from: sender, to: [env.NOTIFY_EMAIL], reply_to: booking.email, subject: `New booking · ${reference} · ${booking.name}`, html: emailMarkup(complete, true), text: emailText(complete, true) };
-  const result = { ok: true, reference, amount: quote.amount, amountKnown: complete.amountKnown, service: complete.service, package: complete.package, unit: complete.unit, whatsappUrl, emailStatus: "pending" };
-  const bookingRecord = { createdAt: new Date().toISOString(), booking: complete, response: result };
+  const result = { ok: true, reference, amount: quote.amount, amountKnown: complete.amountKnown, service: complete.service, package: complete.package, unit: complete.unit, whatsappUrl, status: "pending_payment", expiresAt, paymentDetails: privatePaymentDetails(), booking: complete, emailStatus: "pending" };
+  const bookingRecord = { createdAt, updatedAt: createdAt, expiresAt, status: "pending_payment", booking: complete, response: result };
   try {
-    await env.APEX_HOUSE_BOOKINGS.put(`booking:${idempotencyKey}`, JSON.stringify(bookingRecord));
+    await saveBooking(reference, idempotencyKey, bookingRecord, env);
   } catch (error) {
     console.error("Booking storage write failed", { reference, error: error instanceof Error ? error.message : "Unknown error" });
     return json({ code: "BOOKING_STORAGE_FAILED", error: "We could not save your booking, so payment instructions are not available yet. Please retry or contact us on WhatsApp." }, 503, corsHeaders);
@@ -217,17 +448,7 @@ async function submitBooking(request, env) {
   if (emailConfigMissing.length) {
     emailStatusFailed(reference, `Missing Worker email configuration: ${emailConfigMissing.join(", ")}`);
   } else {
-    const sendEmail = async message => {
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify(message),
-        signal: AbortSignal.timeout(10_000),
-      });
-      const responseBody = await response.text();
-      if (!response.ok) throw new Error(`Resend returned ${response.status}: ${responseBody}`);
-    };
-    const emailResults = await Promise.allSettled([sendEmail(clientMessage), sendEmail(ownerMessage)]);
+    const emailResults = await Promise.allSettled([sendResend(env, clientMessage), sendResend(env, ownerMessage)]);
     const failures = emailResults.filter(item => item.status === "rejected");
     if (failures.length) emailStatusFailed(reference, failures.map(item => item.reason instanceof Error ? item.reason.message : "Unknown Resend error"));
     else result.emailStatus = "sent";
@@ -236,7 +457,7 @@ async function submitBooking(request, env) {
   if (result.emailStatus === "pending") result.emailStatus = "failed";
   bookingRecord.response = result;
   try {
-    await env.APEX_HOUSE_BOOKINGS.put(`booking:${idempotencyKey}`, JSON.stringify(bookingRecord));
+    await saveBooking(reference, idempotencyKey, bookingRecord, env);
   } catch (error) {
     console.error("Booking email status could not be saved", { reference, error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -255,10 +476,15 @@ export default {
 
     if (pathname === "/api/recaptcha/verify") return verifyRecaptcha(request, env);
     if (pathname === "/api/book") return submitBooking(request, env);
+    if (pathname === "/api/booking/retrieve") return retrieveBooking(request, env);
+    if (pathname === "/api/booking/proof") return submitPaymentProof(request, env);
+    if (pathname === "/api/admin/booking/status") return updateAdminStatus(request, env);
+    if (pathname === "/api/admin/proof") return getAdminProof(request, env);
     if (pathname.startsWith("/api/")) return json({ error: "API route not found." }, 404);
 
     const response = await env.ASSETS.fetch(request);
     const headers = new Headers(response.headers);
+    for (const [name, value] of Object.entries(SECURITY_HEADERS)) headers.set(name, value);
     const staticAsset = /\.(?:css|js|mjs|json|svg|png|jpe?g|webp|avif|ico|woff2?)$/i.test(pathname);
     const versionedAsset = staticAsset && url.searchParams.has("v");
     const isHtml = /\.html?$/.test(pathname) || pathname === "/";
@@ -267,6 +493,11 @@ export default {
     if (isHtml || /\.(?:css|js|mjs)$/i.test(pathname)) {
       const contentType = headers.get("Content-Type") || textMime;
       headers.set("Content-Type", /;\s*charset=/i.test(contentType) ? contentType : `${contentType}; charset=utf-8`);
+    }
+
+    if (isHtml) {
+      headers.set("Content-Security-Policy", "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https:; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'self'; upgrade-insecure-requests");
+      if (["theapexxhouse.com", "www.theapexxhouse.com"].includes(url.hostname)) headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     }
 
     if (versionedAsset) headers.set("Cache-Control", "public, max-age=31536000, immutable");

@@ -644,36 +644,6 @@ button:disabled {
 @media(max-width:640px){.pricing-category-intro{margin-bottom:1rem;font-size:.875rem}}
 
 
-/* assets/css/contact-section.css */
-.footer-contact{grid-column:1/-1;min-width:0;padding:36px 0 34px}
-.footer-contact h3{margin:0 0 18px;text-align:center}
-.footer-contact .contact-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;width:min(100%,860px);margin-inline:auto}
-.footer-contact .contact-cards a{box-sizing:border-box;display:grid;min-width:0;max-width:100%;min-height:68px;align-items:center;text-decoration:none;transition:transform .16s ease,background-color .16s ease,border-color .16s ease,box-shadow .16s ease}
-.footer-contact .contact-book{display:flex;justify-content:center;width:100%;min-height:56px;padding:0 18px;border:1px solid #0164ff;border-radius:13px;background:#0164ff;color:#021a40;font:600 15px/1.2 'DM Sans','Inter',sans-serif;text-align:center}
-.footer-contact .contact-book:hover{background:#3383ff;border-color:#3383ff;color:#021a40;box-shadow:0 8px 22px #0164ff35}
-.footer-contact .contact-card{grid-template-columns:44px minmax(0,1fr) 16px;column-gap:15px;width:100%;min-height:72px;padding:12px 15px;border:1px solid rgba(255,255,255,.15);border-radius:13px;background:#0a244a;color:#fff}
-.footer-contact .contact-card:hover{border-color:rgba(117,170,255,.55);background:#102e5b;color:#fff}
-.footer-contact .contact-icon-badge{display:grid;width:44px;height:44px;flex:0 0 44px;place-items:center;border-radius:13px;background:rgba(37,211,102,.15)}
-.footer-contact .contact-icon{display:block;width:24px;height:24px;flex:0 0 24px;fill:none;stroke:#75aaff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.footer-contact .contact-whatsapp-icon{fill:#25d366;stroke:none}
-.footer-contact .contact-copy{display:grid;min-width:0;gap:3px}
-.footer-contact .contact-label{color:rgba(255,255,255,.68);font:500 11px/1.25 'DM Mono',monospace;letter-spacing:.025em}
-.footer-contact .contact-value{display:block;min-width:0;color:#fff;font:500 16px/1.35 'DM Sans','Inter',sans-serif;overflow-wrap:anywhere;word-break:normal}
-.footer-contact .contact-email{font-size:clamp(15px,4vw,17px)}
-.footer-contact .contact-phone{font-variant-numeric:tabular-nums}
-.footer-contact .contact-arrow{display:block;width:17px;height:17px;fill:none;stroke:rgba(255,255,255,.68);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.footer-contact .contact-reach{display:flex;align-items:center;justify-content:center;gap:9px;margin:19px 0 0;color:rgba(255,255,255,.7);font:400 14px/1.5 'DM Sans','Inter',sans-serif;text-align:center}
-.footer-contact .contact-reach svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.footer-contact .contact-cards a:active{transform:scale(.985)}
-.footer-contact .contact-book:active{background:#0757d2}
-.footer-contact .contact-card:active{background:#163967}
-.footer-contact .contact-cards a:focus-visible{outline:3px solid #8ebaff;outline-offset:3px}
-@media(min-width:768px){.footer-contact .contact-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.footer-contact .contact-book,.footer-contact .contact-card:last-child{grid-column:1/-1}}
-@media(min-width:1024px){.footer-contact .contact-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.footer-contact .contact-book{grid-column:1/-1}.footer-contact .contact-card:last-child{grid-column:auto}}
-@media(max-width:767px){.footer-contact{padding:34px 0 30px}.footer-contact .contact-cards{gap:13px}.footer-contact .contact-card{min-height:70px;padding:12px 14px}.footer-contact .contact-reach{font-size:14px}}
-@media(prefers-reduced-motion:reduce){.footer-contact .contact-cards a{transition:none}}
-
-
 /* assets/css/founder-team.css */
 .founder-team{padding:92px 0;background:var(--white)}
 .founder-team-heading{max-width:680px;margin:0 auto 32px;text-align:center}

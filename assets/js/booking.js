@@ -1,50 +1,14 @@
 
     import { SETTINGS, SERVICES, calculatePrice, getService, readServiceIdsFromUrl } from "../../services.js?v=20261029";
     import { initBookingInputs } from "./booking-inputs.js?v=20261029";
-    const BANK_NAME = "Moniepoint MFB";
-    const ACCOUNT_NAME = "The Apex House";
-    const ACCOUNT_NUMBER = "9115595519";
-    // Change transfer details here; never put private keys or API secrets in this file.
-    const PAYMENT_CONFIG = Object.freeze({
-      accountNumber: ACCOUNT_NUMBER,
-      bank: BANK_NAME,
-      accountName: ACCOUNT_NAME,
-      whatsappNumber: "2348038326349",
-    });
-    const BOOKING_STORAGE_KEY = "apex-house-pending-payment";
-    let paymentNarrationCode = "";
-    function getPaymentNarrationCode() {
-      if (!paymentNarrationCode) {
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const values = new Uint8Array(6);
-        if (window.crypto?.getRandomValues) window.crypto.getRandomValues(values);
-        else values.forEach((_, index) => values[index] = Math.floor(Math.random() * 256));
-        paymentNarrationCode = `APX-${[...values].map(value => alphabet[value % alphabet.length]).join("")}`;
-      }
-      return paymentNarrationCode;
-    }
-    const BOOKING_DRAFT_KEY = "apex-house-booking-draft";
-    function readBookingDraft() {
-      try { const value = JSON.parse(localStorage.getItem(BOOKING_DRAFT_KEY) || "null"); return value && typeof value === "object" ? value : {}; } catch { return {}; }
-    }
-    function saveBookingDraft() {
-      const draft = {};
-      for (const [key, value] of new FormData(bookingForm).entries()) {
-        if (["consent", "website"].includes(key)) continue;
-        draft[key] = value;
-      }
-      try { localStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft)); } catch {}
-    }
-    function restoreBookingDraft(draft) {
-      for (const [key, value] of Object.entries(draft)) {
-        const control = bookingForm.elements.namedItem(key);
-        if (!control) continue;
-        if (control instanceof RadioNodeList) [...control].forEach(item => { item.checked = item.value === value; });
-        else if (control.type !== "checkbox" && control.type !== "hidden" && key !== "website") control.value = value;
-        else if (control.type === "hidden") control.value = value;
-      }
-    }
-    const bookingDraft = readBookingDraft();
+    const PAYMENT_REFERENCE_KEY = "apex-house-booking-reference";
+    const PAYMENT_STEP_KEY = "apex-house-payment-step";
+    try {
+      localStorage.removeItem("apex-house-booking-draft");
+      sessionStorage.removeItem("apex-house-pending-payment");
+    } catch {}
+    const PAYMENT_CONFIG = Object.freeze({ whatsappNumber: "2348038326349" });
+    const bookingDraft = {};
     const naira = amount => `${String.fromCharCode(0x20A6)}${Number(amount).toLocaleString("en-NG")}`;
     const serviceOptions = document.getElementById("booking-service");
     const offerOptions = document.getElementById("booking-package");
@@ -108,7 +72,6 @@
     function priceLabel(amount) { return `${naira(amount)} NGN`; }
     serviceOptions.innerHTML = `<option value="">Choose a service</option>${Object.entries(SERVICES).map(([, group]) => `<optgroup label="${group.label}">${group.services.map(service => `<option value="${service.id}">${service.name}</option>`).join("")}</optgroup>`).join("")}`;
     serviceOptions.classList.remove("booking-services-loading");
-    restoreBookingDraft(bookingDraft);
     bookingInputs = initBookingInputs({ draft: bookingDraft });
     document.getElementById("phone-dial-country-iso").value = "NG";
     const allServiceIds = new Set(Object.values(SERVICES).flatMap(group => group.services.map(service => service.id)));
@@ -240,10 +203,6 @@
     const updateNotesCount = () => { notesCount.textContent = String(notesInput.value.length); };
     notesInput.addEventListener("input", updateNotesCount);
     updateNotesCount();
-    let draftSaveTimer;
-    const scheduleDraftSave = () => { window.clearTimeout(draftSaveTimer); draftSaveTimer = window.setTimeout(saveBookingDraft, 250); };
-    bookingForm.addEventListener("input", scheduleDraftSave);
-    bookingForm.addEventListener("change", scheduleDraftSave);
     const priceDetails = document.getElementById("booking-estimate-live");
     const compactPriceQuery = window.matchMedia("(max-width: 760px)");
     const setPriceSummaryMode = () => { priceDetails.open = !compactPriceQuery.matches; };
@@ -357,76 +316,169 @@
     }
     const paymentScreen = document.getElementById("booking-payment");
     const paymentTitle = document.getElementById("payment-title");
+    const paymentPanels = [...document.querySelectorAll("[data-payment-panel]")];
     let currentBooking = null;
-    function displayBookingPayment(booking) {
-      document.querySelector(".bank-transfer-card").hidden = false;
+    let currentPaymentStep = 1;
+    let statusPollTimer = 0;
+    let expiryTimer = 0;
+
+    function savePaymentReference(reference, step = currentPaymentStep) {
+      try {
+        sessionStorage.setItem(PAYMENT_REFERENCE_KEY, reference);
+        sessionStorage.setItem(PAYMENT_STEP_KEY, String(step));
+      } catch {}
+    }
+
+    function setPaymentStep(step, moveFocus = true) {
+      currentPaymentStep = Math.min(3, Math.max(1, Number(step) || 1));
+      paymentPanels.forEach(panel => { panel.hidden = Number(panel.dataset.paymentPanel) !== currentPaymentStep; });
+      document.querySelectorAll("[data-payment-step]").forEach(item => {
+        if (Number(item.dataset.paymentStep) === currentPaymentStep) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
+      });
+      if (currentBooking) savePaymentReference(currentBooking.reference, currentPaymentStep);
+      if (moveFocus) {
+        const heading = paymentScreen.querySelector(`[data-payment-panel="${currentPaymentStep}"] h3`);
+        requestAnimationFrame(() => {
+          paymentScreen.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+          (heading || paymentTitle).focus({ preventScroll: true });
+        });
+      }
+      renderPaymentStatus();
+    }
+
+    function renderPaymentStatus() {
+      if (!currentBooking) return;
+      const status = currentBooking.status || "pending_payment";
+      const terminal = document.getElementById("payment-terminal");
+      const terminalTitle = document.getElementById("payment-terminal-title");
+      const terminalMessage = document.getElementById("payment-terminal-message");
+      const proofForm = document.getElementById("payment-proof-form");
+      const whatsappProof = document.querySelector(".payment-whatsapp-proof");
+      const confirmActions = document.getElementById("payment-confirm-actions");
+      const statusPanel = document.getElementById("payment-status-panel");
+      const statusBadge = document.getElementById("payment-status-badge");
+      const isTerminal = ["expired", "cancelled"].includes(status);
+      terminal.hidden = !isTerminal;
+      paymentPanels.forEach(panel => { panel.hidden = isTerminal || Number(panel.dataset.paymentPanel) !== currentPaymentStep; });
+      if (isTerminal) {
+        confirmActions.hidden = true;
+        terminalTitle.textContent = status === "expired" ? "Payment window expired" : "Booking cancelled";
+        terminalMessage.textContent = status === "expired" ? "This booking is no longer active. Start a new booking to continue." : "This booking was cancelled. Start a new booking if you still need the service.";
+        document.body.classList.add("booking-payment-open");
+        return;
+      }
+      if (status === "confirmed") {
+        currentPaymentStep = 3;
+        paymentPanels.forEach(panel => { panel.hidden = Number(panel.dataset.paymentPanel) !== 3; });
+        document.querySelectorAll("[data-payment-step]").forEach(item => {
+          if (Number(item.dataset.paymentStep) === 3) item.setAttribute("aria-current", "step");
+          else item.removeAttribute("aria-current");
+        });
+        proofForm.hidden = true;
+        whatsappProof.hidden = true;
+        confirmActions.hidden = true;
+        statusPanel.hidden = false;
+        statusPanel.textContent = "Booking confirmed after payment verification.";
+        statusBadge.textContent = "Confirmed";
+        document.getElementById("payment-status-refresh").textContent = "Our team verified the transfer.";
+        document.body.classList.add("booking-payment-open");
+        return;
+      }
+      const awaiting = status === "awaiting_confirmation";
+      statusBadge.textContent = awaiting ? "Awaiting confirmation" : "Pending payment";
+      proofForm.hidden = awaiting;
+      whatsappProof.hidden = awaiting;
+      confirmActions.hidden = awaiting;
+      statusPanel.hidden = !awaiting;
+      statusPanel.textContent = awaiting ? "Payment awaiting confirmation. We’ll email you when verification is complete." : "";
+      document.getElementById("payment-status-refresh").textContent = awaiting ? "Your booking is confirmed only after we verify your payment." : "";
+      document.body.classList.add("booking-payment-open");
+    }
+
+    function displayBookingPayment(booking, options = {}) {
+      currentBooking = {
+        ...booking,
+        emailStatus: options.emailStatus || booking.emailStatus || "sent",
+        paymentDetails: options.paymentDetails || booking.paymentDetails || null,
+      };
       const emailWarning = document.getElementById("booking-email-warning");
-      const emailStatus = booking.emailStatus || "sent";
-      emailWarning.hidden = emailStatus === "sent";
-      emailWarning.textContent = emailStatus === "pending"
-        ? `Your booking ${booking.reference} is saved. Its email confirmation is still processing; your payment instructions are below.`
-        : `Your booking ${booking.reference} is saved, but the email confirmation could not be sent. Your payment instructions are below.`;
-      document.getElementById("payment-guidance").textContent = booking.amountKnown
-        ? "Your service details are reviewed. Transfer the exact amount in Nigerian naira from a Nigerian bank account using the details below. International transfers and foreign currencies are not accepted."
-        : "Please contact us on WhatsApp to confirm the final amount before transferring from a Nigerian bank account. International transfers and foreign currencies are not accepted.";
-      currentBooking = booking;
-      booking.paymentNarration = booking.paymentNarration || getPaymentNarrationCode();
-      paymentNarrationCode = booking.paymentNarration;
-      const amountKnown = booking.amountKnown === true && Number.isFinite(Number(booking.amount));
-      const amountNumber = Number.isFinite(Number(booking.amount)) ? Number(booking.amount) : 0;
-      const amountText = amountKnown ? naira(amountNumber) : "To be confirmed";
-      const amountPlain = amountKnown ? String(amountNumber) : "";
-      const narration = booking.paymentNarration;
-      const formattedAmount = amountKnown ? naira(amountNumber) : "To be confirmed";
-      const confirmationMessage = `Hello Apex House, I have paid ${formattedAmount} for ${booking.service}. Event: ${booking.eventName || "Not provided"}. Date: ${booking.date || "Not provided"}. Payment reference: ${narration}. My name is ${String(booking.name || "").trim()}. Receipt attached.`;
-      document.getElementById("payment-reference-summary").textContent = booking.reference;
-      document.getElementById("payment-name").textContent = booking.name;
-      document.getElementById("payment-service").textContent = booking.service;
-      document.getElementById("payment-mode").textContent = booking.mode === "physical" ? "Physical" : "Virtual";
-      document.getElementById("payment-package").textContent = booking.package;
-      document.getElementById("payment-quantity").textContent = `${booking.quantity} ${booking.unit}${Number(booking.quantity) === 1 ? "" : "s"}`;
-      const eventDate = booking.date ? new Date(`${booking.date}T12:00:00`) : null;
+      emailWarning.hidden = currentBooking.emailStatus === "sent";
+      emailWarning.textContent = currentBooking.emailStatus === "failed"
+        ? "Your booking is saved, but the email could not be sent. Keep your reference and continue here."
+        : "Your booking is saved. The email is still processing; keep your reference and continue here.";
+      const amountKnown = currentBooking.amountKnown === true && Number.isFinite(Number(currentBooking.amount));
+      const amountText = amountKnown ? naira(Number(currentBooking.amount)) : "To be confirmed";
+      const amountPlain = amountKnown ? String(Number(currentBooking.amount)) : "";
+      const narration = currentBooking.narration || currentBooking.reference;
+      document.getElementById("payment-reference-summary").textContent = currentBooking.reference;
+      document.getElementById("payment-reference-pay").textContent = currentBooking.reference;
+      document.getElementById("payment-name").textContent = currentBooking.name;
+      document.getElementById("payment-service").textContent = currentBooking.service;
+      document.getElementById("payment-mode").textContent = currentBooking.mode === "physical" ? "Physical" : "Virtual";
+      document.getElementById("payment-package").textContent = currentBooking.package;
+      document.getElementById("payment-quantity").textContent = `${currentBooking.quantity} ${currentBooking.unit}${Number(currentBooking.quantity) === 1 ? "" : "s"}`;
+      document.getElementById("payment-event-name").textContent = currentBooking.eventName || "Not provided";
+      const eventDate = currentBooking.eventDate ? new Date(`${currentBooking.eventDate}T12:00:00`) : null;
       const dateText = eventDate && !Number.isNaN(eventDate.valueOf()) ? eventDate.toLocaleDateString(navigator.language || "en", { day: "numeric", month: "long", year: "numeric" }) : "Not provided";
-      document.getElementById("payment-event-date").textContent = `${dateText}${booking.time ? ` at ${booking.time}` : ""}`;
-      document.getElementById("payment-country").textContent = `${booking.country || "Not provided"}${booking.countryISO ? ` (${booking.countryISO})` : ""}`;
-      document.getElementById("payment-timezone").textContent = booking.eventTimezone || "Not applicable";
+      document.getElementById("payment-event-date").textContent = `${dateText}${currentBooking.eventTime ? ` at ${currentBooking.eventTime}` : ""}`;
+      document.getElementById("payment-country").textContent = `${currentBooking.country || "Not provided"}${currentBooking.countryISO ? ` (${currentBooking.countryISO})` : ""}`;
       document.getElementById("payment-total").textContent = amountText;
-      document.getElementById("payment-bank").textContent = BANK_NAME;
-      document.getElementById("payment-account-name").textContent = ACCOUNT_NAME;
-      document.getElementById("payment-account-number").textContent = ACCOUNT_NUMBER;
+      const account = currentBooking.paymentDetails || {};
+      document.getElementById("payment-bank").textContent = account.bankName || "";
+      document.getElementById("payment-account-name").textContent = account.accountName || "";
+      document.getElementById("payment-account-number").textContent = account.accountNumber || "";
       document.getElementById("payment-amount").textContent = amountText;
       document.getElementById("payment-narration").textContent = narration;
-      document.getElementById("payment-amount-row").hidden = false;
-      document.getElementById("payment-narration-row").hidden = false;
-      document.getElementById("exact-payment-amount").textContent = amountText;
-      document.getElementById("exact-payment-service").textContent = booking.service;
-      document.getElementById("modal-transfer-amount").textContent = amountText;
-      document.getElementById("modal-payment-narration").textContent = narration;
-      document.querySelector(".exact-payment-notice").hidden = !amountKnown;
-      document.getElementById("payment-open-modal").hidden = !amountKnown;
-      document.querySelector('[data-copy="amount"]').hidden = !amountKnown;
-      const allDetails = `Bank: ${BANK_NAME}\nAccount Name: ${ACCOUNT_NAME}\nAccount Number: ${ACCOUNT_NUMBER}\nAmount: ${formattedAmount}\nNarration: ${narration}`;
-      document.querySelectorAll(".payment-copy").forEach(button => {
-        button.dataset.copyValue = ({
-          bankName: BANK_NAME,
-          accountName: ACCOUNT_NAME,
-          accountNumber: ACCOUNT_NUMBER,
-          amount: amountPlain,
-          narration,
-          all: allDetails,
-        })[button.dataset.copy] || "";
-      });
-      document.getElementById("payment-modal-continue").href = `https://wa.me/${PAYMENT_CONFIG.whatsappNumber}?text=${encodeURIComponent(confirmationMessage)}`;
-      document.getElementById("payment-confirmation").hidden = true;
-      document.getElementById("payment-help").querySelector("a").href = `https://wa.me/${PAYMENT_CONFIG.whatsappNumber}`;
+      document.getElementById("payment-amount-guidance").hidden = amountKnown;
+      const allDetails = `Bank: ${account.bankName || ""}\nAccount Name: ${account.accountName || ""}\nAccount Number: ${account.accountNumber || ""}\nAmount: ${amountText}\nNarration: ${narration}`;
+      const copyValues = { bankName: account.bankName, accountName: account.accountName, accountNumber: account.accountNumber, amount: amountPlain, narration, all: allDetails };
+      document.querySelectorAll(".payment-copy").forEach(button => { button.dataset.copyValue = copyValues[button.dataset.copy] || ""; });
+      const whatsappUrl = currentBooking.whatsappUrl || `https://wa.me/${PAYMENT_CONFIG.whatsappNumber}`;
+      document.getElementById("payment-proof-whatsapp").href = whatsappUrl;
+      document.querySelectorAll("[data-payment-help]").forEach(link => { link.href = `https://wa.me/${PAYMENT_CONFIG.whatsappNumber}`; });
+      const expiresAt = Date.parse(currentBooking.expiresAt || "");
+      const expiryNote = document.getElementById("payment-expiry-note");
+      if (Number.isFinite(expiresAt)) {
+        expiryNote.textContent = `Payment is due by ${new Date(expiresAt).toLocaleString(navigator.language || "en", { dateStyle: "medium", timeStyle: "short" })}.`;
+        window.clearTimeout(expiryTimer);
+        if (currentBooking.status === "pending_payment" && expiresAt > Date.now()) expiryTimer = window.setTimeout(refreshBookingStatus, expiresAt - Date.now() + 500);
+      } else expiryNote.textContent = "";
       bookingForm.hidden = true;
+      document.getElementById("booking-recovery").hidden = true;
       paymentScreen.hidden = false;
-      document.querySelectorAll("[data-booking-phase]").forEach((label,index)=>{if(index===3)label.setAttribute("aria-current","step");else label.removeAttribute("aria-current")});
+      document.body.classList.add("booking-payment-open");
+      document.querySelectorAll("[data-booking-phase]").forEach((label, index) => { if (index === 3) label.setAttribute("aria-current", "step"); else label.removeAttribute("aria-current"); });
       history.replaceState({}, "", "#booking-payment");
-      requestAnimationFrame(() => {
-        document.querySelector(".bank-transfer-card").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-        paymentTitle.focus({ preventScroll: true });
+      savePaymentReference(currentBooking.reference, options.step || currentPaymentStep || 1);
+      setPaymentStep(options.step || currentPaymentStep || 1, false);
+      renderPaymentStatus();
+      if (options.focus !== false) requestAnimationFrame(() => paymentTitle.focus({ preventScroll: true }));
+    }
+
+    async function retrieveBooking(reference, email) {
+      const response = await fetch(BOOKING_API_URL.replace("/api/book", "/api/booking/retrieve"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference, email }),
       });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.ok !== true) throw new Error(result.error || "We could not retrieve that booking.");
+      return result;
+    }
+
+    async function refreshBookingStatus() {
+      if (!currentBooking?.reference || !currentBooking?.email) return;
+      try {
+        const result = await retrieveBooking(currentBooking.reference, currentBooking.email);
+        displayBookingPayment(result.booking, { paymentDetails: result.paymentDetails, emailStatus: result.emailStatus, step: currentPaymentStep, focus: false });
+      } catch (error) {
+        document.getElementById("payment-status-refresh").textContent = "We could not refresh the payment status. Try again shortly.";
+      }
+      if (currentBooking?.status === "awaiting_confirmation") {
+        window.clearInterval(statusPollTimer);
+        statusPollTimer = window.setInterval(refreshBookingStatus, 30_000);
+      } else window.clearInterval(statusPollTimer);
     }
     bookingForm.addEventListener("submit", async event => {
       event.preventDefault();
@@ -531,22 +583,14 @@
         submitButton.disabled = false;
       }
 
-      const booking = {
-          reference: result.reference, name: String(data.name).trim(), email: String(data.email).trim(),
-          country: selectedCountry.name, countryISO: selectedCountry.isoCode,
-          phoneDialCode: bookingInputs.dialCountry.dialCode, whatsapp: selectedPhone.e164,
-          service: result.service, mode: data.mode, package: result.package,
-          quantity: Number(data.quantity), unit: result.unit,
-          amount: result.amount, amountNGN: result.amount, amountKnown: result.amountKnown, paymentNarration: result.reference,
-          eventName: String(data.eventName || "").trim(), eventType: String(data.eventType || "").trim(),
-          date: data.eventDate, time: String(data.eventTime || ""),
-          eventTimezone: data.mode === "virtual" ? bookingInputs.timeZone : "",
-          platform, additionalNotes: String(data.additionalNotes || "").trim(), emailStatus: result.emailStatus || "sent",
-        };
-        try { sessionStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(booking)); } catch (error) { console.warn("Could not save this payment summary for refresh recovery.", error); }
-        try { localStorage.removeItem(BOOKING_DRAFT_KEY); } catch {}
-        status.textContent = "Booking received. Payment instructions are below.";
-        displayBookingPayment(booking);
+        const booking = result.booking;
+        if (!booking || booking.reference !== result.reference) {
+          status.textContent = "The booking was saved, but we could not load its secure payment details. Use your email reference to recover it.";
+          return;
+        }
+        booking.emailStatus = result.emailStatus || "sent";
+        status.textContent = "Booking received. Review your service details to continue.";
+        displayBookingPayment(booking, { paymentDetails: result.paymentDetails, emailStatus: result.emailStatus, step: 1 });
     });
     document.querySelectorAll(".payment-copy").forEach(button => button.addEventListener("click", async () => {
       const value = button.dataset.copyValue;
@@ -559,7 +603,7 @@
           await navigator.clipboard.writeText(value);
           copied = true;
         }
-      } catch (error) { /* Use the temporary textarea fallback. */ }
+      } catch {}
       if (!copied) {
         const textarea = document.createElement("textarea");
         textarea.value = value;
@@ -568,99 +612,149 @@
         textarea.style.top = "-1000px";
         textarea.style.opacity = "0";
         document.body.append(textarea);
-        textarea.focus();
-        textarea.select();
-        textarea.setSelectionRange(0, textarea.value.length);
-        try { copied = document.execCommand("copy"); } catch (error) { copied = false; }
+        textarea.focus(); textarea.select(); textarea.setSelectionRange(0, textarea.value.length);
+        try { copied = document.execCommand("copy"); } catch { copied = false; }
         textarea.remove();
         button.focus({ preventScroll: true });
       }
       const announcement = document.getElementById("copy-announcement");
       if (button._copyTimer) window.clearTimeout(button._copyTimer);
-      if (label) label.textContent = copied ? "Copied \u2713" : "Copy failed";
+      if (label) label.textContent = copied ? "Copied ✓" : "Copy failed";
       announcement.textContent = copied ? `${originalText.replace(/^Copy /, "")} copied.` : "Copy was not available on this browser.";
       button._copyTimer = window.setTimeout(() => { if (label) label.textContent = originalText; announcement.textContent = ""; }, 2000);
     }));
-    const paymentModalBackdrop = document.getElementById("payment-modal-backdrop");
-    const paymentModal = document.getElementById("payment-modal");
-    const paymentModalContinue = document.getElementById("payment-modal-continue");
-    const paymentOpenModal = document.getElementById("payment-open-modal");
-    let paymentModalReturnFocus = null;
-    function closePaymentModal(restoreFocus = true) {
-      paymentModalBackdrop.hidden = true;
-      document.body.classList.remove("payment-modal-open");
-      if (restoreFocus && paymentModalReturnFocus?.isConnected) paymentModalReturnFocus.focus({ preventScroll: true });
-    }
-    paymentOpenModal.addEventListener("click", () => {
-      paymentModalReturnFocus = document.activeElement;
-      paymentModalBackdrop.hidden = false;
-      document.body.classList.add("payment-modal-open");
-      paymentModalContinue.focus({ preventScroll: true });
-    });
-    document.getElementById("payment-modal-back").addEventListener("click", () => closePaymentModal());
-    paymentModalBackdrop.addEventListener("click", event => { if (event.target === paymentModalBackdrop) closePaymentModal(); });
-    paymentModalContinue.addEventListener("click", () => {
-      closePaymentModal(false);
-      const confirmation = document.getElementById("payment-confirmation");
-      confirmation.hidden = false;
-      confirmation.focus({ preventScroll: true });
-    });
-    document.addEventListener("keydown", event => {
-      if (paymentModalBackdrop.hidden) return;
-      if (event.key === "Escape") { event.preventDefault(); closePaymentModal(); return; }
-      if (event.key !== "Tab") return;
-      const focusable = [paymentModalContinue, document.getElementById("payment-modal-back")];
-      const first = focusable[0], last = focusable[focusable.length - 1];
-      if (event.shiftKey && (document.activeElement === first || document.activeElement === paymentModal || !paymentModal.contains(document.activeElement))) {
-        event.preventDefault(); last.focus();
-      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === paymentModal || !paymentModal.contains(document.activeElement))) {
-        event.preventDefault(); first.focus();
-      }
-    });
-    function getSavedBooking() {
-      if (currentBooking) return currentBooking;
-      try {
-        const booking = JSON.parse(sessionStorage.getItem(BOOKING_STORAGE_KEY) || "null");
-        if (booking && typeof booking.reference === "string") return booking;
-      } catch (error) { /* Keep the in-memory booking usable if storage is blocked. */ }
-      return currentBooking;
-    }
-    document.getElementById("new-booking").addEventListener("click", () => {
-      try { sessionStorage.removeItem(BOOKING_STORAGE_KEY); } catch (error) {}
+
+    document.getElementById("payment-edit-details").addEventListener("click", () => {
+      window.clearInterval(statusPollTimer);
+      window.clearTimeout(expiryTimer);
       currentBooking = null;
-      paymentNarrationCode = "";
       bookingIdempotencyKey = "";
+      try { sessionStorage.removeItem(PAYMENT_REFERENCE_KEY); sessionStorage.removeItem(PAYMENT_STEP_KEY); } catch {}
       paymentScreen.hidden = true;
+      document.body.classList.remove("booking-payment-open");
+      bookingForm.hidden = false;
+      currentStep = 3;
+      renderStep();
+      history.replaceState({}, "", "#book");
+      document.getElementById("booking-title").focus({ preventScroll: true });
+    });
+    document.getElementById("payment-continue-pay").addEventListener("click", () => setPaymentStep(2));
+    document.getElementById("payment-back-review").addEventListener("click", () => setPaymentStep(1));
+    document.getElementById("payment-made-transfer").addEventListener("click", () => setPaymentStep(3));
+    document.getElementById("payment-back-pay").addEventListener("click", () => setPaymentStep(2));
+
+    async function sendPaymentProof(method = "form") {
+      const status = document.getElementById("payment-proof-status");
+      const submit = document.getElementById("payment-submit-proof");
+      const whatsappSent = document.getElementById("payment-whatsapp-sent");
+      if (!currentBooking?.reference || !currentBooking?.email) {
+        status.textContent = "Retrieve your booking with its reference and email before submitting proof.";
+        return;
+      }
+      let body;
+      const headers = {};
+      if (method === "whatsapp") {
+        body = JSON.stringify({ reference: currentBooking.reference, email: currentBooking.email, method: "whatsapp" });
+        headers["Content-Type"] = "application/json";
+        whatsappSent.disabled = true;
+      } else {
+        const fileInput = document.getElementById("proof-receipt");
+        const file = fileInput.files?.[0];
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+        if (file && (!allowedTypes.includes(file.type) || file.size > 4 * 1024 * 1024)) {
+          status.textContent = "Choose a JPEG, PNG, WebP, or PDF receipt no larger than 4 MB.";
+          return;
+        }
+        const senderName = document.getElementById("proof-sender-name").value.trim();
+        const transferTime = document.getElementById("proof-transfer-time").value;
+        if (!file && (!senderName || !transferTime)) {
+          status.textContent = "Upload a receipt or enter both the sender name and transfer time.";
+          return;
+        }
+        body = new FormData();
+        body.append("reference", currentBooking.reference);
+        body.append("email", currentBooking.email);
+        body.append("method", "form");
+        body.append("senderName", senderName);
+        body.append("transferTime", transferTime);
+        if (file) body.append("receipt", file, file.name);
+        submit.disabled = true;
+      }
+      status.textContent = "Submitting your proof securely…";
+      try {
+        const response = await fetch(BOOKING_API_URL.replace("/api/book", "/api/booking/proof"), { method: "POST", headers, body });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.ok !== true) throw new Error(result.error || "We could not submit your proof. Please try again.");
+        currentBooking.status = result.status;
+        document.getElementById("payment-proof-form").reset();
+        status.textContent = result.emailStatus === "failed"
+          ? "Payment awaiting confirmation. Your proof is saved, but the email notice could not be sent."
+          : "Payment awaiting confirmation. We’ll email you after we verify the transfer.";
+        renderPaymentStatus();
+        window.clearInterval(statusPollTimer);
+        statusPollTimer = window.setInterval(refreshBookingStatus, 30_000);
+      } catch (error) {
+        status.textContent = error.message || "We could not submit your proof. Please try again or use WhatsApp.";
+      } finally {
+        submit.disabled = false;
+        whatsappSent.disabled = false;
+      }
+    }
+
+    document.getElementById("payment-proof-form").addEventListener("submit", event => {
+      event.preventDefault();
+      sendPaymentProof("form");
+    });
+    document.getElementById("payment-whatsapp-sent").addEventListener("click", () => sendPaymentProof("whatsapp"));
+
+    document.getElementById("payment-restart").addEventListener("click", restartBooking);
+    document.getElementById("new-booking").addEventListener("click", restartBooking);
+    function restartBooking() {
+      window.clearInterval(statusPollTimer);
+      window.clearTimeout(expiryTimer);
+      currentBooking = null;
+      bookingIdempotencyKey = "";
+      currentPaymentStep = 1;
+      try { sessionStorage.removeItem(PAYMENT_REFERENCE_KEY); sessionStorage.removeItem(PAYMENT_STEP_KEY); } catch {}
+      paymentScreen.hidden = true;
+      document.getElementById("booking-recovery").hidden = true;
+      document.body.classList.remove("booking-payment-open");
       bookingForm.hidden = false;
       bookingForm.reset();
       bookingInputs.reset();
-      updatePlatformOther();
-      updateNotesCount();
+      updatePlatformOther(); updateNotesCount();
       currentStep = 0;
       history.replaceState({}, "", "#book");
-      updateOffers();
-      renderStep();
+      updateOffers(); renderStep();
       document.getElementById("booking-title").focus({ preventScroll: true });
+    }
+
+    const paymentRecovery = document.getElementById("booking-recovery");
+    const recoveryReference = (() => { try { return sessionStorage.getItem(PAYMENT_REFERENCE_KEY) || ""; } catch { return ""; } })();
+    if (/^APX-[A-F0-9]{24}$/.test(recoveryReference)) {
+      paymentRecovery.hidden = false;
+      document.getElementById("booking-recovery-reference").textContent = recoveryReference;
+    }
+    document.getElementById("booking-recovery-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      const status = document.getElementById("booking-recovery-status");
+      const button = document.getElementById("booking-recovery-submit");
+      const email = document.getElementById("booking-recovery-email").value.trim();
+      if (!recoveryReference || !email) { status.textContent = "Enter the email address used for this booking."; return; }
+      button.disabled = true;
+      status.textContent = "Retrieving your booking…";
+      try {
+        const result = await retrieveBooking(recoveryReference, email);
+        const step = Number(sessionStorage.getItem(PAYMENT_STEP_KEY)) || 1;
+        displayBookingPayment({ ...result.booking, email }, { paymentDetails: result.paymentDetails, emailStatus: result.emailStatus, step });
+      } catch (error) {
+        status.textContent = error.message || "We could not retrieve that booking.";
+      } finally { button.disabled = false; }
     });
+
     document.querySelectorAll('input[name="eventDate"],input[name="alternateDate"]').forEach(input => input.min = localDateString());
     updateOffers();
-    if (bookingDraft.serviceId === serviceOptions.value && bookingDraft.mode === selectedMode() && bookingDraft.offerId && [...offerOptions.options].some(option => option.value === bookingDraft.offerId)) {
-      offerOptions.value = bookingDraft.offerId;
-      updateEstimate();
-    }
     renderStep();
-    document.getElementById("payment-help").querySelector("a").href = `https://wa.me/${PAYMENT_CONFIG.whatsappNumber}`;
-    document.getElementById("payment-bank").textContent = PAYMENT_CONFIG.bank;
-    document.getElementById("payment-account-name").textContent = PAYMENT_CONFIG.accountName;
-    document.getElementById("payment-account-number").textContent = PAYMENT_CONFIG.accountNumber;
-    const publicPaymentCopyValues = {
-      bankName: PAYMENT_CONFIG.bank,
-      accountName: PAYMENT_CONFIG.accountName,
-      accountNumber: PAYMENT_CONFIG.accountNumber,
-      all: `Bank: ${PAYMENT_CONFIG.bank}\nAccount Name: ${PAYMENT_CONFIG.accountName}\nAccount Number: ${PAYMENT_CONFIG.accountNumber}`,
-    };
-    document.querySelectorAll(".payment-copy").forEach(button => {
-      button.dataset.copyValue = publicPaymentCopyValues[button.dataset.copy] || "";
-    });
-    const savedBooking = getSavedBooking();
-    if (savedBooking) displayBookingPayment(savedBooking);
+    document.getElementById("payment-bank").textContent = "";
+    document.getElementById("payment-account-name").textContent = "";
+    document.getElementById("payment-account-number").textContent = "";
