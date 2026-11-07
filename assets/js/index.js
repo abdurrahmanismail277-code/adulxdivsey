@@ -31,17 +31,6 @@
     document.getElementById('intro-skip').addEventListener('click',dismissIntro);document.getElementById('intro-enter').addEventListener('click',dismissIntro);
     const finishIntro=()=>{if(!introScreen||introScreen.hidden)return;introScreen.classList.add('intro-finished');introScreen.inert=true;introScreen.setAttribute('aria-hidden','true')};
     window.setTimeout(finishIntro,3100);
-    const backToTop=document.getElementById('back-to-top');
-    if(backToTop){
-      const progress=backToTop.querySelector('.scroll-progress-value');
-      const circumference=2*Math.PI*24;
-      let progressFramePending=false;
-      const updateScrollProgress=()=>{progressFramePending=false;const maxScroll=Math.max(0,document.documentElement.scrollHeight-window.innerHeight);const amount=maxScroll?Math.min(1,Math.max(0,window.scrollY/maxScroll)):0;if(progress){progress.style.strokeDasharray=String(circumference);progress.style.strokeDashoffset=String(circumference*(1-amount))}backToTop.classList.toggle('is-visible',window.scrollY>200)};
-      const requestProgressUpdate=()=>{if(!progressFramePending){progressFramePending=true;window.requestAnimationFrame(updateScrollProgress)}};
-      window.addEventListener('scroll',requestProgressUpdate,{passive:true});window.addEventListener('resize',requestProgressUpdate,{passive:true});
-      backToTop.addEventListener('click',event=>{event.preventDefault();window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})});
-      updateScrollProgress();
-    }
     const themeButton=document.querySelector('.theme-toggle');
     const themeRoot=document.documentElement;
     const accessibilityTrigger=document.getElementById('accessibility-trigger');
