@@ -1,9 +1,9 @@
 
     import { SETTINGS, SERVICES, calculatePrice, getService, readServiceIdsFromUrl } from "../../services.js?v=20261029";
     import { initBookingInputs } from "./booking-inputs.js?v=20261029";
-    const BANK_NAME = "OPay";
-    const ACCOUNT_NAME = "MUTMAINNAH OLUNLE TIRMIDHIY";
-    const ACCOUNT_NUMBER = "6550785344";
+    const BANK_NAME = "Moniepoint MFB";
+    const ACCOUNT_NAME = "The Apex House";
+    const ACCOUNT_NUMBER = "9115595519";
     // Change transfer details here; never put private keys or API secrets in this file.
     const PAYMENT_CONFIG = Object.freeze({
       accountNumber: ACCOUNT_NUMBER,

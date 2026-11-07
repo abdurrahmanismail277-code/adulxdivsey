@@ -22,7 +22,7 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const rateWindows = new Map();
 const idempotentBookings = new Map();
 const money = amount => `₦${Number(amount).toLocaleString("en-NG")}`;
-const BANK = Object.freeze({ name: "OPay", accountName: "MUTMAINNAH OLUNLE TIRMIDHIY", accountNumber: "6550785344" });
+const BANK = Object.freeze({ name: "Moniepoint MFB", accountName: "The Apex House", accountNumber: "9115595519" });
 const OWNER_WHATSAPP = "2348038326349";
 
 async function verifyRecaptchaToken(token, env) {
