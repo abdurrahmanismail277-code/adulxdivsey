@@ -27,7 +27,6 @@
     // Mobile navigation and gentle reveal; respects reduced-motion preferences.
     const introScreen=document.getElementById('intro-screen');
     const dismissIntro=()=>{if(!introScreen||introScreen.hidden)return;introScreen.hidden=true};
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)introScreen.hidden=true;
     document.getElementById('intro-skip').addEventListener('click',dismissIntro);document.getElementById('intro-enter').addEventListener('click',dismissIntro);
     const finishIntro=()=>{if(!introScreen||introScreen.hidden)return;introScreen.classList.add('intro-finished');introScreen.inert=true;introScreen.setAttribute('aria-hidden','true')};
     window.setTimeout(finishIntro,3100);

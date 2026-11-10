@@ -1,5 +1,5 @@
 
-    import { SETTINGS, SERVICES, calculatePrice, getService, readServiceIdsFromUrl } from "../../services.js?v=20261029";
+    import { SETTINGS, SERVICES, calculatePrice, getService, readServiceIdsFromUrl } from "../../services.js?v=20261110-project-management-checkout";
     import { initBookingInputs } from "./booking-inputs.js?v=20261029";
     const PAYMENT_REFERENCE_KEY = "apex-house-booking-reference";
     const PAYMENT_STEP_KEY = "apex-house-payment-step";
@@ -70,11 +70,14 @@
       });
     }
     function priceLabel(amount) { return `${naira(amount)} NGN`; }
-    serviceOptions.innerHTML = `<option value="">Choose a service</option>${Object.entries(SERVICES).map(([, group]) => `<optgroup label="${group.label}">${group.services.map(service => `<option value="${service.id}">${service.name}</option>`).join("")}</optgroup>`).join("")}`;
+    serviceOptions.innerHTML = `<option value="">Choose a service</option>${Object.entries(SERVICES).map(([, group]) => {
+      const services = [...group.services, ...(group.inquiryServices || [])];
+      return `<optgroup label="${group.label}">${services.map(service => `<option value="${service.id}">${service.name}${service.inquiryOnly ? " (Enquiry)" : ""}</option>`).join("")}</optgroup>`;
+    }).join("")}`;
     serviceOptions.classList.remove("booking-services-loading");
     bookingInputs = initBookingInputs({ draft: bookingDraft });
     document.getElementById("phone-dial-country-iso").value = "NG";
-    const allServiceIds = new Set(Object.values(SERVICES).flatMap(group => group.services.map(service => service.id)));
+    const allServiceIds = new Set(Object.values(SERVICES).flatMap(group => [...group.services, ...(group.inquiryServices || [])].map(service => service.id).filter(Boolean)));
     const validUrlSelections = readServiceIdsFromUrl(window.location.search);
     let storedSelections = [];
     try { storedSelections = JSON.parse(sessionStorage.getItem("apex-house-selected-services") || "[]"); } catch {}
@@ -122,13 +125,23 @@
         conditionalTimers.set(wrapper, window.setTimeout(() => { if (wrapper.inert) wrapper.hidden = true; }, 180));
       }
     }
-    function updateOffers() {
+    function clearFieldError(field) {
+      if (!field) return;
+      field.setCustomValidity("");
+      field.removeAttribute("aria-invalid");
+      const wrapper = field.closest(".booking-field");
+      wrapper?.classList.remove("is-invalid");
+      const error = wrapper?.querySelector(".field-error");
+      if (error) error.textContent = "";
+    }
+    function updateOffers({ resetPackage = true } = {}) {
       const service = selectedService();
-      if (service) getPaymentNarrationCode();
+      const serviceOffers = service?.offers || [];
+      const isInquiry = Boolean(service?.inquiryOnly);
       const modeRadios = [...bookingForm.querySelectorAll('input[name="mode"]')];
-      modeRadios.forEach(radio => { radio.disabled = !service || !service.offers.some(offer => offer.mode === radio.value); });
-      if (service && !service.offers.some(offer => offer.mode === selectedMode())) {
-        const firstMode = service.offers[0].mode;
+      modeRadios.forEach(radio => { radio.disabled = !service || (!isInquiry && !serviceOffers.some(offer => offer.mode === radio.value)); });
+      if (serviceOffers.length && !serviceOffers.some(offer => offer.mode === selectedMode())) {
+        const firstMode = serviceOffers[0].mode;
         modeRadios.find(radio => radio.value === firstMode).checked = true;
       }
       const mode = selectedMode();
@@ -141,12 +154,21 @@
       venueField.querySelector(".required-mark").hidden = isVirtual;
       setConditionalField(document.getElementById("platform-field"), isVirtual);
       setConditionalField(document.getElementById("timezone-field"), isVirtual);
-      const offers = service ? service.offers.filter(offer => offer.mode === mode) : [];
-      offerOptions.innerHTML = offers.length ? offers.map(offer => `<option value="${offer.id}">${offer.label} / ${priceLabel(offer.amount)} per ${offer.unit}</option>`).join("") : '<option value="">Choose a service first</option>';
+      const offers = serviceOffers.filter(offer => offer.mode === mode);
+      const previousOffer = resetPackage ? "" : offerOptions.value;
+      const placeholder = isInquiry
+        ? "Select project scope"
+        : service
+        ? (offers.length ? "Select a package" : "No packages available for this mode")
+        : "Choose a service first";
+      offerOptions.innerHTML = `<option value="">${placeholder}</option>${offers.map(offer => `<option value="${offer.id}">${isInquiry ? offer.label : `${offer.label} / ${priceLabel(offer.amount)} per ${offer.unit}`}</option>`).join("")}`;
+      if (previousOffer && offers.some(offer => offer.id === previousOffer)) offerOptions.value = previousOffer;
+      clearFieldError(offerOptions);
       const offer = offers[0];
-      const units = { hour: "hours", day: "days", package: "packages", content: "content pieces", block: "blocks" };
+      const units = { hour: "hours", day: "days", package: "packages", content: "content pieces", block: "blocks", project: "projects" };
       document.getElementById("quantity-label").textContent = `Number of ${units[offer?.unit] || "items"}`;
-      document.getElementById("quantity-unit").textContent = offer ? `Price is per ${offer.unit}.` : "Choose a service to see the unit.";
+      document.getElementById("quantity-unit").textContent = isInquiry ? "Project pricing will be confirmed after review." : offer ? `Price is per ${offer.unit}.` : "Choose a service to see the unit.";
+      document.getElementById("booking-next").textContent = "Continue";
       const extraHoursField = document.getElementById("extra-hours-field");
       setConditionalField(extraHoursField, Boolean(service?.extraHoursAllowed));
       updateEstimate();
@@ -165,23 +187,23 @@
       const quantity = Number(document.getElementById("booking-quantity").value);
       const extraHours = Number(document.getElementById("booking-extra-hours").value || 0);
       const quote = calculatePrice(serviceOptions.value, selectedMode(), offerId, quantity, extraHours);
-      const totalText = quote ? naira(quote.amount) : "Select a service and package";
+      const totalText = service?.inquiryOnly ? "Price confirmed after review" : quote ? naira(quote.amount) : "Select a service and package";
       animatePrice(document.getElementById("booking-price-live"), totalText);
       animatePrice(document.getElementById("booking-price"), totalText);
       const notes = ["Prices and payments are in Nigerian naira (NGN)."];
       if (selectedMode() === "physical") notes.push("Transport fare is not included.");
       if (service?.extraHoursAllowed) notes.push(SETTINGS.launchExtraHourRateNGN == null ? "Additional hours are confirmed after review." : `Additional hours: ${priceLabel(SETTINGS.launchExtraHourRateNGN)} per hour, confirmed after review.`);
-      const note = quote ? notes.join(" ") : "Choose a service and package to see the NGN price.";
+      const note = service?.inquiryOnly ? "Project Management pricing is scoped to your project and will be confirmed after review." : quote ? notes.join(" ") : "Choose a service and package to see the NGN price.";
       const extraNotes = quote ? notes.filter(item => item !== "Prices and payments are in Nigerian naira (NGN)").join(" ") : "";
       const estimateNote = document.getElementById("estimate-note");
       estimateNote.textContent = extraNotes;
       estimateNote.hidden = !extraNotes;
       document.getElementById("estimate-note-live").textContent = note;
     }
-    serviceOptions.addEventListener("change", updateOffers);
-    offerOptions.addEventListener("change", updateEstimate);
+    serviceOptions.addEventListener("change", () => updateOffers());
+    offerOptions.addEventListener("change", () => { clearFieldError(offerOptions); updateEstimate(); });
 
-    document.querySelectorAll('input[name="mode"]').forEach(input => input.addEventListener("change", updateOffers));
+    document.querySelectorAll('input[name="mode"]').forEach(input => input.addEventListener("change", () => updateOffers()));
     document.getElementById("booking-quantity").addEventListener("input", updateEstimate);
     document.getElementById("booking-extra-hours").addEventListener("input", updateEstimate);
     const platformPreference = document.getElementById("platform-preference");
@@ -311,7 +333,7 @@
       setSummaryRow("email", data.get("email"));
       setSummaryRow("country", country?.name);
       setSummaryRow("timezone", data.get("mode") === "virtual" ? bookingInputs.timeZone : "");
-      animatePrice(document.getElementById("booking-price"), quote ? naira(quote.amount) : "Quote unavailable");
+      animatePrice(document.getElementById("booking-price"), service?.inquiryOnly ? "Price confirmed after review" : quote ? naira(quote.amount) : "Quote unavailable");
       }
     }
     const paymentScreen = document.getElementById("booking-payment");
@@ -754,6 +776,10 @@
 
     document.querySelectorAll('input[name="eventDate"],input[name="alternateDate"]').forEach(input => input.min = localDateString());
     updateOffers();
+    // Browsers can restore select/radio values after module evaluation without
+    // dispatching change. Rebuild offers once that restored state is applied.
+    requestAnimationFrame(() => updateOffers());
+    window.addEventListener("pageshow", () => updateOffers());
     renderStep();
     document.getElementById("payment-bank").textContent = "";
     document.getElementById("payment-account-name").textContent = "";

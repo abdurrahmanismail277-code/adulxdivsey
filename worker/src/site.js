@@ -90,8 +90,8 @@ async function verifyRecaptcha(request, env) {
 
 function bookingFields(input, quote, reference, narration, whatsappUrl) {
   const { service, offer } = quote;
-  const amountKnown = input.mode !== "physical" && service.id !== "launch-hosting";
-  const amountText = amountKnown ? money(quote.amount) : "To be confirmed, please contact us on WhatsApp for the final amount before you transfer";
+  const amountKnown = !service.inquiryOnly && input.mode !== "physical" && service.id !== "launch-hosting";
+  const amountText = amountKnown ? money(quote.amount) : "To be confirmed after review. Please wait for the final amount before transferring.";
   return {
     ...input,
     reference,
@@ -123,14 +123,14 @@ function emailMarkup(booking, internal = false) {
   const detailRows = rows.map(([label, value]) => `<tr><th align="left" style="padding:8px 10px;color:#60718a;border-bottom:1px solid #e5edf7">${escapeHtml(label)}</th><td style="padding:8px 10px;color:#142d50;border-bottom:1px solid #e5edf7;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`).join("");
   const payment = booking.amountKnown
     ? `<div style="margin-top:20px;padding:16px;border-radius:12px;background:#edf4ff"><h2 style="margin:0 0 10px;font-size:16px">Transfer details</h2><p style="margin:5px 0">Bank: <strong>${BANK.name}</strong></p><p style="margin:5px 0">Account name: <strong>${BANK.accountName}</strong></p><p style="margin:5px 0">Account number: <strong>${BANK.accountNumber}</strong></p><p style="margin:5px 0">Amount: <strong>${escapeHtml(money(booking.amount))}</strong></p><p style="margin:5px 0">Narration: <strong>${escapeHtml(booking.narration)}</strong></p></div>`
-    : `<div style="margin-top:20px;padding:16px;border-radius:12px;background:#fff7e4;color:#463914"><strong>To be confirmed, please contact us on WhatsApp for the final amount before you transfer.</strong></div>`;
+    : `<div style="margin-top:20px;padding:16px;border-radius:12px;background:#fff7e4;color:#463914"><strong>The Apex House team will confirm your final amount after reviewing the project scope. Please wait for that confirmation before transferring.</strong></div>`;
   const receipt = `<p style="margin:22px 0"><a href="${escapeHtml(booking.whatsappUrl)}" style="display:inline-block;padding:13px 18px;border-radius:8px;background:#0164ff;color:#fff;text-decoration:none;font-weight:bold">Send your receipt on WhatsApp</a></p>`;
   return `<div style="margin:0;background:#f3f6fb;padding:24px 10px;font-family:Arial,sans-serif;color:#142d50"><div style="max-width:600px;margin:auto;background:#fff;border-radius:14px;overflow:hidden"><div style="padding:24px;background:#021a40;color:#fff"><div style="color:#a9c9ff;font-size:12px;letter-spacing:2px">THE APEX HOUSE</div><h1 style="margin:8px 0 0;font-size:24px">${internal ? "New booking request" : "We received your booking"}</h1></div><div style="padding:24px"><p>Hello ${escapeHtml(booking.name)},</p><p>${internal ? "A new booking was submitted. Status: Pending payment." : "We received your booking. Your payment is pending until we receive and verify your transfer proof."}</p><div style="padding:15px;border:1px solid #c9ddfb;border-radius:10px;background:#f5f9ff"><div style="font-size:11px;color:#60718a">BOOKING REFERENCE / PAYMENT NARRATION</div><strong style="display:block;margin-top:5px;font-size:22px;color:#0164ff">${escapeHtml(booking.reference)}</strong></div><p style="margin:18px 0 8px">Amount: <strong>${escapeHtml(booking.amountText)}</strong></p><table role="presentation" style="width:100%;border-collapse:collapse">${detailRows}</table>${payment}${internal ? "" : receipt}<p style="margin-top:22px;color:#60718a;font-size:12px">The Apex House · +234 803 832 6349</p></div></div></div>`;
 }
 
 function emailText(booking, internal = false) {
   const details = `Reference / narration: ${booking.reference}\n${internal ? `Client: ${booking.name} <${booking.email}>\nWhatsApp: ${booking.whatsapp}\n` : ""}Service: ${booking.category} / ${booking.service}\nMode: ${booking.mode}\nPackage: ${booking.package}\nQuantity: ${booking.quantity} ${booking.unit}\nAdditional hours: ${booking.extraHours || 0}\nEvent: ${booking.eventName} (${booking.eventType})\nPreferred date: ${booking.eventDate}${booking.eventTime ? ` at ${booking.eventTime}` : ""}\nSecond-choice date: ${booking.alternateDate || "Not provided"}\nCountry: ${booking.country} (${booking.countryISO})\nTime zone: ${booking.eventTimezone || "Not applicable"}\nVenue: ${booking.venue || "Not provided"}\nPlatform: ${booking.platform || "Not provided"}\nAudience size: ${booking.audienceSize}\nAdditional notes: ${booking.additionalNotes || "Not provided"}\nBrief: ${booking.brief || "Not provided"}\nAmount: ${booking.amountText}`;
-  const payment = booking.amountKnown ? `\n\nTransfer details\nBank: ${BANK.name}\nAccount name: ${BANK.accountName}\nAccount number: ${BANK.accountNumber}\nAmount: ${money(booking.amount)}\nNarration: ${booking.narration}` : "\n\nTo be confirmed, please contact us on WhatsApp for the final amount before you transfer.";
+  const payment = booking.amountKnown ? `\n\nTransfer details\nBank: ${BANK.name}\nAccount name: ${BANK.accountName}\nAccount number: ${BANK.accountNumber}\nAmount: ${money(booking.amount)}\nNarration: ${booking.narration}` : "\n\nThe Apex House team will confirm your final amount after reviewing the project scope. Please wait for that confirmation before transferring.";
   return `${internal ? "New booking request · Pending payment" : `Hello ${booking.name}, we received your booking. Your payment is pending until we receive and verify your transfer proof.`}\n\n${details}${payment}${internal ? "" : `\n\nSend your receipt on WhatsApp: ${booking.whatsappUrl}`}`;
 }
 
@@ -429,7 +429,7 @@ async function submitBooking(request, env) {
   const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(whatsappMessage)}`;
   const complete = bookingFields(booking, quote, reference, reference, whatsappUrl);
   const createdAt = new Date().toISOString();
-  const expiresAt = new Date(Date.now() + PAYMENT_WINDOW_MS).toISOString();
+  const expiresAt = service.inquiryOnly ? null : new Date(Date.now() + PAYMENT_WINDOW_MS).toISOString();
   complete.expiresAt = expiresAt;
   const sender = env.RESEND_FROM_EMAIL || env.RESEND_FROM || "The Apex House <bookings@theapexxhouse.com>";
   const clientMessage = { from: sender, to: [booking.email], subject: `Booking received · ${reference}`, html: emailMarkup(complete), text: emailText(complete) };

@@ -41,7 +41,10 @@ export const SERVICES = {
       ] },
     ],
     inquiryServices: [
-      { name: "Project Management", description: "Practical coordination to help keep your project organized, on schedule, and moving toward its goals.", inquiryMessage: "Hello, I’m interested in Project Management. Please share how you can support my project and the pricing." },
+      { id: "project-management", name: "Project Management", inquiryOnly: true, description: "Practical coordination to help keep your project organized, on schedule, and moving toward its goals.", offers: [
+        { id: "scoped-project", label: "Project scope (price confirmed after review)", mode: "virtual", unit: "project", amount: 0 },
+        { id: "scoped-project", label: "Project scope (price confirmed after review)", mode: "physical", unit: "project", amount: 0 },
+      ] },
     ],
   },
   media: {
@@ -61,7 +64,7 @@ export const SERVICES = {
 };
 
 export function readServiceIdsFromUrl(search = globalThis.location?.search ?? "") {
-  const validIds = new Set(Object.values(SERVICES).flatMap((group) => group.services.map((service) => service.id)));
+  const validIds = new Set(Object.values(SERVICES).flatMap((group) => [...group.services, ...(group.inquiryServices || [])].map((service) => service.id).filter(Boolean)));
   const params = new URLSearchParams(search);
   const requested = [params.get("service"), params.get("services")].filter(Boolean).join(",");
   return [...new Set(requested.split(",").filter((serviceId) => validIds.has(serviceId)))];
@@ -69,14 +72,14 @@ export function readServiceIdsFromUrl(search = globalThis.location?.search ?? ""
 
 export function getService(serviceId) {
   for (const [category, group] of Object.entries(SERVICES)) {
-    const service = group.services.find((item) => item.id === serviceId);
+    const service = [...group.services, ...(group.inquiryServices || [])].find((item) => item.id === serviceId);
     if (service) return { ...service, category, categoryLabel: group.label };
   }
   return null;
 }
 
 export function getOffer(serviceId, mode, offerId) {
-  return getService(serviceId)?.offers.find((item) => item.id === offerId && item.mode === mode) ?? null;
+  return getService(serviceId)?.offers?.find((item) => item.id === offerId && item.mode === mode) ?? null;
 }
 
 export function calculatePrice(serviceId, mode, offerId, quantity, extraHours = 0) {
